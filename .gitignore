@@ -37,6 +37,7 @@ results/*
 *.csv
 *.json
 !graphify-out/**/*.json
+!vercel.json
 
 # IDE / OS
 .idea/

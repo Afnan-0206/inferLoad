@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 from enum import Enum
 import json
 import logging
+import os
 from pathlib import Path
 import time
 from typing import Any, AsyncGenerator
@@ -586,8 +587,12 @@ def create_app() -> FastAPI:
 
     # Mount results directory safely for historical artifact retrieval
     p_results = Path("results").resolve()
-    p_results.mkdir(parents=True, exist_ok=True)
-    app.mount("/results", StaticFiles(directory=str(p_results)), name="results")
+    try:
+        p_results.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        pass
+    if p_results.is_dir():
+        app.mount("/results", StaticFiles(directory=str(p_results)), name="results")
 
     # Mount static assets
     static_dir = Path(__file__).parent / "web_static"
