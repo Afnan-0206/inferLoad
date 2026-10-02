@@ -146,3 +146,32 @@ def test_web_report_endpoint(client: TestClient, tmp_path: Path) -> None:
     assert resp.json()["report_markdown"] == "# Test Report Content"
 
     _jobs.pop(mock_job_id, None)
+
+
+def test_web_logs_endpoint(client: TestClient) -> None:
+    mock_job_id = "test-job-logs"
+    _jobs[mock_job_id] = ExperimentJobState(
+        job_id=mock_job_id,
+        status=JobStatus.RUNNING,
+        logs=["[12:00:00] Job started", "[12:00:01] Running trial [1/2]"],
+    )
+
+    resp = client.get(f"/api/experiments/{mock_job_id}/logs")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["job_id"] == mock_job_id
+    assert len(data["logs"]) == 2
+    assert "Job started" in data["logs"][0]
+
+    _jobs.pop(mock_job_id, None)
+
+
+def test_web_historical_report_resolution(client: TestClient) -> None:
+    # Use existing historical experiment in results/ if present
+    res_dir = Path("results")
+    exp_dirs = [d for d in res_dir.iterdir() if d.is_dir() and d.name.startswith("experiment-") and (d / "report.md").is_file()]
+    if exp_dirs:
+        target_dir = exp_dirs[0].name
+        resp = client.get(f"/api/experiments/historical-{target_dir}/report")
+        assert resp.status_code == 200
+        assert "report_markdown" in resp.json()

@@ -348,15 +348,15 @@
     "semantic_hash": ""
   },
   "src/inferload/web_static/app.js": {
-    "mtime": 1790923140.844411,
-    "seen": 1790924088.0235097,
-    "ast_hash": "549c69d93d1d3e90f91d708d8ae16183",
+    "mtime": 1790924584.9486632,
+    "seen": 1790937325.9740033,
+    "ast_hash": "13a3b68128e5ae5df816dc14c5a104ff",
     "semantic_hash": ""
   },
   "tests/test_web.py": {
-    "mtime": 1790923202.6032493,
-    "seen": 1790924088.0235507,
-    "ast_hash": "69ddfd857897214642d526b8d13c6c07",
+    "mtime": 1790924645.9492753,
+    "seen": 1790937325.9740734,
+    "ast_hash": "6bd498da61b3e2394e7f955b317378e2",
     "semantic_hash": ""
   },
   "docs/web_ui.md": {
@@ -366,9 +366,9 @@
     "semantic_hash": ""
   },
   "src/inferload/web_static/index.html": {
-    "mtime": 1790923085.7830656,
-    "seen": 1790924088.0236166,
-    "ast_hash": "7049ebc076bac9c8f92157fd31e7c93b",
+    "mtime": 1790924340.8651373,
+    "seen": 1790937325.9741426,
+    "ast_hash": "ff737b51c28b69307d6f45a820a56aaf",
     "semantic_hash": ""
   }
 }

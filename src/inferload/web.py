@@ -116,11 +116,27 @@ class ExperimentJobState(BaseModel):
     capacity: dict[str, Any] | None = None
     artifacts_dir: str | None = None
     plots: list[str] = Field(default_factory=list)
+    logs: list[str] = Field(default_factory=list)
 
 
 # In-memory job repository
 _jobs: dict[str, ExperimentJobState] = {}
 _jobs_lock = asyncio.Lock()
+
+
+def _resolve_artifacts_dir(job_id: str) -> Path | None:
+    """Resolve artifacts directory for either an active in-memory job or a historical run."""
+    if job_id in _jobs and _jobs[job_id].artifacts_dir:
+        p = Path(_jobs[job_id].artifacts_dir).resolve()
+        if p.is_dir():
+            return p
+
+    dir_name = job_id[len("historical-"):] if job_id.startswith("historical-") else job_id
+    results_base = Path("results").resolve()
+    cand = (results_base / dir_name).resolve()
+    if cand.is_relative_to(results_base) and cand.is_dir():
+        return cand
+    return None
 
 
 def build_experiment_config(req: WebBenchmarkRequest) -> tuple[ExperimentConfig, SLOConfig]:
@@ -172,11 +188,18 @@ async def _run_experiment_task(
     slo_config: SLOConfig,
 ) -> None:
     """Execute the experiment runner in the background and update job state."""
+    def _log(msg: str) -> None:
+        t_str = datetime.now().strftime("%H:%M:%S")
+        if job_id in _jobs:
+            _jobs[job_id].logs.append(f"[{t_str}] {msg}")
+
     async with _jobs_lock:
         if job_id not in _jobs:
             return
         _jobs[job_id].status = JobStatus.RUNNING
         _jobs[job_id].start_time = time.time()
+        _log(f"Benchmark job started. Target: {exp_config.target.base_url} (Model: {exp_config.target.model})")
+        _log(f"Concurrency sweep: {exp_config.concurrency_levels}, Repetitions: {exp_config.repetitions}, Requests/point: {exp_config.requests_per_point}")
 
     runner = ExperimentRunner(exp_config)
 
@@ -186,9 +209,11 @@ async def _run_experiment_task(
             _jobs[job_id].progress_current = current
             _jobs[job_id].progress_total = total
             _jobs[job_id].elapsed_seconds = round(time.time() - _jobs[job_id].start_time, 1)
+            _log(f"Running trial [{current}/{total}]: {trial_id}")
 
     try:
         exp_result, exp_dir = await runner.run(progress_callback=on_progress)
+        _log("Trials complete. Evaluating SLO capacity compliance constraints...")
         capacity_res = analyze_capacity(exp_result, slo_config)
 
         # Detect generated plots
@@ -207,8 +232,11 @@ async def _run_experiment_task(
             job.result = exp_result.model_dump(mode="json")
             job.capacity = capacity_res.model_dump(mode="json")
             job.plots = plot_names
+            comp = capacity_res.highest_compliant_concurrency
+            _log(f"Experiment completed. Highest compliant concurrency: {comp if comp is not None else 'None'}")
     except Exception as exc:
         logger.exception("Experiment job %s failed", job_id)
+        _log(f"Experiment failed: {exc}")
         async with _jobs_lock:
             job = _jobs[job_id]
             job.status = JobStatus.FAILED
@@ -258,7 +286,7 @@ def create_app() -> FastAPI:
 
     @app.post("/api/validate")
     async def validate_configuration(req: WebBenchmarkRequest) -> dict[str, Any]:
-        """Validate a benchmark configuration without executing it."""
+        """Validate a benchmark configuration and check endpoint reachability."""
         errors: list[str] = []
 
         if not req.base_url or not req.base_url.startswith(("http://", "https://")):
@@ -284,13 +312,44 @@ def create_app() -> FastAPI:
             errors.append("At least one non-empty benchmark prompt is required.")
 
         if errors:
-            return {"valid": False, "errors": errors}
+            return {"valid": False, "errors": errors, "endpoint_reachable": False, "endpoint_detail": "Configuration validation failed"}
+
+        # Live reachability check
+        endpoint_reachable = False
+        endpoint_detail = "Unknown"
+        try:
+            t0 = time.perf_counter()
+            async with httpx.AsyncClient(timeout=1.5) as client:
+                resp = await client.get(req.base_url.rstrip("/") + "/models")
+                elapsed_ms = round((time.perf_counter() - t0) * 1000, 1)
+                endpoint_reachable = resp.status_code in [200, 401, 403, 404]
+                endpoint_detail = f"Reachable - HTTP {resp.status_code} ({elapsed_ms}ms)"
+        except Exception:
+            try:
+                t0 = time.perf_counter()
+                async with httpx.AsyncClient(timeout=1.5) as client:
+                    resp = await client.get(req.base_url)
+                    elapsed_ms = round((time.perf_counter() - t0) * 1000, 1)
+                    endpoint_reachable = True
+                    endpoint_detail = f"Reachable - HTTP {resp.status_code} ({elapsed_ms}ms)"
+            except Exception as e:
+                endpoint_detail = f"Unreachable ({type(e).__name__})"
 
         try:
             build_experiment_config(req)
-            return {"valid": True, "errors": []}
+            return {
+                "valid": True,
+                "errors": [],
+                "endpoint_reachable": endpoint_reachable,
+                "endpoint_detail": endpoint_detail,
+            }
         except Exception as exc:
-            return {"valid": False, "errors": [str(exc)]}
+            return {
+                "valid": False,
+                "errors": [str(exc)],
+                "endpoint_reachable": endpoint_reachable,
+                "endpoint_detail": endpoint_detail,
+            }
 
     @app.post("/api/experiments", status_code=status.HTTP_202_ACCEPTED)
     async def start_experiment(
@@ -334,17 +393,30 @@ def create_app() -> FastAPI:
 
         return job.model_dump()
 
-    @app.get("/api/experiments/{job_id}/report")
-    async def get_experiment_report(job_id: str) -> dict[str, Any]:
-        """Return the markdown text of the report.md generated for this job."""
+    @app.get("/api/experiments/{job_id}/logs")
+    async def get_experiment_logs(job_id: str) -> dict[str, Any]:
+        """Return real-time execution logs for an active or completed experiment."""
         if job_id not in _jobs:
             raise HTTPException(status_code=404, detail=f"Experiment job '{job_id}' not found.")
-
         job = _jobs[job_id]
-        if not job.artifacts_dir:
-            raise HTTPException(status_code=400, detail="Experiment has not generated artifacts yet.")
+        return {
+            "job_id": job.job_id,
+            "status": job.status,
+            "logs": job.logs,
+            "progress_current": job.progress_current,
+            "progress_total": job.progress_total,
+            "current_trial": job.current_trial,
+            "elapsed_seconds": round(time.time() - job.start_time, 1) if job.status == JobStatus.RUNNING else job.elapsed_seconds,
+        }
 
-        report_file = Path(job.artifacts_dir) / "report.md"
+    @app.get("/api/experiments/{job_id}/report")
+    async def get_experiment_report(job_id: str) -> dict[str, Any]:
+        """Return the markdown text of the report.md generated for an active or historical job."""
+        artifacts_dir = _resolve_artifacts_dir(job_id)
+        if not artifacts_dir:
+            raise HTTPException(status_code=404, detail=f"Experiment '{job_id}' not found.")
+
+        report_file = artifacts_dir / "report.md"
         if not report_file.is_file():
             raise HTTPException(status_code=404, detail="report.md not found in artifacts directory.")
 
@@ -353,15 +425,11 @@ def create_app() -> FastAPI:
 
     @app.get("/api/experiments/{job_id}/artifacts/{file_path:path}")
     async def get_experiment_artifact(job_id: str, file_path: str) -> FileResponse:
-        """Safely serve an artifact file belonging to this experiment."""
-        if job_id not in _jobs:
-            raise HTTPException(status_code=404, detail=f"Experiment job '{job_id}' not found.")
+        """Safely serve an artifact file belonging to an active or historical experiment."""
+        base_dir = _resolve_artifacts_dir(job_id)
+        if not base_dir:
+            raise HTTPException(status_code=404, detail=f"Experiment '{job_id}' not found.")
 
-        job = _jobs[job_id]
-        if not job.artifacts_dir:
-            raise HTTPException(status_code=400, detail="Experiment artifacts directory not available.")
-
-        base_dir = Path(job.artifacts_dir).resolve()
         target = (base_dir / file_path).resolve()
 
         # Strict security constraint: prevent path traversal outside the experiment directory
