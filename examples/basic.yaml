@@ -1,0 +1,27 @@
+target:
+  base_url: "http://localhost:8000/v1"
+  api_key: "test"
+  model: "example-model"
+
+workload:
+  requests: 20
+  concurrency: 4
+  stream: true
+
+  prompts:
+    - "Explain what a database index is in simple terms."
+    - "Explain how TCP differs from UDP."
+    - "What is a hash table?"
+
+  max_tokens: 128
+  temperature: 0
+
+execution:
+  warmup_requests: 2
+
+export:
+  output_dir: "results"
+  formats:
+    - "json"
+    - "csv"
+  prefix: "run"

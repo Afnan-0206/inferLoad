@@ -1,0 +1,28 @@
+experiment:
+  name: "ollama-quick-sweep"
+  description: "Quick sweep demonstrating concurrency scaling and saturation detection on local endpoint"
+  output_dir: "results"
+
+target:
+  base_url: "http://127.0.0.1:11434/v1"
+  model: "qwen2.5:0.5b"
+  timeout: 60.0
+
+workload:
+  prompts:
+    - "What is a database index?"
+    - "What is a hash table?"
+  max_tokens: 32
+  temperature: 0.0
+  stream: true
+
+sweep:
+  concurrency:
+    - 1
+    - 2
+    - 4
+  repetitions: 2
+  requests_per_point: 5
+
+execution:
+  warmup_requests: 1

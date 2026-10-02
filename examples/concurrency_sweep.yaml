@@ -1,0 +1,29 @@
+experiment:
+  name: "concurrency-sweep"
+  description: "Evaluate latency and throughput across scaling concurrency levels on OpenAI-compatible endpoint"
+  output_dir: "results"
+
+target:
+  base_url: "http://127.0.0.1:11434/v1"
+  model: "qwen2.5:0.5b"
+  timeout: 60.0
+
+workload:
+  prompts:
+    - "Explain the difference between prefill and decode stages in LLM inference."
+    - "How does continuous batching improve GPU utilization compared to static batching?"
+    - "What is Time to First Token (TTFT) and why is it critical for user experience?"
+  max_tokens: 64
+  temperature: 0.0
+  stream: true
+
+sweep:
+  concurrency:
+    - 1
+    - 2
+    - 4
+  repetitions: 3
+  requests_per_point: 20
+
+execution:
+  warmup_requests: 5

@@ -1,0 +1,88 @@
+# InferLoad Real GPU / vLLM Baseline Validation Experiment
+# Configurable for any OpenAI-compatible vLLM serving endpoint.
+#
+# Usage:
+#   inferload validate examples/vllm_gpu_baseline.yaml
+#   inferload experiment examples/vllm_gpu_baseline.yaml
+#   inferload capacity results/<experiment-dir> --slo examples/slo_vllm.yaml
+
+experiment:
+  name: "vllm-gpu-baseline"
+  description: "Controlled empirical baseline validation against real vLLM engine across concurrency, prompt lengths, and output tokens"
+  output_dir: "results"
+
+# Target vLLM server: e.g. started via `vllm serve Qwen/Qwen2.5-1.5B-Instruct --port 8000`
+target:
+  # Base URL: adjust to the host and port of your vLLM server
+  base_url: "http://localhost:8000/v1"
+  api_key: null
+  # Configurable model: Any Hugging Face repository identifier or local directory path.
+  # "Qwen/Qwen2.5-1.5B-Instruct" is a lightweight baseline model ideal for initial GPU validation.
+  # For larger GPUs, replace with e.g. "meta-llama/Meta-Llama-3-8B-Instruct".
+  model: "Qwen/Qwen2.5-1.5B-Instruct"
+  timeout: 120.0
+
+# Optional server telemetry collection (Prometheus /metrics)
+# When enabled, InferLoad captures before/during/after snapshots of server-side state.
+telemetry:
+  enabled: false
+  metrics_url: "http://localhost:8000/metrics"
+  timeout: 5.0
+
+workload:
+  stream: true
+  temperature: 0.0   # Strict deterministic greedy decoding for baseline repeatability
+  seed: 42           # Deterministic prompt cycling seed
+  max_tokens: 64     # Baseline generation limit
+
+  # Prompts spanning short, medium, and long prefill lengths
+  prompts:
+    # Short prompt (~10 tokens)
+    - "What is an index in a relational database?"
+    # Medium prompt (~40 tokens)
+    - "Explain the core differences between static request batching and continuous iteration-level batching in modern LLM inference serving systems."
+    # Long prompt (~120 tokens)
+    - "You are a distributed systems and GPU performance engineer. Provide a detailed technical comparison of PagedAttention versus contiguous KV-cache allocation. Discuss how virtual memory paging eliminates external fragmentation, how block tables are maintained across prompt prefill and token decode iterations, and how host-to-device memory swapping behaves when GPU memory approaches capacity limits under heavy concurrent client traffic."
+
+  # Named profiles for isolated prompt-length sweeps
+  prompt_profiles:
+    short:
+      - "What is an index in a relational database?"
+      - "Explain TCP three-way handshake."
+      - "What is an HTTP 429 status code?"
+    medium:
+      - "Explain the core differences between static request batching and continuous iteration-level batching in modern LLM inference serving systems."
+      - "Describe the trade-offs between tensor parallelism and pipeline parallelism when serving large language models across multiple GPUs."
+      - "How does temperature affect the probability distribution of token selection in auto-regressive language models?"
+    long:
+      - "You are a distributed systems and GPU performance engineer. Provide a detailed technical comparison of PagedAttention versus contiguous KV-cache allocation. Discuss how virtual memory paging eliminates external fragmentation, how block tables are maintained across prompt prefill and token decode iterations, and how host-to-device memory swapping behaves when GPU memory approaches capacity limits under heavy concurrent client traffic."
+
+sweep:
+  # Concurrency progression
+  concurrency:
+    - 1
+    - 2
+    - 4
+    - 8
+
+  # Output length variations: short output (64 tokens) vs medium output (128 tokens)
+  max_tokens:
+    - 64
+    - 128
+
+  repetitions: 3         # 3 independent repetitions per parameter point for sample std dev and 95% CI
+  requests_per_point: 30 # 30 requests per repetition to ensure valid tail percentiles (p95, p99)
+
+execution:
+  warmup_requests: 10    # 10 warmup requests to prime connections, CUDA graphs, and KV-cache blocks
+  delay_between_requests_ms: 0
+
+arrival:
+  mode: "closed"         # Bounded closed-loop worker pool for baseline capacity evaluation
+
+export:
+  output_dir: "results"
+  formats:
+    - "json"
+    - "csv"
+  prefix: "vllm-baseline"

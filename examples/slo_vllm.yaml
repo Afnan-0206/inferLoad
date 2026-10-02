@@ -1,0 +1,6 @@
+# Target Service Level Objectives (SLOs) for vLLM GPU inference capacity analysis
+slo:
+  max_ttft_p95_ms: 500.0            # Maximum acceptable TTFT p95 in milliseconds
+  max_total_latency_p95_ms: 2500.0   # Maximum acceptable Total Latency p95 in milliseconds
+  max_error_rate_pct: 1.0            # Maximum acceptable error rate (1.0 = 1%)
+  min_throughput_req_per_sec: 1.0    # Minimum acceptable request throughput (req/s)

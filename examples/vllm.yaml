@@ -1,0 +1,35 @@
+# InferLoad Workload Configuration for vLLM Server
+#
+# Target points to a running vLLM OpenAI-compatible server:
+# e.g., started with `vllm serve meta-llama/Meta-Llama-3-8B-Instruct --port 8000`
+
+target:
+  base_url: "http://localhost:8000/v1"
+  api_key: "EMPTY"  # Set to your Bearer token if vLLM was started with --api-key
+  model: "meta-llama/Meta-Llama-3-8B-Instruct"
+  timeout: 60.0
+
+workload:
+  requests: 30
+  concurrency: 4
+  stream: true
+
+  prompts:
+    - "Explain the concept of PagedAttention and how it mitigates memory fragmentation."
+    - "What is continuous batching and how does it differ from static request batching?"
+    - "Explain the difference between Time to First Token (TTFT) and decode latency in LLMs."
+    - "Describe the primary memory bottlenecks during large-context transformer generation."
+    - "How does speculative decoding improve inference throughput without degrading accuracy?"
+
+  max_tokens: 128
+  temperature: 0.0
+
+execution:
+  warmup_requests: 3
+
+export:
+  output_dir: "results"
+  formats:
+    - "json"
+    - "csv"
+  prefix: "vllm-run"

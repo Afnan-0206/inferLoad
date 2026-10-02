@@ -1,0 +1,28 @@
+# InferLoad Workload Configuration for Local Ollama Endpoint (OpenAI-compatible)
+
+target:
+  base_url: "http://127.0.0.1:11434/v1"
+  model: "qwen2.5:0.5b"
+  timeout: 60.0
+
+workload:
+  requests: 4
+  concurrency: 1
+  stream: true
+
+  prompts:
+    - "Explain what a hash table is."
+    - "Explain why database indexing improves query performance."
+
+  max_tokens: 32
+  temperature: 0.0
+
+execution:
+  warmup_requests: 1
+
+export:
+  output_dir: "results"
+  formats:
+    - "json"
+    - "csv"
+  prefix: "ollama-qwen"

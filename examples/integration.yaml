@@ -1,0 +1,29 @@
+target:
+  base_url: "http://127.0.0.1:8000/v1"
+  api_key: "mock-key"
+  model: "mock-llama-3"
+  timeout: 10.0
+
+workload:
+  requests: 10
+  concurrency: 2
+  stream: true
+
+  prompts:
+    - "Explain the difference between prefill and decode phases in LLM inference."
+    - "What causes KV-cache fragmentation during high concurrency?"
+    - "Explain Time to First Token (TTFT) and why it matters."
+    - "How does continuous batching optimize GPU compute utilization?"
+
+  max_tokens: 64
+  temperature: 0.0
+
+execution:
+  warmup_requests: 2
+
+export:
+  output_dir: "results"
+  formats:
+    - "json"
+    - "csv"
+  prefix: "integration-run"
