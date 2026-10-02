@@ -263,6 +263,38 @@ function initFormControls() {
     });
   }
 
+  // Presets
+  const btnPresetOllama = document.getElementById('preset-ollama');
+  if (btnPresetOllama) {
+    btnPresetOllama.addEventListener('click', () => {
+      document.getElementById('target-base-url').value = 'http://127.0.0.1:11434/v1';
+      document.getElementById('target-model').value = discoveredModels[0] || 'qwen2.5:0.5b';
+      setEl('server-url-label', 'http://127.0.0.1:11434/v1');
+      showToast('Loaded Local Ollama preset');
+    });
+  }
+
+  const btnPresetMock = document.getElementById('preset-mock');
+  if (btnPresetMock) {
+    btnPresetMock.addEventListener('click', () => {
+      const mockUrl = `${window.location.origin}/mock/v1`;
+      document.getElementById('target-base-url').value = mockUrl;
+      document.getElementById('target-model').value = 'mock-llama3-8b';
+      setEl('server-url-label', mockUrl);
+      showToast('Loaded Built-in Demo preset');
+    });
+  }
+
+  const btnPresetVllm = document.getElementById('preset-vllm');
+  if (btnPresetVllm) {
+    btnPresetVllm.addEventListener('click', () => {
+      document.getElementById('target-base-url').value = 'http://localhost:8000/v1';
+      document.getElementById('target-model').value = 'meta-llama/Meta-Llama-3-8B-Instruct';
+      setEl('server-url-label', 'http://localhost:8000/v1');
+      showToast('Loaded vLLM preset');
+    });
+  }
+
   // Validate Button
   const btnValidate = document.getElementById('btn-validate');
   if (btnValidate) {

@@ -14,12 +14,12 @@ import json
 import logging
 from pathlib import Path
 import time
-from typing import Any
+from typing import Any, AsyncGenerator
 import uuid
 
-from fastapi import FastAPI, HTTPException, BackgroundTasks, status
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 import httpx
 from pydantic import BaseModel, Field
@@ -520,6 +520,69 @@ def create_app() -> FastAPI:
             }
         except Exception as exc:
             raise HTTPException(status_code=500, detail=f"Failed to parse historical experiment: {exc}")
+
+    # Built-in lightweight mock OpenAI-compatible inference endpoint for cloud demos
+    @app.get("/mock/v1/models")
+    async def mock_models() -> dict[str, Any]:
+        """Return simulated models list."""
+        return {
+            "object": "list",
+            "data": [
+                {"id": "mock-llama3-8b", "object": "model", "owned_by": "inferload-mock"},
+                {"id": "mock-qwen2.5-7b", "object": "model", "owned_by": "inferload-mock"},
+            ],
+        }
+
+    @app.post("/mock/v1/chat/completions")
+    async def mock_chat_completions(request: Request) -> Any:
+        """Simulate realistic streaming or non-streaming LLM responses."""
+        body = await request.json()
+        is_stream = body.get("stream", False)
+        max_tokens = min(body.get("max_tokens", 32), 128)
+        model = body.get("model", "mock-llama3-8b")
+        req_id = f"chatcmpl-mock-{uuid.uuid4().hex[:6]}"
+
+        if not is_stream:
+            await asyncio.sleep(0.08)  # TTFT delay
+            return {
+                "id": req_id,
+                "object": "chat.completion",
+                "created": int(time.time()),
+                "model": model,
+                "choices": [{
+                    "index": 0,
+                    "message": {"role": "assistant", "content": "InferLoad simulated inference completion."},
+                    "finish_reason": "stop",
+                }],
+                "usage": {"prompt_tokens": 12, "completion_tokens": max_tokens, "total_tokens": 12 + max_tokens},
+            }
+
+        async def generate_mock_stream() -> AsyncGenerator[str, None]:
+            await asyncio.sleep(0.06)  # TTFT delay (~60ms)
+            words = ["InferLoad", " verifies", " LLM", " server", " latency", " and", " throughput", " under", " concurrent", " load", "."]
+            for i in range(min(max_tokens, len(words))):
+                token = (" " if i > 0 else "") + words[i % len(words)]
+                chunk = {
+                    "id": req_id,
+                    "object": "chat.completion.chunk",
+                    "created": int(time.time()),
+                    "model": model,
+                    "choices": [{"index": 0, "delta": {"content": token}, "finish_reason": None}],
+                }
+                yield f"data: {json.dumps(chunk)}\n\n"
+                await asyncio.sleep(0.015)  # Inter-token latency (~65 tok/s)
+
+            final_chunk = {
+                "id": req_id,
+                "object": "chat.completion.chunk",
+                "created": int(time.time()),
+                "model": model,
+                "choices": [{"index": 0, "delta": {}, "finish_reason": "stop"}],
+            }
+            yield f"data: {json.dumps(final_chunk)}\n\n"
+            yield "data: [DONE]\n\n"
+
+        return StreamingResponse(generate_mock_stream(), media_type="text/event-stream")
 
     # Mount results directory safely for historical artifact retrieval
     p_results = Path("results").resolve()

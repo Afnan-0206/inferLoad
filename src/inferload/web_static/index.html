@@ -89,7 +89,14 @@
               <!-- Tab 1: Benchmark Core -->
               <div class="tab-content active" id="ctab-benchmark">
                 <div class="form-group-section">
-                  <span class="form-section-label">Target Server</span>
+                  <div class="section-title-bar">
+                    <span class="form-section-label">Target Server</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button type="button" class="btn-micro" id="preset-ollama">Local Ollama</button>
+                      <button type="button" class="btn-micro" id="preset-mock">Built-in Demo</button>
+                      <button type="button" class="btn-micro" id="preset-vllm">vLLM</button>
+                    </div>
+                  </div>
                   <div class="form-grid form-grid-2">
                     <div class="form-field">
                       <label for="target-base-url">Endpoint URL</label>
