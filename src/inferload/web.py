@@ -194,25 +194,24 @@ async def _run_experiment_task(
         if job_id in _jobs:
             _jobs[job_id].logs.append(f"[{t_str}] {msg}")
 
-    async with _jobs_lock:
-        if job_id not in _jobs:
-            return
-        _jobs[job_id].status = JobStatus.RUNNING
-        _jobs[job_id].start_time = time.time()
-        _log(f"Benchmark job started. Target: {exp_config.target.base_url} (Model: {exp_config.target.model})")
-        _log(f"Concurrency sweep: {exp_config.concurrency_levels}, Repetitions: {exp_config.repetitions}, Requests/point: {exp_config.requests_per_point}")
-
-    runner = ExperimentRunner(exp_config)
-
-    def on_progress(trial_id: str, current: int, total: int) -> None:
-        if job_id in _jobs:
-            _jobs[job_id].current_trial = trial_id
-            _jobs[job_id].progress_current = current
-            _jobs[job_id].progress_total = total
-            _jobs[job_id].elapsed_seconds = round(time.time() - _jobs[job_id].start_time, 1)
-            _log(f"Running trial [{current}/{total}]: {trial_id}")
-
     try:
+        async with _jobs_lock:
+            if job_id not in _jobs:
+                return
+            _jobs[job_id].status = JobStatus.RUNNING
+            _jobs[job_id].start_time = time.time()
+            _log(f"Benchmark job started. Target: {exp_config.target.base_url} (Model: {exp_config.target.model})")
+            _log(f"Concurrency sweep: {exp_config.sweep.concurrency}, Repetitions: {exp_config.sweep.repetitions}, Requests/point: {exp_config.sweep.requests_per_point}")
+
+        runner = ExperimentRunner(exp_config)
+
+        def on_progress(trial_id: str, current: int, total: int) -> None:
+            if job_id in _jobs:
+                _jobs[job_id].current_trial = trial_id
+                _jobs[job_id].progress_current = current
+                _jobs[job_id].progress_total = total
+                _jobs[job_id].elapsed_seconds = round(time.time() - _jobs[job_id].start_time, 1)
+                _log(f"Running trial [{current}/{total}]: {trial_id}")
         exp_result, exp_dir = await runner.run(progress_callback=on_progress)
         _log("Trials complete. Evaluating SLO capacity compliance constraints...")
         capacity_res = analyze_capacity(exp_result, slo_config)
@@ -290,8 +289,13 @@ def create_app() -> FastAPI:
         """Validate a benchmark configuration and check endpoint reachability."""
         errors: list[str] = []
 
-        if not req.base_url or not req.base_url.startswith(("http://", "https://")):
-            errors.append("Target endpoint must be a valid HTTP or HTTPS URL (e.g. http://127.0.0.1:11434/v1).")
+        if not req.base_url or not (req.base_url.startswith(("http://", "https://", "/"))):
+            errors.append("Target endpoint must be a valid HTTP/HTTPS URL or local path (e.g. http://127.0.0.1:11434/v1 or /mock/v1).")
+
+        # Resolve relative URLs like /mock/v1 to local server address if relative
+        effective_base_url = req.base_url
+        if effective_base_url.startswith("/"):
+            effective_base_url = f"http://127.0.0.1:8000{effective_base_url}"
 
         if not req.model or not req.model.strip():
             errors.append("Model name is required.")
@@ -321,7 +325,7 @@ def create_app() -> FastAPI:
         try:
             t0 = time.perf_counter()
             async with httpx.AsyncClient(timeout=1.5) as client:
-                resp = await client.get(req.base_url.rstrip("/") + "/models")
+                resp = await client.get(effective_base_url.rstrip("/") + "/models")
                 elapsed_ms = round((time.perf_counter() - t0) * 1000, 1)
                 endpoint_reachable = resp.status_code in [200, 401, 403, 404]
                 endpoint_detail = f"Reachable - HTTP {resp.status_code} ({elapsed_ms}ms)"
@@ -329,7 +333,7 @@ def create_app() -> FastAPI:
             try:
                 t0 = time.perf_counter()
                 async with httpx.AsyncClient(timeout=1.5) as client:
-                    resp = await client.get(req.base_url)
+                    resp = await client.get(effective_base_url)
                     elapsed_ms = round((time.perf_counter() - t0) * 1000, 1)
                     endpoint_reachable = True
                     endpoint_detail = f"Reachable - HTTP {resp.status_code} ({elapsed_ms}ms)"
@@ -337,6 +341,8 @@ def create_app() -> FastAPI:
                 endpoint_detail = f"Unreachable ({type(e).__name__})"
 
         try:
+            if req.base_url.startswith("/"):
+                req.base_url = effective_base_url
             build_experiment_config(req)
             return {
                 "valid": True,

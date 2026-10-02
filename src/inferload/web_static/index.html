@@ -7,689 +7,674 @@
   <link rel="stylesheet" href="/static/app.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- ===== LEFT NAVIGATION SIDEBAR ===== -->
-  <nav class="nav-sidebar" id="nav-sidebar" aria-label="Main Navigation">
-    <div class="nav-brand">
-      <div class="nav-brand-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-        </svg>
-      </div>
-      <div class="nav-brand-text">
-        <span class="nav-brand-name">InferLoad</span>
-        <span class="nav-brand-sub">LLM Inference Lab</span>
-      </div>
-    </div>
-
-    <div class="nav-items">
-      <button type="button" class="nav-item active" data-view="view-benchmark" id="nav-new">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-        <span>Benchmark Lab</span>
-      </button>
-      <button type="button" class="nav-item" data-view="view-history" id="nav-history">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-        <span>Experiments History</span>
-      </button>
-      <button type="button" class="nav-item" data-view="view-reports" id="nav-reports">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-        <span>Reports &amp; Analysis</span>
-      </button>
-      <button type="button" class="nav-item" data-view="view-settings" id="nav-settings">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"></path></svg>
-        <span>Environment &amp; Settings</span>
-      </button>
-    </div>
-
-    <div class="nav-footer">
-      <div class="nav-env-status">
-        <span class="status-indicator-dot dot-green" id="nav-server-status-dot"></span>
-        <span class="nav-env-text" id="nav-env-label">Host Environment</span>
-      </div>
-    </div>
-  </nav>
-
-  <!-- ===== MAIN APPLICATION SHELL ===== -->
-  <div class="app-shell">
-    <!-- Top Header Bar -->
-    <header class="top-bar">
-      <div class="top-bar-left">
-        <h1 class="page-title" id="page-title">Run a New Benchmark</h1>
-        <p class="page-subtitle" id="page-subtitle">Configure workloads, set SLO constraints, and measure real inference performance</p>
-      </div>
-      <div class="top-bar-right">
-        <div class="server-pill">
-          <span class="server-pill-label">Target:</span>
-          <span class="server-pill-val" id="server-url-label">http://127.0.0.1:11434/v1</span>
+  <!-- ===== TOP HEADER NAVIGATION BAR ===== -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="brand-badge">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
         </div>
-        <span class="badge-version" id="version-badge">v0.1.0</span>
+        <div class="brand-info">
+          <span class="brand-title">InferLoad</span>
+          <span class="brand-tag">LLM INFERENCE LAB</span>
+        </div>
       </div>
-    </header>
 
-    <!-- ===== VIEW 1: BENCHMARK LAB (CONFIG + RESULTS + RIGHT SIDEBAR) ===== -->
-    <main class="view-container active" id="view-benchmark">
-      <div class="lab-layout">
-        <!-- Center Area: Config + Results -->
-        <div class="center-stage">
-          <!-- LEFT: Workload & SLO Configuration Panel -->
-          <section class="card config-card" id="config-panel" aria-labelledby="cfg-heading">
-            <div class="card-header">
-              <h2 class="card-title" id="cfg-heading">Workload Configuration</h2>
-              <!-- Config Sub-Tabs -->
-              <div class="tab-strip" role="tablist">
-                <button type="button" class="tab-btn active" role="tab" data-ctab="ctab-benchmark" id="tab-btn-benchmark">Benchmark</button>
-                <button type="button" class="tab-btn" role="tab" data-ctab="ctab-slos" id="tab-btn-slos">SLOs</button>
-                <button type="button" class="tab-btn" role="tab" data-ctab="ctab-telemetry" id="tab-btn-telemetry">Telemetry</button>
-              </div>
+      <!-- Main Navigation Tabs -->
+      <nav class="nav-segmented" aria-label="Main Navigation">
+        <button type="button" class="nav-tab active" data-tab="tab-studio" id="nav-tab-studio">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span>Benchmark Studio</span>
+        </button>
+        <button type="button" class="nav-tab" data-tab="tab-results" id="nav-tab-results">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>
+          <span>Analytics &amp; Capacity</span>
+        </button>
+        <button type="button" class="nav-tab" data-tab="tab-history" id="nav-tab-history">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span>Archive</span>
+        </button>
+        <button type="button" class="nav-tab" data-tab="tab-reports" id="nav-tab-reports">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          <span>Audit Reports</span>
+        </button>
+        <button type="button" class="nav-tab" data-tab="tab-env" id="nav-tab-env">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"></path></svg>
+          <span>Diagnostics</span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <div class="endpoint-status-pill" id="endpoint-pill">
+        <span class="status-pulse-dot" id="header-status-dot"></span>
+        <span class="endpoint-label" id="header-endpoint-label">http://127.0.0.1:11434/v1</span>
+      </div>
+      <span class="version-tag" id="version-badge">v0.1.0</span>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT CANVAS ===== -->
+  <main class="app-canvas">
+
+    <!-- ========================================================
+         VIEW 1: BENCHMARK STUDIO (CONFIG & LIVE TELEMETRY)
+         ======================================================== -->
+    <section class="view-panel active" id="tab-studio">
+      <div class="studio-container">
+
+        <!-- Left Column: Workload & Target Configurator -->
+        <div class="studio-config-column">
+          <!-- Preset Switcher -->
+          <div class="preset-card">
+            <span class="preset-label">Quick Launch Preset</span>
+            <div class="preset-buttons">
+              <button type="button" class="preset-btn active" id="preset-mock">
+                <span class="preset-icon">⚡</span>
+                <span class="preset-text"><strong>Built-in Demo</strong><small>Instant Cloud Test</small></span>
+              </button>
+              <button type="button" class="preset-btn" id="preset-ollama">
+                <span class="preset-icon">🦙</span>
+                <span class="preset-text"><strong>Local Ollama</strong><small>127.0.0.1:11434</small></span>
+              </button>
+              <button type="button" class="preset-btn" id="preset-vllm">
+                <span class="preset-icon">🚀</span>
+                <span class="preset-text"><strong>vLLM Server</strong><small>OpenAI-Compatible</small></span>
+              </button>
             </div>
+          </div>
 
-            <form id="benchmark-form" autocomplete="off">
-              <!-- Tab 1: Benchmark Core -->
-              <div class="tab-content active" id="ctab-benchmark">
-                <div class="form-group-section">
-                  <div class="section-title-bar">
-                    <span class="form-section-label">Target Server</span>
-                    <div style="display: flex; gap: 4px;">
-                      <button type="button" class="btn-micro" id="preset-ollama">Local Ollama</button>
-                      <button type="button" class="btn-micro" id="preset-mock">Built-in Demo</button>
-                      <button type="button" class="btn-micro" id="preset-vllm">vLLM</button>
-                    </div>
-                  </div>
-                  <div class="form-grid form-grid-2">
-                    <div class="form-field">
-                      <label for="target-base-url">Endpoint URL</label>
-                      <input type="text" id="target-base-url" value="http://127.0.0.1:11434/v1" placeholder="http://host:port/v1" required>
-                    </div>
-                    <div class="form-field">
-                      <label for="target-model">Model Name</label>
-                      <div class="model-select-wrapper">
-                        <input type="text" id="target-model" value="qwen2.5:0.5b" placeholder="e.g. qwen2.5:0.5b" required>
-                        <div class="model-popover" id="model-dropdown"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group-section">
-                  <span class="form-section-label">Workload Parameters</span>
-                  <div class="form-grid form-grid-4">
-                    <div class="form-field">
-                      <label for="sweep-concurrency">Concurrency Sweep</label>
-                      <input type="text" id="sweep-concurrency" value="1, 2, 4" placeholder="1, 2, 4">
-                      <span class="field-hint">Comma separated</span>
-                    </div>
-                    <div class="form-field">
-                      <label for="sweep-repetitions">Repetitions</label>
-                      <input type="number" id="sweep-repetitions" value="2" min="1" max="20">
-                    </div>
-                    <div class="form-field">
-                      <label for="sweep-requests">Requests / Point</label>
-                      <input type="number" id="sweep-requests" value="5" min="1" max="500">
-                    </div>
-                    <div class="form-field">
-                      <label for="exec-warmup">Warmup Requests</label>
-                      <input type="number" id="exec-warmup" value="1" min="0" max="50">
-                    </div>
-                  </div>
-
-                  <div class="form-grid form-grid-4" style="margin-top: 10px;">
-                    <div class="form-field">
-                      <label for="workload-max-tokens">Max Tokens</label>
-                      <input type="number" id="workload-max-tokens" value="32" min="1" max="4096">
-                    </div>
-                    <div class="form-field">
-                      <label for="workload-temperature">Temperature</label>
-                      <input type="number" id="workload-temperature" value="0.0" min="0" max="2" step="0.1">
-                    </div>
-                    <div class="form-field">
-                      <label for="workload-seed">Seed</label>
-                      <input type="number" id="workload-seed" value="42">
-                    </div>
-                    <div class="form-field">
-                      <label>Streaming</label>
-                      <div class="inline-controls">
-                        <label class="switch">
-                          <input type="checkbox" id="workload-stream" checked>
-                          <span class="slider"></span>
-                        </label>
-                        <select id="arrival-mode" class="select-compact">
-                          <option value="closed" selected>Closed-loop</option>
-                          <option value="rate">Open-loop</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div id="open-loop-rate-group" class="form-grid form-grid-2" style="display: none; margin-top: 10px;">
-                    <div class="form-field">
-                      <label for="arrival-rate">Target Arrival Rate (req/s)</label>
-                      <input type="number" id="arrival-rate" value="2.0" min="0.1" step="0.5">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group-section">
-                  <div class="section-title-bar">
-                    <span class="form-section-label">Benchmark Prompts</span>
-                    <button type="button" class="btn-text-action" id="btn-add-prompt">+ Add Prompt</button>
-                  </div>
-                  <div id="prompts-container" class="prompts-list">
-                    <div class="prompt-entry">
-                      <input type="text" class="prompt-input" value="What is a database index?" required>
-                      <button type="button" class="btn-remove-prompt" title="Remove prompt">&times;</button>
-                    </div>
-                  </div>
-                </div>
-
-                <details class="form-details-section" id="advanced-toggle">
-                  <summary class="details-summary">Advanced Settings</summary>
-                  <div class="form-grid form-grid-2" style="margin-top: 10px;">
-                    <div class="form-field">
-                      <label for="target-timeout">Timeout (seconds)</label>
-                      <input type="number" id="target-timeout" value="60" min="1" step="1">
-                    </div>
-                    <div class="form-field">
-                      <label for="target-api-key">API Key (optional)</label>
-                      <input type="password" id="target-api-key" placeholder="Bearer token">
-                    </div>
-                  </div>
-                </details>
+          <form id="benchmark-form" class="studio-form" autocomplete="off">
+            <!-- Card 1: Target Endpoint -->
+            <div class="glass-card">
+              <div class="card-title-row">
+                <div class="card-icon violet"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+                <h3 class="card-heading">Target Server</h3>
               </div>
-
-              <!-- Tab 2: SLO Constraints -->
-              <div class="tab-content" id="ctab-slos">
-                <div class="form-group-section">
-                  <span class="form-section-label">Service Level Objectives (Capacity Constraints)</span>
-                  <p class="form-desc-text">Define maximum acceptable latencies and minimum throughput. InferLoad evaluates each concurrency stage against these limits to find the highest compliant concurrency.</p>
-                  <div class="form-grid form-grid-2">
-                    <div class="form-field">
-                      <label for="slo-ttft">Max TTFT p95 (ms)</label>
-                      <input type="number" id="slo-ttft" value="1000" min="1" step="50">
-                    </div>
-                    <div class="form-field">
-                      <label for="slo-latency">Max Total Latency p95 (ms)</label>
-                      <input type="number" id="slo-latency" value="2500" min="1" step="100">
-                    </div>
-                  </div>
-                  <div class="form-grid form-grid-2" style="margin-top: 10px;">
-                    <div class="form-field">
-                      <label for="slo-error">Max Error Rate (%)</label>
-                      <input type="number" id="slo-error" value="1.0" min="0" max="100" step="0.5">
-                    </div>
-                    <div class="form-field">
-                      <label for="slo-throughput">Min Throughput (req/s)</label>
-                      <input type="number" id="slo-throughput" value="1.0" min="0.1" step="0.5">
-                    </div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label for="target-base-url">Base URL</label>
+                  <input type="text" id="target-base-url" value="/mock/v1" placeholder="http://127.0.0.1:11434/v1" required>
+                </div>
+                <div class="form-group">
+                  <label for="target-model">Model</label>
+                  <div class="autocomplete-wrap">
+                    <input type="text" id="target-model" value="mock-llama3-8b" placeholder="e.g. qwen2.5:0.5b" required>
+                    <div class="dropdown-popover" id="model-dropdown"></div>
                   </div>
                 </div>
               </div>
-
-              <!-- Tab 3: Telemetry Correlation -->
-              <div class="tab-content" id="ctab-telemetry">
-                <div class="form-group-section">
-                  <span class="form-section-label">Prometheus Metrics Correlation</span>
-                  <p class="form-desc-text">Optionally poll server-side Prometheus metrics before and after the sweep to capture KV-cache utilization and server queue depth.</p>
-                  <div class="form-field inline-toggle-field">
-                    <label class="switch">
-                      <input type="checkbox" id="telemetry-enable">
-                      <span class="slider"></span>
-                    </label>
-                    <span class="toggle-text">Enable Prometheus Polling</span>
+              <details class="advanced-details">
+                <summary>Security &amp; Timeout</summary>
+                <div class="form-row form-row-2" style="margin-top: 10px;">
+                  <div class="form-group">
+                    <label for="target-timeout">Request Timeout (s)</label>
+                    <input type="number" id="target-timeout" value="60" min="5" step="5">
                   </div>
-                  <div id="telemetry-fields" style="display: none; margin-top: 12px;">
-                    <div class="form-field">
-                      <label for="telemetry-url">Metrics URL</label>
-                      <input type="text" id="telemetry-url" value="http://127.0.0.1:8000/metrics" placeholder="http://host:port/metrics">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Unified Form Actions Footer (accessible across all tabs) -->
-              <div class="form-actions-bar">
-                <button type="button" class="btn btn-secondary" id="btn-validate">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                  Validate Config
-                </button>
-                <button type="submit" class="btn btn-primary" id="btn-run">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                  Run Benchmark
-                </button>
-                <button type="button" class="btn btn-ghost" id="btn-reset" title="Reset fields to defaults">
-                  Reset
-                </button>
-              </div>
-            </form>
-
-            <!-- Validation Feedback Notice -->
-            <div id="validation-notice" class="validation-banner" style="display: none;"></div>
-          </section>
-
-          <!-- RIGHT: Results & Execution Display Panel -->
-          <section class="card results-card" id="results-panel" aria-labelledby="results-heading">
-            <!-- State 1: Ready / Empty State -->
-            <div class="empty-state-view" id="empty-state">
-              <div class="empty-state-icon">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-              </div>
-              <h3 class="empty-state-title">Benchmark Laboratory Ready</h3>
-              <p class="empty-state-desc">Configure target parameters and click <strong>Run Benchmark</strong> to begin measuring TTFT, latency, and throughput. Or select an experiment from the history panel.</p>
-              <div class="quick-tips">
-                <span class="quick-tip-tag">Ollama Supported</span>
-                <span class="quick-tip-tag">vLLM Compatible</span>
-                <span class="quick-tip-tag">Closed / Open-loop</span>
-                <span class="quick-tip-tag">SLO Capacity Analysis</span>
-              </div>
-            </div>
-
-            <!-- State 2: Active Benchmark Execution -->
-            <div class="execution-monitor" id="progress-card" style="display: none;">
-              <div class="monitor-header">
-                <div class="monitor-title-wrap">
-                  <span class="status-indicator-dot dot-blue"></span>
-                  <span class="monitor-title" id="execution-status-text">Benchmark In Progress</span>
-                </div>
-                <span class="monitor-timer" id="progress-timer">0m 0s</span>
-              </div>
-
-              <!-- Stepper -->
-              <div class="execution-stepper" id="stepper">
-                <div class="stepper-step completed" id="step-validation">
-                  <span class="step-num">✓</span>
-                  <span class="step-text">Pre-flight Validation</span>
-                </div>
-                <div class="stepper-divider"></div>
-                <div class="stepper-step active" id="step-running">
-                  <span class="step-num">2</span>
-                  <span class="step-text">Executing Trials</span>
-                </div>
-                <div class="stepper-divider"></div>
-                <div class="stepper-step" id="step-analysis">
-                  <span class="step-num">3</span>
-                  <span class="step-text">Capacity Analysis</span>
-                </div>
-                <div class="stepper-divider"></div>
-                <div class="stepper-step" id="step-complete">
-                  <span class="step-num">4</span>
-                  <span class="step-text">Done</span>
-                </div>
-              </div>
-
-              <!-- Progress bar -->
-              <div class="progress-track">
-                <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%;"></div>
-              </div>
-              <div class="progress-info-row">
-                <span id="progress-trials">0 / 0 trials</span>
-                <span id="progress-trial-id" class="badge-trial">Initializing...</span>
-              </div>
-
-              <!-- Real-time Terminal Log Console -->
-              <div class="terminal-card">
-                <div class="terminal-header">
-                  <span class="terminal-title">Execution Terminal</span>
-                  <div class="terminal-actions">
-                    <label class="terminal-autoscroll-label">
-                      <input type="checkbox" id="terminal-autoscroll" checked>
-                      <span>Auto-scroll</span>
-                    </label>
-                    <button type="button" class="btn-micro" id="btn-copy-logs">Copy Logs</button>
-                    <button type="button" class="btn-micro" id="btn-clear-logs">Clear</button>
-                  </div>
-                </div>
-                <pre class="terminal-body" id="terminal-output">[System] Waiting for runner output...</pre>
-              </div>
-            </div>
-
-            <!-- Error State -->
-            <div class="alert-error-card" id="error-card" style="display: none;">
-              <div class="alert-header">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-                <span>Benchmark Failed</span>
-                <button type="button" class="btn-close-alert" id="btn-dismiss-error">&times;</button>
-              </div>
-              <p class="alert-body" id="error-card-msg"></p>
-            </div>
-
-            <!-- State 3: Completed Results View -->
-            <div class="results-viewer" id="results-view" style="display: none;">
-              <!-- Capacity Hero Banner -->
-              <div class="capacity-banner" id="capacity-hero">
-                <div class="capacity-banner-left">
-                  <span class="capacity-banner-title">Highest Compliant Tested Concurrency</span>
-                  <span class="capacity-banner-value" id="hero-capacity-value">—</span>
-                  <span class="capacity-banner-sub">Tested operating point meeting all defined SLOs</span>
-                </div>
-                <div class="capacity-banner-right">
-                  <span class="badge-compliance" id="hero-capacity-badge">SLO COMPLIANT</span>
-                </div>
-              </div>
-
-              <!-- Primary Metric KPIs -->
-              <div class="kpi-row">
-                <div class="kpi-box">
-                  <span class="kpi-label">Throughput (mean)</span>
-                  <div class="kpi-value-wrap">
-                    <span class="kpi-val" id="hero-kpi-throughput">—</span>
-                    <span class="kpi-unit">req/s</span>
-                  </div>
-                </div>
-                <div class="kpi-box">
-                  <span class="kpi-label">TTFT p95 (mean)</span>
-                  <div class="kpi-value-wrap">
-                    <span class="kpi-val" id="hero-kpi-ttft">—</span>
-                    <span class="kpi-unit">ms</span>
-                  </div>
-                </div>
-                <div class="kpi-box">
-                  <span class="kpi-label">Latency p95 (mean)</span>
-                  <div class="kpi-value-wrap">
-                    <span class="kpi-val" id="hero-kpi-latency">—</span>
-                    <span class="kpi-unit">ms</span>
-                  </div>
-                </div>
-                <div class="kpi-box">
-                  <span class="kpi-label">Error Rate (mean)</span>
-                  <div class="kpi-value-wrap">
-                    <span class="kpi-val" id="hero-kpi-errors">0.00%</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Sweep Summary Table -->
-              <div class="table-section">
-                <div class="table-header-bar">
-                  <h3 class="section-title">Tested Concurrency Results</h3>
-                  <div class="legend-row">
-                    <span class="legend-item"><span class="legend-chip chip-green"></span> Compliant</span>
-                    <span class="legend-item"><span class="legend-chip chip-red"></span> Violation</span>
-                  </div>
-                </div>
-                <div class="table-container">
-                  <table class="data-table" id="table-sweep-results">
-                    <thead>
-                      <tr>
-                        <th>Concurrency</th>
-                        <th>Trials</th>
-                        <th>Req/Trial</th>
-                        <th>TTFT p50</th>
-                        <th>TTFT p95</th>
-                        <th>Latency p95</th>
-                        <th>Throughput</th>
-                        <th>Error Rate</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody id="sweep-table-body"></tbody>
-                  </table>
-                </div>
-              </div>
-
-              <!-- SLO Compliance Table -->
-              <div class="table-section">
-                <h3 class="section-title">SLO Evaluation Summary</h3>
-                <div class="table-container">
-                  <table class="data-table" id="table-slo-results">
-                    <thead>
-                      <tr>
-                        <th>Concurrency</th>
-                        <th>TTFT p95</th>
-                        <th>Latency p95</th>
-                        <th>Throughput</th>
-                        <th>Error Rate</th>
-                        <th>SLO Result</th>
-                      </tr>
-                    </thead>
-                    <tbody id="slo-table-body"></tbody>
-                  </table>
-                </div>
-              </div>
-
-              <!-- Performance Visualizations Section -->
-              <div class="graphs-section">
-                <div class="graphs-header-bar">
-                  <h3 class="section-title">Performance Graphs</h3>
-                  <div class="filter-btn-group" role="tablist">
-                    <button type="button" class="filter-btn active" data-graph="all" id="btn-graph-all">All Plots</button>
-                    <button type="button" class="filter-btn" data-graph="ttft" id="btn-graph-ttft">TTFT p95</button>
-                    <button type="button" class="filter-btn" data-graph="latency" id="btn-graph-latency">Total Latency</button>
-                    <button type="button" class="filter-btn" data-graph="throughput" id="btn-graph-throughput">Throughput</button>
-                    <button type="button" class="filter-btn" data-graph="errors" id="btn-graph-errors">Error Rate</button>
-                  </div>
-                </div>
-                <div class="graphs-grid" id="plots-grid">
-                  <div class="graph-card" id="card-plot-ttft">
-                    <div class="graph-card-title">TTFT p95 vs Concurrency</div>
-                    <img id="plot-ttft" class="graph-img" alt="TTFT p95 vs Concurrency">
-                  </div>
-                  <div class="graph-card" id="card-plot-latency">
-                    <div class="graph-card-title">Total Latency p95 vs Concurrency</div>
-                    <img id="plot-latency" class="graph-img" alt="Total Latency p95 vs Concurrency">
-                  </div>
-                  <div class="graph-card" id="card-plot-throughput">
-                    <div class="graph-card-title">Throughput vs Concurrency</div>
-                    <img id="plot-throughput" class="graph-img" alt="Throughput vs Concurrency">
-                  </div>
-                  <div class="graph-card" id="card-plot-errors">
-                    <div class="graph-card-title">Error Rate vs Concurrency</div>
-                    <img id="plot-errors" class="graph-img" alt="Error Rate vs Concurrency">
-                  </div>
-                </div>
-              </div>
-
-              <!-- Saturation Findings -->
-              <div class="saturation-notice-card" id="saturation-section" style="display: none;">
-                <div class="saturation-header">
-                  <span class="saturation-badge">Saturation Behavior</span>
-                </div>
-                <div class="saturation-content" id="saturation-findings"></div>
-              </div>
-
-              <!-- Capacity Disclaimer -->
-              <div class="disclaimer-callout">
-                <span class="disclaimer-title">Methodology Notice:</span>
-                <span id="capacity-note-text">Capacity is strictly bounded to tested configurations and does not extrapolate beyond measured points. This represents the highest observed compliant tested concurrency.</span>
-              </div>
-
-              <!-- Collapsible Full Report -->
-              <details class="collapsible-section">
-                <summary class="collapsible-summary">Full Markdown Report</summary>
-                <div class="collapsible-body">
-                  <div class="report-toolbar">
-                    <button type="button" class="btn-micro" id="btn-copy-report">Copy Markdown</button>
-                  </div>
-                  <pre class="report-preview" id="report-markdown-view">Loading report...</pre>
-                </div>
-              </details>
-
-              <!-- Collapsible Artifacts & Raw Inspector -->
-              <details class="collapsible-section">
-                <summary class="collapsible-summary">Generated Artifacts &amp; Raw Data</summary>
-                <div class="collapsible-body">
-                  <div class="artifact-links-grid" id="artifact-links-list"></div>
-                  <div class="raw-trial-explorer">
-                    <div class="explorer-bar">
-                      <label for="raw-run-selector">Inspect Raw Trial Record:</label>
-                      <select id="raw-run-selector" class="select-compact">
-                        <option value="">Select trial to inspect...</option>
-                      </select>
-                    </div>
-                    <pre class="raw-json-body" id="raw-json-output">Select a trial run above to audit request timestamps, TTFT, and token counts.</pre>
+                  <div class="form-group">
+                    <label for="target-api-key">API Key (optional)</label>
+                    <input type="password" id="target-api-key" placeholder="Bearer token">
                   </div>
                 </div>
               </details>
             </div>
-          </section>
-        </div>
 
-        <!-- RIGHT: Environmental Specs & Quick Navigation Sidebar -->
-        <aside class="right-rail" id="right-sidebar">
-          <!-- Host Environment Specs -->
-          <div class="rail-card">
-            <h3 class="rail-title">Environment Diagnostics</h3>
-            <div class="spec-list" id="env-list">
-              <div class="spec-row"><span class="spec-key">OS</span><span class="spec-val" id="env-os">—</span></div>
-              <div class="spec-row"><span class="spec-key">Python</span><span class="spec-val" id="env-python">—</span></div>
-              <div class="spec-row"><span class="spec-key">CPU</span><span class="spec-val" id="env-cpu">—</span></div>
-              <div class="spec-row"><span class="spec-key">RAM</span><span class="spec-val" id="env-ram">—</span></div>
-              <div class="spec-row"><span class="spec-key">GPU</span><span class="spec-val" id="env-gpu">—</span></div>
-              <div class="spec-row"><span class="spec-key">CUDA</span><span class="spec-val" id="env-cuda">—</span></div>
-              <div class="spec-row"><span class="spec-key">InferLoad</span><span class="spec-val" id="env-inferload">—</span></div>
-            </div>
-          </div>
+            <!-- Card 2: Workload Generator -->
+            <div class="glass-card">
+              <div class="card-title-row">
+                <div class="card-icon amber"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg></div>
+                <h3 class="card-heading">Traffic Workload</h3>
+              </div>
+              <div class="form-row form-row-4">
+                <div class="form-group">
+                  <label for="sweep-concurrency">Concurrency Sweep</label>
+                  <input type="text" id="sweep-concurrency" value="1, 2, 4" placeholder="1, 2, 4">
+                  <span class="field-caption">Comma-separated</span>
+                </div>
+                <div class="form-group">
+                  <label for="sweep-repetitions">Reps / Point</label>
+                  <input type="number" id="sweep-repetitions" value="2" min="1" max="10">
+                </div>
+                <div class="form-group">
+                  <label for="sweep-requests">Reqs / Point</label>
+                  <input type="number" id="sweep-requests" value="5" min="1" max="200">
+                </div>
+                <div class="form-group">
+                  <label for="exec-warmup">Warmup</label>
+                  <input type="number" id="exec-warmup" value="1" min="0" max="20">
+                </div>
+              </div>
 
-          <!-- Server Telemetry Status -->
-          <div class="rail-card">
-            <h3 class="rail-title">Server Telemetry</h3>
-            <div class="telemetry-pill-row">
-              <span class="status-indicator-dot dot-gray" id="telem-dot"></span>
-              <span class="telemetry-pill-text" id="telemetry-status-text">Not Enabled</span>
-            </div>
-            <p class="rail-muted" id="telemetry-note">Telemetry was not enabled for this benchmark run.</p>
-          </div>
+              <div class="form-row form-row-4" style="margin-top: 12px;">
+                <div class="form-group">
+                  <label for="workload-max-tokens">Max Tokens</label>
+                  <input type="number" id="workload-max-tokens" value="32" min="1" max="4096">
+                </div>
+                <div class="form-group">
+                  <label for="workload-temperature">Temperature</label>
+                  <input type="number" id="workload-temperature" value="0.0" min="0" max="2" step="0.1">
+                </div>
+                <div class="form-group">
+                  <label for="workload-seed">Seed</label>
+                  <input type="number" id="workload-seed" value="42">
+                </div>
+                <div class="form-group">
+                  <label>Streaming</label>
+                  <div class="toggle-pill-wrap">
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="workload-stream" checked>
+                      <span class="toggle-track"></span>
+                    </label>
+                    <select id="arrival-mode" class="select-micro">
+                      <option value="closed" selected>Closed-loop</option>
+                      <option value="rate">Open-loop</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
 
-          <!-- Recent Runs List -->
-          <div class="rail-card">
-            <div class="rail-header-row">
-              <h3 class="rail-title">Recent Benchmarks</h3>
-              <button type="button" class="btn-text-action" id="btn-view-all-history">View All</button>
+              <div id="open-loop-rate-group" class="form-row form-row-2" style="display: none; margin-top: 12px;">
+                <div class="form-group">
+                  <label for="arrival-rate">Target Arrival Rate (req/s)</label>
+                  <input type="number" id="arrival-rate" value="2.0" min="0.1" step="0.5">
+                </div>
+              </div>
             </div>
-            <div class="recent-runs-list" id="recent-experiments">
-              <p class="rail-muted">Scanning results directory...</p>
-            </div>
-          </div>
 
-          <!-- Quick Navigation Actions -->
-          <div class="rail-card">
-            <h3 class="rail-title">Quick Actions</h3>
-            <div class="action-stack">
-              <button type="button" class="btn-rail-action" id="action-report" disabled>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                <span>Jump to Report</span>
+            <!-- Card 3: Prompts -->
+            <div class="glass-card">
+              <div class="card-title-row">
+                <div class="card-icon emerald"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                <h3 class="card-heading">Prompts Studio</h3>
+                <button type="button" class="btn-subtle-add" id="btn-add-prompt">+ Add Prompt</button>
+              </div>
+              <div id="prompts-container" class="prompts-stack">
+                <div class="prompt-item">
+                  <input type="text" class="prompt-text-input" value="Explain how database indexing optimizes search latency." required>
+                  <button type="button" class="btn-del-prompt" title="Remove">&times;</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4: SLO Quality Constraints -->
+            <div class="glass-card">
+              <div class="card-title-row">
+                <div class="card-icon rose"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                <h3 class="card-heading">Service Level Objectives (Capacity Gates)</h3>
+              </div>
+              <div class="form-row form-row-4">
+                <div class="form-group">
+                  <label for="slo-ttft">Max TTFT p95 (ms)</label>
+                  <input type="number" id="slo-ttft" value="1000" min="1" step="50">
+                </div>
+                <div class="form-group">
+                  <label for="slo-latency">Max Latency p95 (ms)</label>
+                  <input type="number" id="slo-latency" value="2500" min="1" step="100">
+                </div>
+                <div class="form-group">
+                  <label for="slo-throughput">Min T-put (req/s)</label>
+                  <input type="number" id="slo-throughput" value="1.0" min="0.1" step="0.5">
+                </div>
+                <div class="form-group">
+                  <label for="slo-error">Max Error Rate (%)</label>
+                  <input type="number" id="slo-error" value="1.0" min="0" max="100" step="0.5">
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating Action Bar -->
+            <div class="action-footer-bar">
+              <button type="button" class="btn btn-emerald-outline" id="btn-validate">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Validate Endpoint</span>
               </button>
-              <button type="button" class="btn-rail-action" id="action-artifacts" disabled>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                <span>Jump to Artifacts</span>
+              <button type="submit" class="btn btn-vibrant-run" id="btn-run">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span>Launch Benchmark</span>
               </button>
-              <button type="button" class="btn-rail-action" id="action-plots" disabled>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                <span>Jump to Plots</span>
+              <button type="button" class="btn btn-ghost" id="btn-reset">
+                <span>Reset</span>
               </button>
             </div>
+
+            <!-- Validation Feedback Box -->
+            <div id="validation-banner" class="banner-feedback" style="display: none;"></div>
+          </form>
+        </div>
+
+        <!-- Right Column: Live Run Monitor & Telemetry -->
+        <div class="studio-monitor-column">
+
+          <!-- State A: Idle Studio Hub -->
+          <div class="monitor-empty-state" id="empty-state">
+            <div class="empty-halo-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            </div>
+            <h3 class="empty-headline">Ready for Load Testing</h3>
+            <p class="empty-subtext">Select a preset on the left or enter your target endpoint. Click <strong>Launch Benchmark</strong> to start real-time client load generation with per-token timing.</p>
+
+            <div class="capability-cards-grid">
+              <div class="cap-card">
+                <span class="cap-icon">⚡</span>
+                <span class="cap-title">Microsecond Timing</span>
+                <span class="cap-desc">True TTFT, ITL, and inter-chunk streaming latencies.</span>
+              </div>
+              <div class="cap-card">
+                <span class="cap-icon">📈</span>
+                <span class="cap-title">Capacity Planner</span>
+                <span class="cap-desc">Defensible maximum concurrency meeting all SLO constraints.</span>
+              </div>
+              <div class="cap-card">
+                <span class="cap-icon">🛡️</span>
+                <span class="cap-title">Zero Fabrication</span>
+                <span class="cap-desc">Strict audit trail with raw JSON token timestamps.</span>
+              </div>
+              <div class="cap-card">
+                <span class="cap-icon">📊</span>
+                <span class="cap-title">Automated Plots</span>
+                <span class="cap-desc">TTFT curves, saturation plateaus, and error distributions.</span>
+              </div>
+            </div>
           </div>
-        </aside>
+
+          <!-- State B: Active Execution HUD -->
+          <div class="monitor-active-hud" id="progress-card" style="display: none;">
+            <div class="hud-header">
+              <div class="hud-status-badge">
+                <span class="status-pulse-dot" style="background:#8b5cf6;"></span>
+                <span class="hud-title" id="execution-status-text">Benchmark In Progress</span>
+              </div>
+              <span class="hud-timer" id="progress-timer">0m 00s</span>
+            </div>
+
+            <!-- Stepper -->
+            <div class="hud-stepper" id="stepper">
+              <div class="hud-step completed" id="step-validation">
+                <span class="step-circle">✓</span>
+                <span class="step-label">Pre-flight</span>
+              </div>
+              <div class="hud-step-line"></div>
+              <div class="hud-step active" id="step-running">
+                <span class="step-circle">2</span>
+                <span class="step-label">Generating Load</span>
+              </div>
+              <div class="hud-step-line"></div>
+              <div class="hud-step" id="step-analysis">
+                <span class="step-circle">3</span>
+                <span class="step-label">Capacity Analysis</span>
+              </div>
+              <div class="hud-step-line"></div>
+              <div class="hud-step" id="step-complete">
+                <span class="step-circle">4</span>
+                <span class="step-label">Finished</span>
+              </div>
+            </div>
+
+            <div class="hud-progress-track">
+              <div class="hud-progress-fill" id="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <div class="hud-progress-meta">
+              <span id="progress-trials">0 / 0 trials completed</span>
+              <span id="progress-trial-id" class="badge-trial-id">Initializing client...</span>
+            </div>
+
+            <!-- Live Streaming Terminal Console -->
+            <div class="studio-terminal">
+              <div class="terminal-bar">
+                <div class="terminal-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <span class="terminal-label">Execution Log Stream</span>
+                <div class="terminal-btns">
+                  <button type="button" class="btn-micro" id="btn-copy-logs">Copy Logs</button>
+                  <button type="button" class="btn-micro" id="btn-clear-logs">Clear</button>
+                </div>
+              </div>
+              <pre class="terminal-screen" id="terminal-output">[InferLoad] Preparing benchmark environment...</pre>
+            </div>
+          </div>
+
+          <!-- State C: Benchmark Error State -->
+          <div class="monitor-error-card" id="error-card" style="display: none;">
+            <div class="error-header-bar">
+              <span class="error-title">Benchmark Execution Encountered an Error</span>
+              <button type="button" class="btn-dismiss-err" id="btn-dismiss-error">&times;</button>
+            </div>
+            <p class="error-detail-msg" id="error-card-msg"></p>
+          </div>
+
+          <!-- State D: Quick Run Summary Drawer -->
+          <div class="monitor-summary-card" id="studio-summary-card" style="display: none;">
+            <div class="summary-top">
+              <div class="summary-left">
+                <span class="summary-label">Highest Observed Compliant Concurrency</span>
+                <span class="summary-value" id="studio-capacity-val">—</span>
+              </div>
+              <button type="button" class="btn btn-vibrant-run" id="btn-view-full-analytics">
+                View Full Analytics &amp; Charts &rarr;
+              </button>
+            </div>
+            <div class="summary-kpis">
+              <div class="kpi-mini">
+                <span class="kpi-mini-val" id="studio-kpi-tput">—</span>
+                <span class="kpi-mini-lbl">Throughput (req/s)</span>
+              </div>
+              <div class="kpi-mini">
+                <span class="kpi-mini-val" id="studio-kpi-ttft">—</span>
+                <span class="kpi-mini-lbl">TTFT p95 (ms)</span>
+              </div>
+              <div class="kpi-mini">
+                <span class="kpi-mini-val" id="studio-kpi-lat">—</span>
+                <span class="kpi-mini-lbl">Latency p95 (ms)</span>
+              </div>
+              <div class="kpi-mini">
+                <span class="kpi-mini-val" id="studio-kpi-err">0.00%</span>
+                <span class="kpi-mini-lbl">Error Rate</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
-    </main>
+    </section>
 
-    <!-- ===== VIEW 2: EXPERIMENTS HISTORY ARCHIVE ===== -->
-    <main class="view-container" id="view-history-container" style="display: none;">
-      <div class="card full-width-card">
-        <div class="card-header">
-          <div>
-            <h2 class="card-title">Experiments Archive</h2>
-            <p class="card-subtitle">All historical benchmark sweeps stored in the local results directory</p>
+    <!-- ========================================================
+         VIEW 2: FULL ANALYTICS & CAPACITY DASHBOARD
+         ======================================================== -->
+    <section class="view-panel" id="tab-results">
+      <div class="analytics-container">
+        <!-- Big Hero Verdict -->
+        <div class="verdict-banner" id="capacity-hero">
+          <div class="verdict-left">
+            <span class="verdict-tag">Capacity Assessment</span>
+            <div class="verdict-main-row">
+              <span class="verdict-large" id="hero-capacity-value">—</span>
+              <span class="verdict-unit">Tested Concurrency</span>
+            </div>
+            <p class="verdict-desc">The highest observed operating point that strictly satisfies all defined TTFT, latency, throughput, and error rate Service Level Objectives.</p>
           </div>
-          <div class="archive-controls">
-            <input type="text" id="history-search" class="input-search" placeholder="Filter by model or directory...">
-            <button type="button" class="btn btn-secondary" id="btn-refresh-history">Refresh</button>
+          <div class="verdict-right">
+            <span class="badge-verdict-status compliant" id="hero-capacity-badge">SLO COMPLIANT</span>
           </div>
         </div>
-        <div class="table-container">
-          <table class="data-table" id="table-full-history">
-            <thead>
-              <tr>
-                <th>Date / Time</th>
-                <th>Experiment Directory</th>
-                <th>Target Model</th>
-                <th>Concurrency Sweep</th>
-                <th>Reps</th>
-                <th>Req/Point</th>
-                <th>Compliant Capacity</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="full-history-tbody">
-              <tr><td colspan="8" class="text-center">Loading experiment archive...</td></tr>
-            </tbody>
-          </table>
+
+        <!-- 4 Primary Metric Stat Tiles -->
+        <div class="stat-tiles-grid">
+          <div class="stat-tile">
+            <span class="stat-tile-title">Throughput (mean)</span>
+            <div class="stat-tile-num">
+              <span id="hero-kpi-throughput">—</span>
+              <span class="stat-tile-unit">req/s</span>
+            </div>
+            <span class="stat-tile-sub">Effective request completion rate</span>
+          </div>
+
+          <div class="stat-tile">
+            <span class="stat-tile-title">TTFT p95 (mean)</span>
+            <div class="stat-tile-num">
+              <span id="hero-kpi-ttft">—</span>
+              <span class="stat-tile-unit">ms</span>
+            </div>
+            <span class="stat-tile-sub">Time to first streaming token</span>
+          </div>
+
+          <div class="stat-tile">
+            <span class="stat-tile-title">Total Latency p95</span>
+            <div class="stat-tile-num">
+              <span id="hero-kpi-latency">—</span>
+              <span class="stat-tile-unit">ms</span>
+            </div>
+            <span class="stat-tile-sub">End-to-end request turnaround</span>
+          </div>
+
+          <div class="stat-tile">
+            <span class="stat-tile-title">Error Rate (mean)</span>
+            <div class="stat-tile-num">
+              <span id="hero-kpi-errors">0.00%</span>
+            </div>
+            <span class="stat-tile-sub">HTTP 4xx / 5xx / timeout ratio</span>
+          </div>
+        </div>
+
+        <!-- Sweep Results & SLO Tables Side-by-Side -->
+        <div class="tables-split-layout">
+          <div class="glass-card" style="flex: 1.4;">
+            <div class="card-title-row">
+              <h3 class="card-heading">Concurrency Scaling Matrix</h3>
+            </div>
+            <div class="data-table-scroll">
+              <table class="luxe-table" id="table-sweep-results">
+                <thead>
+                  <tr>
+                    <th>Concurrency</th>
+                    <th>Trials</th>
+                    <th>Reqs</th>
+                    <th>TTFT p50</th>
+                    <th>TTFT p95</th>
+                    <th>Latency p95</th>
+                    <th>Throughput</th>
+                    <th>Error Rate</th>
+                    <th>SLO Status</th>
+                  </tr>
+                </thead>
+                <tbody id="sweep-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="glass-card" style="flex: 1;">
+            <div class="card-title-row">
+              <h3 class="card-heading">SLO Quality Evaluation</h3>
+            </div>
+            <div class="data-table-scroll">
+              <table class="luxe-table" id="table-slo-results">
+                <thead>
+                  <tr>
+                    <th>Concurrency</th>
+                    <th>TTFT p95</th>
+                    <th>Latency p95</th>
+                    <th>Throughput</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="slo-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Performance Visualizations Section -->
+        <div class="glass-card">
+          <div class="chart-header-row">
+            <div>
+              <h3 class="card-heading">Performance Scaling Curves</h3>
+              <p class="chart-sub">Measured inference response curves across concurrency levels</p>
+            </div>
+            <div class="chart-filter-pills" role="tablist">
+              <button type="button" class="chart-filter-btn active" data-graph="all">All Curves</button>
+              <button type="button" class="chart-filter-btn" data-graph="ttft">TTFT p95</button>
+              <button type="button" class="chart-filter-btn" data-graph="latency">Total Latency</button>
+              <button type="button" class="chart-filter-btn" data-graph="throughput">Throughput</button>
+              <button type="button" class="chart-filter-btn" data-graph="errors">Error Rate</button>
+            </div>
+          </div>
+
+          <div class="charts-canvas-grid" id="plots-grid">
+            <div class="chart-frame" id="card-plot-ttft">
+              <span class="chart-frame-title">TTFT p95 vs Concurrency</span>
+              <img id="plot-ttft" class="chart-image" alt="TTFT Scaling Plot">
+            </div>
+            <div class="chart-frame" id="card-plot-latency">
+              <span class="chart-frame-title">Total Latency p95 vs Concurrency</span>
+              <img id="plot-latency" class="chart-image" alt="Total Latency Plot">
+            </div>
+            <div class="chart-frame" id="card-plot-throughput">
+              <span class="chart-frame-title">Throughput vs Concurrency (Saturation Curve)</span>
+              <img id="plot-throughput" class="chart-image" alt="Throughput Plot">
+            </div>
+            <div class="chart-frame" id="card-plot-errors">
+              <span class="chart-frame-title">Error Rate vs Concurrency</span>
+              <img id="plot-errors" class="chart-image" alt="Error Rate Plot">
+            </div>
+          </div>
+        </div>
+
+        <!-- Saturation Alerts -->
+        <div class="saturation-card" id="saturation-section" style="display: none;">
+          <div class="saturation-badge">Saturation Behavior Detected</div>
+          <div id="saturation-findings" class="saturation-details"></div>
+        </div>
+
+        <!-- Raw Artifacts & Trial Inspector -->
+        <div class="glass-card">
+          <div class="card-title-row">
+            <h3 class="card-heading">Generated Artifacts &amp; Audit Trail</h3>
+          </div>
+          <div class="artifacts-grid-links" id="artifact-links-list"></div>
+
+          <div class="raw-inspector-box">
+            <div class="raw-inspector-top">
+              <label for="raw-run-selector">Inspect Per-Token Trial Record:</label>
+              <select id="raw-run-selector" class="select-micro">
+                <option value="">Select a trial to audit...</option>
+              </select>
+            </div>
+            <pre class="raw-inspector-code" id="raw-json-output">Select a trial run above to audit TTFT, chunks, and token latency timestamps.</pre>
+          </div>
         </div>
       </div>
-    </main>
+    </section>
 
-    <!-- ===== VIEW 3: REPORTS & ANALYSIS VIEWER ===== -->
-    <main class="view-container" id="view-reports-container" style="display: none;">
-      <div class="card full-width-card">
-        <div class="card-header">
-          <div>
-            <h2 class="card-title">Markdown Performance Report</h2>
-            <p class="card-subtitle" id="report-view-subtitle">Inspect the full generated markdown benchmark report</p>
+    <!-- ========================================================
+         VIEW 3: EXPERIMENTS HISTORY ARCHIVE
+         ======================================================== -->
+    <section class="view-panel" id="tab-history">
+      <div class="archive-container">
+        <div class="glass-card">
+          <div class="archive-header-row">
+            <div>
+              <h2 class="card-heading">Historical Benchmark Sweeps</h2>
+              <p class="chart-sub">All benchmark runs recorded in the local results directory</p>
+            </div>
+            <div class="archive-action-group">
+              <input type="text" id="history-search" class="search-input" placeholder="Search by model or directory name...">
+              <button type="button" class="btn btn-emerald-outline" id="btn-refresh-history">Scan Results</button>
+            </div>
           </div>
-          <div class="archive-controls">
-            <select id="report-exp-selector" class="select-compact">
-              <option value="">Select an experiment...</option>
-            </select>
-            <button type="button" class="btn btn-secondary" id="btn-copy-dedicated-report">Copy Report</button>
+
+          <div class="data-table-scroll">
+            <table class="luxe-table" id="table-full-history">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Directory</th>
+                  <th>Model</th>
+                  <th>Concurrency Levels</th>
+                  <th>Reps</th>
+                  <th>Req/Point</th>
+                  <th>Compliant Concurrency</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="full-history-tbody">
+                <tr><td colspan="8" class="text-center">Scanning results directory...</td></tr>
+              </tbody>
+            </table>
           </div>
-        </div>
-        <div class="report-full-body">
-          <pre class="report-markdown-canvas" id="dedicated-report-markdown">Select an experiment to read its generated report.md</pre>
         </div>
       </div>
-    </main>
+    </section>
 
-    <!-- ===== VIEW 4: ENVIRONMENT & SETTINGS ===== -->
-    <main class="view-container" id="view-settings-container" style="display: none;">
-      <div class="settings-grid">
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">Local Server Inventory (Ollama)</h2>
+    <!-- ========================================================
+         VIEW 4: AUDIT REPORTS VIEWER
+         ======================================================== -->
+    <section class="view-panel" id="tab-reports">
+      <div class="reports-container">
+        <div class="glass-card">
+          <div class="reports-header-row">
+            <div>
+              <h2 class="card-heading">Benchmark Audit Report</h2>
+              <p class="chart-sub" id="report-view-subtitle">Full defensible markdown summary report</p>
+            </div>
+            <div class="reports-toolbar">
+              <select id="report-exp-selector" class="select-micro">
+                <option value="">Select an experiment...</option>
+              </select>
+              <button type="button" class="btn btn-emerald-outline" id="btn-copy-dedicated-report">Copy Markdown</button>
+            </div>
           </div>
-          <div class="settings-body">
-            <div id="ollama-inventory-status" class="inventory-status-box">Scanning local Ollama...</div>
-            <h4 class="settings-subhead">Discovered Models</h4>
-            <div id="ollama-models-list" class="model-tags-list"></div>
+          <div class="report-reading-canvas">
+            <pre class="report-markdown-text" id="dedicated-report-markdown">Select an experiment to read its generated report.md</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         VIEW 5: ENVIRONMENT & DIAGNOSTICS
+         ======================================================== -->
+    <section class="view-panel" id="tab-env">
+      <div class="diagnostics-grid">
+        <!-- Host Specs -->
+        <div class="glass-card">
+          <div class="card-title-row">
+            <div class="card-icon violet"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+            <h3 class="card-heading">Host Compute Runtime</h3>
+          </div>
+          <div class="specs-data-list">
+            <div class="spec-item"><span class="spec-k">Operating System</span><span class="spec-v" id="env-os">—</span></div>
+            <div class="spec-item"><span class="spec-k">Python Version</span><span class="spec-v" id="env-python">—</span></div>
+            <div class="spec-item"><span class="spec-k">CPU Architecture</span><span class="spec-v" id="env-cpu">—</span></div>
+            <div class="spec-item"><span class="spec-k">System Memory (RAM)</span><span class="spec-v" id="env-ram">—</span></div>
+            <div class="spec-item"><span class="spec-k">GPU Acceleration</span><span class="spec-v" id="env-gpu">—</span></div>
+            <div class="spec-item"><span class="spec-k">CUDA Runtime</span><span class="spec-v" id="env-cuda">—</span></div>
+            <div class="spec-item"><span class="spec-k">InferLoad Engine</span><span class="spec-v" id="env-inferload">—</span></div>
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">Telemetry &amp; Prometheus Integration</h2>
+        <!-- Ollama Discovery -->
+        <div class="glass-card">
+          <div class="card-title-row">
+            <div class="card-icon emerald"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+            <h3 class="card-heading">Local Ollama Inventory</h3>
           </div>
-          <div class="settings-body">
-            <div class="form-field">
-              <label for="settings-telemetry-url">Prometheus Metrics Endpoint</label>
+          <div class="ollama-info-box" id="ollama-inventory-status">Scanning port 11434...</div>
+          <h4 class="sub-label">Discovered Local Models:</h4>
+          <div class="tags-cluster" id="ollama-models-list"></div>
+        </div>
+
+        <!-- Telemetry Endpoint -->
+        <div class="glass-card" style="grid-column: 1 / -1;">
+          <div class="card-title-row">
+            <div class="card-icon amber"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+            <h3 class="card-heading">Prometheus Telemetry Integration</h3>
+          </div>
+          <p class="chart-sub">Connect to your inference server's Prometheus endpoint (e.g., vLLM <code>:8000/metrics</code>) to correlate client latency with server KV-cache memory and queue depths.</p>
+          <div class="form-row form-row-2" style="margin-top: 12px;">
+            <div class="form-group">
+              <label for="settings-telemetry-url">Prometheus Metrics URL</label>
               <input type="text" id="settings-telemetry-url" value="http://127.0.0.1:8000/metrics">
             </div>
-            <div style="margin-top: 12px;">
-              <button type="button" class="btn btn-secondary" id="btn-test-telemetry">Test Connection</button>
-              <span id="telemetry-test-result" class="test-feedback"></span>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="grid-column: 1 / -1;">
-          <div class="card-header">
-            <h2 class="card-title">About InferLoad</h2>
-          </div>
-          <div class="settings-body">
-            <p class="about-text">
-              <strong>InferLoad</strong> is an LLM inference load testing and capacity analysis system. It subjects inference endpoints to closed-loop or open-loop synthetic workloads across concurrency sweeps, recording TTFT, inter-token latency, total latency, and throughput, and compares them against Service Level Objectives (SLOs) to determine defensible operational capacity.
-            </p>
-            <div class="about-links">
-              <a href="https://github.com/Afnan-0206/inferLoad" target="_blank" class="about-link">GitHub Repository</a>
-              <span class="link-separator">•</span>
-              <a href="https://github.com/affaan-m/ecc" target="_blank" class="about-link">Agent Engineering Harness (ECC)</a>
+            <div class="form-group" style="justify-content: flex-end;">
+              <button type="button" class="btn btn-emerald-outline" id="btn-test-telemetry" style="align-self: flex-start;">Test Connection</button>
+              <span id="telemetry-test-result" class="test-msg"></span>
             </div>
           </div>
         </div>
       </div>
-    </main>
-  </div>
+    </section>
+
+  </main>
 
   <!-- Notification Toast -->
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="toast" class="luxe-toast" role="status" aria-live="polite"></div>
 
   <script src="/static/app.js"></script>
 </body>
