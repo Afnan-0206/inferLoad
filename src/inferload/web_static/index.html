@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InferLoad — LLM Inference Testing Laboratory</title>
+  <link rel="stylesheet" href="/static/app.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- ===== LEFT NAVIGATION SIDEBAR ===== -->
+  <nav class="nav-sidebar" id="nav-sidebar">
+    <div class="nav-brand">
+      <div class="nav-brand-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+        </svg>
+      </div>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">InferLoad</span>
+        <span class="nav-brand-sub">LLM Inference Load Testing + Capacity Analysis</span>
+      </div>
+    </div>
+
+    <div class="nav-items">
+      <a class="nav-item active" data-page="benchmark" id="nav-home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Home</span>
+      </a>
+      <a class="nav-item" data-page="new-benchmark" id="nav-new">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        <span>New Benchmark</span>
+      </a>
+      <a class="nav-item" data-page="history" id="nav-history">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>Experiments History</span>
+      </a>
+      <a class="nav-item" data-page="reports" id="nav-reports">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        <span>Reports</span>
+      </a>
+      <a class="nav-item" data-page="settings" id="nav-settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"></path></svg>
+        <span>Settings</span>
+      </a>
+    </div>
+
+    <div class="nav-footer">
+      <div class="nav-env-badge">
+        <span class="dot dot-green"></span>
+        <span id="nav-env-label">Environment</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN CONTENT AREA ===== -->
+  <div class="app-shell">
+    <!-- Top bar -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <h1 class="page-title" id="page-title">Run a New Benchmark</h1>
+        <p class="page-subtitle" id="page-subtitle">Configure your workload, set SLOs and run a real benchmark on your LLM endpoint</p>
+      </div>
+      <div class="top-bar-right">
+        <div class="server-indicator">
+          <span class="label-muted">Local Server</span>
+          <span class="server-url" id="server-url-label">http://127.0.0.1:11434/v1</span>
+        </div>
+        <span class="version-badge" id="version-badge">v0.1.0</span>
+      </div>
+    </header>
+
+    <!-- Content body -->
+    <div class="content-body">
+      <!-- CENTER COLUMN -->
+      <div class="center-col">
+        <!-- Config + Results area -->
+        <div class="center-top-split">
+          <!-- LEFT: Configuration Panel -->
+          <div class="config-panel" id="config-panel">
+            <!-- Config Tabs -->
+            <div class="config-tabs">
+              <button class="config-tab active" data-ctab="ctab-benchmark">Benchmark</button>
+              <button class="config-tab" data-ctab="ctab-slos">SLOs</button>
+              <button class="config-tab" data-ctab="ctab-telemetry">Telemetry (optional)</button>
+            </div>
+
+            <form id="benchmark-form" autocomplete="off">
+              <!-- Benchmark Tab -->
+              <div class="config-tab-pane active" id="ctab-benchmark">
+                <div class="cfg-section">
+                  <h3 class="cfg-section-title">Target</h3>
+                  <div class="cfg-row">
+                    <div class="cfg-field" style="flex:2">
+                      <label for="target-base-url">Endpoint</label>
+                      <input type="text" id="target-base-url" value="http://127.0.0.1:11434/v1" required>
+                    </div>
+                    <div class="cfg-field" style="flex:1">
+                      <label for="target-model">Model</label>
+                      <div class="model-select-wrap">
+                        <input type="text" id="target-model" value="qwen2.5:0.5b" required>
+                        <div class="model-dropdown" id="model-dropdown"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cfg-section">
+                  <h3 class="cfg-section-title">Workload</h3>
+                  <div class="cfg-row cfg-row-4">
+                    <div class="cfg-field">
+                      <label for="sweep-concurrency">Concurrency</label>
+                      <input type="text" id="sweep-concurrency" value="1, 2, 4">
+                      <span class="cfg-hint">Comma separated</span>
+                    </div>
+                    <div class="cfg-field">
+                      <label for="sweep-repetitions">Repetitions</label>
+                      <input type="number" id="sweep-repetitions" value="2" min="1" max="20">
+                    </div>
+                    <div class="cfg-field">
+                      <label for="sweep-requests">Requests per point</label>
+                      <input type="number" id="sweep-requests" value="5" min="1" max="500">
+                    </div>
+                    <div class="cfg-field">
+                      <label for="exec-warmup">Warmup requests</label>
+                      <input type="number" id="exec-warmup" value="1" min="0" max="50">
+                    </div>
+                  </div>
+                  <div class="cfg-row cfg-row-4">
+                    <div class="cfg-field">
+                      <label for="workload-max-tokens">Max tokens</label>
+                      <input type="number" id="workload-max-tokens" value="32" min="1" max="4096">
+                    </div>
+                    <div class="cfg-field">
+                      <label for="workload-temperature">Temperature</label>
+                      <input type="number" id="workload-temperature" value="0.0" min="0" max="2" step="0.1">
+                    </div>
+                    <div class="cfg-field">
+                      <label for="workload-seed">Seed</label>
+                      <input type="number" id="workload-seed" value="42">
+                    </div>
+                    <div class="cfg-field">
+                      <label>Streaming</label>
+                      <div class="toggle-row">
+                        <label class="toggle-switch">
+                          <input type="checkbox" id="workload-stream" checked>
+                          <span class="toggle-slider"></span>
+                        </label>
+                        <label>Arrival mode</label>
+                        <select id="arrival-mode" class="select-sm">
+                          <option value="closed" selected>closed</option>
+                          <option value="rate">open</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="open-loop-rate-group" style="display:none" class="cfg-row">
+                    <div class="cfg-field">
+                      <label for="arrival-rate">Arrival Rate (req/s)</label>
+                      <input type="number" id="arrival-rate" value="2.0" min="0.1" step="0.5">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cfg-section">
+                  <div class="cfg-section-header">
+                    <h3 class="cfg-section-title">Prompts</h3>
+                    <button type="button" class="btn-link" id="btn-add-prompt">+ Add Prompt</button>
+                  </div>
+                  <div id="prompts-container" class="prompts-list">
+                    <div class="prompt-entry">
+                      <input type="text" class="prompt-input" value="What is a database index?" required>
+                      <button type="button" class="btn-remove-prompt" title="Remove">&times;</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Advanced toggle -->
+                <details class="cfg-advanced" id="advanced-toggle">
+                  <summary>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    Advanced
+                  </summary>
+                  <div class="cfg-row">
+                    <div class="cfg-field" style="flex:1">
+                      <label for="target-timeout">Timeout (s)</label>
+                      <input type="number" id="target-timeout" value="60" min="1" step="1">
+                    </div>
+                    <div class="cfg-field" style="flex:1">
+                      <label for="target-api-key">API Key (optional)</label>
+                      <input type="password" id="target-api-key" placeholder="Bearer token">
+                    </div>
+                  </div>
+                </details>
+
+                <!-- Run button -->
+                <button type="submit" class="btn-run" id="btn-run">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  Run Benchmark
+                </button>
+              </div>
+
+              <!-- SLOs Tab -->
+              <div class="config-tab-pane" id="ctab-slos">
+                <div class="cfg-section">
+                  <h3 class="cfg-section-title">Service Level Objectives</h3>
+                  <p class="cfg-description">Define the performance ceiling your LLM endpoint must meet. InferLoad evaluates each tested concurrency point against these constraints.</p>
+                  <div class="cfg-row">
+                    <div class="cfg-field" style="flex:1">
+                      <label for="slo-ttft">TTFT p95 Max (ms)</label>
+                      <input type="number" id="slo-ttft" value="1000" min="1" step="50">
+                    </div>
+                    <div class="cfg-field" style="flex:1">
+                      <label for="slo-latency">Latency p95 Max (ms)</label>
+                      <input type="number" id="slo-latency" value="2500" min="1" step="100">
+                    </div>
+                  </div>
+                  <div class="cfg-row">
+                    <div class="cfg-field" style="flex:1">
+                      <label for="slo-error">Error Rate Max (%)</label>
+                      <input type="number" id="slo-error" value="1.0" min="0" max="100" step="0.5">
+                    </div>
+                    <div class="cfg-field" style="flex:1">
+                      <label for="slo-throughput">Throughput Min (req/s)</label>
+                      <input type="number" id="slo-throughput" value="1.0" min="0.1" step="0.5">
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn-run" id="btn-run-slo">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  Run Benchmark
+                </button>
+              </div>
+
+              <!-- Telemetry Tab -->
+              <div class="config-tab-pane" id="ctab-telemetry">
+                <div class="cfg-section">
+                  <h3 class="cfg-section-title">Server Telemetry Correlation</h3>
+                  <p class="cfg-description">Optionally poll Prometheus /metrics to correlate client measurements with server-side queue depth, KV cache occupancy, and prefill/decode timings.</p>
+                  <div class="cfg-row">
+                    <div class="cfg-field">
+                      <label class="toggle-label-row">
+                        <label class="toggle-switch">
+                          <input type="checkbox" id="telemetry-enable">
+                          <span class="toggle-slider"></span>
+                        </label>
+                        <span>Enable Prometheus Polling</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div id="telemetry-fields" style="display:none">
+                    <div class="cfg-field">
+                      <label for="telemetry-url">Metrics URL</label>
+                      <input type="text" id="telemetry-url" value="http://127.0.0.1:8000/metrics" placeholder="http://host:port/metrics">
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn-run" id="btn-run-telem">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  Run Benchmark
+                </button>
+              </div>
+            </form>
+
+            <!-- Validation errors -->
+            <div id="validation-errors" class="validation-box" style="display:none"></div>
+          </div>
+
+          <!-- RIGHT: Results / Status Panel -->
+          <div class="results-panel" id="results-panel">
+            <!-- Empty state -->
+            <div class="empty-state" id="empty-state">
+              <div class="empty-icon-wrap">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              </div>
+              <h3>Ready for Benchmark</h3>
+              <p>Configure your workload on the left and click <strong>Run Benchmark</strong>, or select a previous experiment from the history panel.</p>
+            </div>
+
+            <!-- Progress / Running state -->
+            <div class="benchmark-status-card" id="progress-card" style="display:none">
+              <div class="status-header">
+                <span class="dot dot-pulse dot-blue"></span>
+                <span class="status-label">Benchmark Running</span>
+                <span class="status-timer" id="progress-timer">0m 0s</span>
+              </div>
+              <!-- Stepper -->
+              <div class="stepper" id="stepper">
+                <div class="step completed" id="step-validation">
+                  <div class="step-circle">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                  <span class="step-label">Validation</span>
+                  <span class="step-time" id="step-validation-time"></span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step active" id="step-running">
+                  <div class="step-circle">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  </div>
+                  <span class="step-label">Running</span>
+                  <span class="step-time" id="step-running-time"></span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step" id="step-analysis">
+                  <div class="step-circle"><span>3</span></div>
+                  <span class="step-label">Analysis</span>
+                  <span class="step-time" id="step-analysis-time"></span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step" id="step-complete">
+                  <div class="step-circle"><span>4</span></div>
+                  <span class="step-label">Complete</span>
+                  <span class="step-time" id="step-complete-time"></span>
+                </div>
+              </div>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" id="progress-bar-fill" style="width:0%"></div>
+              </div>
+              <div class="progress-detail">
+                <span id="progress-trials">0 / 0 trials</span>
+                <span id="progress-trial-id" class="trial-id-badge">Initializing...</span>
+              </div>
+            </div>
+
+            <!-- Error state -->
+            <div class="error-card" id="error-card" style="display:none">
+              <div class="error-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                <span>Benchmark Failed</span>
+                <button class="btn-dismiss" id="btn-dismiss-error">&times;</button>
+              </div>
+              <p class="error-msg" id="error-card-msg"></p>
+            </div>
+
+            <!-- Completed results -->
+            <div id="results-view" style="display:none">
+              <!-- Capacity Hero -->
+              <div class="capacity-hero" id="capacity-hero">
+                <div class="hero-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <div class="hero-text">
+                  <span class="hero-title">Highest Observed Compliant Tested Concurrency</span>
+                  <span class="hero-value" id="hero-capacity-value">—</span>
+                </div>
+                <span class="hero-badge" id="hero-capacity-badge">SLO COMPLIANT</span>
+              </div>
+
+              <!-- Quick Results KPIs -->
+              <div class="quick-results" id="quick-results">
+                <h3 class="section-title">Quick Results</h3>
+                <div class="kpi-grid">
+                  <div class="kpi-card">
+                    <span class="kpi-number" id="hero-kpi-throughput">—</span>
+                    <span class="kpi-unit">req/s</span>
+                    <span class="kpi-label">Throughput (mean)</span>
+                  </div>
+                  <div class="kpi-card">
+                    <span class="kpi-number" id="hero-kpi-ttft">—</span>
+                    <span class="kpi-unit">ms</span>
+                    <span class="kpi-label">TTFT p95 (mean)</span>
+                  </div>
+                  <div class="kpi-card">
+                    <span class="kpi-number" id="hero-kpi-latency">—</span>
+                    <span class="kpi-unit">ms</span>
+                    <span class="kpi-label">Latency p95 (mean)</span>
+                  </div>
+                  <div class="kpi-card">
+                    <span class="kpi-number" id="hero-kpi-errors">0.00%</span>
+                    <span class="kpi-unit"></span>
+                    <span class="kpi-label">Error Rate (mean)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Results Summary + SLO side-by-side -->
+              <div class="results-tables-row">
+                <div class="results-table-wrap" style="flex:1.3">
+                  <div class="table-header-row">
+                    <h3 class="section-title">Results Summary</h3>
+                    <div class="slo-legend">
+                      <span class="legend-dot legend-slo"></span> SLO Status
+                      <span class="legend-dot legend-compliant"></span> Compliant
+                      <span class="legend-dot legend-violation"></span> Violation
+                    </div>
+                  </div>
+                  <div class="table-scroll">
+                    <table class="data-table" id="table-sweep-results">
+                      <thead>
+                        <tr>
+                          <th>Concurrency</th>
+                          <th>Trials</th>
+                          <th>Requests/Trial</th>
+                          <th>TTFT p50</th>
+                          <th>TTFT p95</th>
+                          <th>Latency p95</th>
+                          <th>Throughput</th>
+                          <th>Error Rate</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="sweep-table-body"></tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="results-table-wrap" style="flex:1">
+                  <h3 class="section-title">SLO Compliance</h3>
+                  <div class="table-scroll">
+                    <table class="data-table" id="table-slo-results">
+                      <thead>
+                        <tr>
+                          <th>Concurrency</th>
+                          <th>TTFT p95</th>
+                          <th>Latency p95</th>
+                          <th>Throughput</th>
+                          <th>Error Rate</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="slo-table-body"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Performance Graphs -->
+              <div class="perf-graphs-section">
+                <div class="perf-graphs-header">
+                  <h3 class="section-title">Performance Graphs</h3>
+                  <div class="perf-graph-tabs">
+                    <button class="perf-tab active" data-ptab="ttft">TTFT p95</button>
+                    <button class="perf-tab" data-ptab="latency">Total Latency p95</button>
+                    <button class="perf-tab" data-ptab="throughput">Throughput</button>
+                    <button class="perf-tab" data-ptab="errors">Error Rate</button>
+                  </div>
+                </div>
+                <div class="perf-graphs-grid">
+                  <div class="plot-card active" id="plot-card-ttft">
+                    <img id="plot-ttft" class="plot-img" alt="TTFT p95 vs Concurrency">
+                  </div>
+                  <div class="plot-card" id="plot-card-latency">
+                    <img id="plot-latency" class="plot-img" alt="Total Latency p95 vs Concurrency">
+                  </div>
+                  <div class="plot-card" id="plot-card-throughput">
+                    <img id="plot-throughput" class="plot-img" alt="Throughput vs Concurrency">
+                  </div>
+                  <div class="plot-card" id="plot-card-errors">
+                    <img id="plot-errors" class="plot-img" alt="Error Rate vs Concurrency">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Saturation behavior -->
+              <div class="saturation-section" id="saturation-section" style="display:none">
+                <div class="saturation-header">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                  <h3>Saturation-like Behavior</h3>
+                </div>
+                <div class="saturation-findings" id="saturation-findings"></div>
+              </div>
+
+              <!-- Capacity Note -->
+              <div class="capacity-note">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <span class="note-label">Note</span>
+                <span id="capacity-note-text">Capacity is limited to tested configurations and does not extrapolate beyond observed measurements. This represents the highest observed compliant tested concurrency, not theoretical or maximum system capacity.</span>
+              </div>
+
+              <!-- Report & Artifacts (collapsible) -->
+              <details class="results-detail-section">
+                <summary class="detail-summary">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  Full Markdown Report
+                </summary>
+                <div class="report-wrap">
+                  <div class="report-toolbar">
+                    <button class="btn-sm-action" id="btn-copy-report">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre class="report-code" id="report-markdown-view">Loading report...</pre>
+                </div>
+              </details>
+
+              <details class="results-detail-section">
+                <summary class="detail-summary">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  Artifacts &amp; Raw Data
+                </summary>
+                <div class="artifacts-wrap">
+                  <div class="artifact-grid" id="artifact-links-list"></div>
+                  <div class="raw-explorer">
+                    <select id="raw-run-selector" class="select-sm">
+                      <option value="">Select trial to inspect...</option>
+                    </select>
+                    <pre class="raw-json-view" id="raw-json-output">Select a trial run above to audit request timestamps, TTFT, and chunk counts.</pre>
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="right-sidebar" id="right-sidebar">
+        <!-- Environment -->
+        <div class="rs-section">
+          <h4 class="rs-title">Environment</h4>
+          <div class="env-list" id="env-list">
+            <div class="env-row"><span class="env-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </span><span class="env-key">OS</span><span class="env-val" id="env-os">—</span></div>
+            <div class="env-row"><span class="env-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+            </span><span class="env-key">Python</span><span class="env-val" id="env-python">—</span></div>
+            <div class="env-row"><span class="env-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+            </span><span class="env-key">CPU</span><span class="env-val" id="env-cpu">—</span></div>
+            <div class="env-row"><span class="env-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12H2"></path><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"></path><line x1="6" y1="16" x2="6.01" y2="16"></line><line x1="10" y1="16" x2="10.01" y2="16"></line></svg>
+            </span><span class="env-key">RAM</span><span class="env-val" id="env-ram">—</span></div>
+            <div class="env-row"><span class="env-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            </span><span class="env-key">GPU</span><span class="env-val" id="env-gpu">—</span></div>
+            <div class="env-row"><span class="env-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"></path></svg>
+            </span><span class="env-key">CUDA</span><span class="env-val" id="env-cuda">—</span></div>
+            <div class="env-row"><span class="env-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+            </span><span class="env-key">Server / vLLM</span><span class="env-val" id="env-server">Unspecified</span></div>
+            <div class="env-row"><span class="env-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            </span><span class="env-key">InferLoad</span><span class="env-val" id="env-inferload">—</span></div>
+          </div>
+        </div>
+
+        <!-- Server Telemetry -->
+        <div class="rs-section">
+          <h4 class="rs-title">Server Telemetry</h4>
+          <div class="telemetry-status" id="telemetry-status">
+            <span class="dot dot-red"></span>
+            <span>Not Available</span>
+          </div>
+          <p class="rs-muted" id="telemetry-note">Telemetry was not enabled for this benchmark run.</p>
+        </div>
+
+        <!-- Recent Experiments -->
+        <div class="rs-section">
+          <div class="rs-title-row">
+            <h4 class="rs-title">Recent Experiments</h4>
+            <button class="btn-link-sm" id="btn-view-all-history">View All</button>
+          </div>
+          <div class="recent-experiments" id="recent-experiments">
+            <p class="rs-muted">Loading...</p>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="rs-section">
+          <h4 class="rs-title">Quick Actions</h4>
+          <div class="quick-actions" id="quick-actions">
+            <button class="action-btn" id="action-report" disabled>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              View Report
+            </button>
+            <button class="action-btn" id="action-artifacts" disabled>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Download Artifacts
+            </button>
+            <button class="action-btn" id="action-plots" disabled>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+              View Plots
+            </button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
