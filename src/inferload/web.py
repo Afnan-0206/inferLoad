@@ -439,6 +439,23 @@ def create_app() -> FastAPI:
 
         target = (base_dir / file_path).resolve()
 
+        # Check aliases and plots subdirectory if file not found directly
+        if not (target.is_file() and target.is_relative_to(base_dir)):
+            alias_map = {
+                "plot_ttft.png": "plots/concurrency_vs_ttft_p95.png",
+                "plot_latency.png": "plots/concurrency_vs_total_latency_p95.png",
+                "plot_throughput.png": "plots/concurrency_vs_throughput.png",
+                "plot_errors.png": "plots/concurrency_vs_error_rate.png",
+                "concurrency_vs_ttft_p95.png": "plots/concurrency_vs_ttft_p95.png",
+                "concurrency_vs_total_latency_p95.png": "plots/concurrency_vs_total_latency_p95.png",
+                "concurrency_vs_throughput.png": "plots/concurrency_vs_throughput.png",
+                "concurrency_vs_error_rate.png": "plots/concurrency_vs_error_rate.png",
+            }
+            cand_rel = alias_map.get(file_path) or f"plots/{file_path}"
+            cand_target = (base_dir / cand_rel).resolve()
+            if cand_target.is_file() and cand_target.is_relative_to(base_dir):
+                target = cand_target
+
         # Strict security constraint: prevent path traversal outside the experiment directory
         if not target.is_relative_to(base_dir):
             raise HTTPException(status_code=403, detail="Access denied: path traversal detected.")

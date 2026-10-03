@@ -1,11 +1,11 @@
-import os
 import sys
 from pathlib import Path
 
-# Add project src to sys.path so the inferload package is importable on Vercel
-root_dir = Path(__file__).resolve().parent.parent
-src_dir = root_dir / "src"
-if str(src_dir) not in sys.path:
-    sys.path.insert(0, str(src_dir))
+# Add project root and src directory to Python path
+ROOT_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT_DIR / "src"))
 
-from inferload.web import app
+from inferload.web import create_web_app
+
+# Vercel's Python runtime detects this ASGI app
+app = create_web_app()
