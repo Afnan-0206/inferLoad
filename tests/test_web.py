@@ -175,3 +175,82 @@ def test_web_historical_report_resolution(client: TestClient) -> None:
         resp = client.get(f"/api/experiments/historical-{target_dir}/report")
         assert resp.status_code == 200
         assert "report_markdown" in resp.json()
+
+
+def test_web_auth_status_open_mode(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("INFERLOAD_AUTH_TOKEN", raising=False)
+    resp = client.get("/api/auth/status")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["auth_required"] is False
+    assert data["authenticated"] is True
+    assert data["mode"] == "permissive"
+
+
+def test_web_auth_enforcement_when_token_configured(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("INFERLOAD_AUTH_TOKEN", "enterprise-secret-key-123")
+
+    # 1. Auth status without token
+    resp = client.get("/api/auth/status")
+    assert resp.status_code == 200
+    assert resp.json()["auth_required"] is True
+    assert resp.json()["authenticated"] is False
+
+    # 2. Auth status with token
+    resp_authed = client.get("/api/auth/status", headers={"Authorization": "Bearer enterprise-secret-key-123"})
+    assert resp_authed.status_code == 200
+    assert resp_authed.json()["authenticated"] is True
+
+    # 3. Mutation endpoint rejected without token
+    payload = {
+        "base_url": "http://127.0.0.1:11434/v1",
+        "model": "qwen2.5:0.5b",
+        "concurrency": [1],
+    }
+    unauth_resp = client.post("/api/validate", json=payload)
+    assert unauth_resp.status_code == 401
+
+    # 4. Mutation endpoint allowed with token
+    auth_resp = client.post(
+        "/api/validate",
+        json=payload,
+        headers={"Authorization": "Bearer enterprise-secret-key-123"},
+    )
+    assert auth_resp.status_code == 200
+
+
+def test_web_telemetry_test_endpoint_invalid_url(client: TestClient) -> None:
+    resp = client.post("/api/telemetry/test", json={"metrics_url": "ftp://bad-url"})
+    assert resp.status_code == 200
+    assert resp.json()["valid"] is False
+
+
+def test_web_experiment_sse_stream(client: TestClient) -> None:
+    mock_job_id = "test-job-sse"
+    _jobs[mock_job_id] = ExperimentJobState(
+        job_id=mock_job_id,
+        status=JobStatus.COMPLETED,
+    )
+    try:
+        resp = client.get(f"/api/experiments/{mock_job_id}/stream")
+        assert resp.status_code == 200
+        assert "text/event-stream" in resp.headers["content-type"]
+        assert "initial_state" in resp.text
+    finally:
+        _jobs.pop(mock_job_id, None)
+
+
+def test_web_experiment_websocket(client: TestClient) -> None:
+    mock_job_id = "test-job-ws"
+    _jobs[mock_job_id] = ExperimentJobState(
+        job_id=mock_job_id,
+        status=JobStatus.COMPLETED,
+    )
+    try:
+        with client.websocket_connect(f"/ws/experiments/{mock_job_id}") as websocket:
+            data = websocket.receive_json()
+            assert data["type"] == "initial_state"
+            assert data["job"]["job_id"] == mock_job_id
+    finally:
+        _jobs.pop(mock_job_id, None)
+

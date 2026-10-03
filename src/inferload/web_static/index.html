@@ -33,12 +33,16 @@
     </div>
 
     <div class="header-right">
+      <div class="mockup-auth-pill" id="header-auth-pill" title="Role-Based Access Control & API Token Security">
+        <span class="auth-dot" id="header-auth-dot"></span>
+        <span class="auth-label" id="header-auth-text">Open Mode</span>
+      </div>
       <div class="mockup-system-pill" id="endpoint-pill">
         <span class="status-pulse-dot" id="header-status-dot"></span>
         <span class="system-text">System</span>
         <span class="system-status-tag">ON</span>
       </div>
-      <button type="button" class="btn-header-icon" id="btn-header-settings" title="Settings">
+      <button type="button" class="btn-header-icon" id="btn-header-settings" title="Settings & Access Control">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"></path></svg>
         <span>Settings</span>
       </button>
@@ -98,6 +102,10 @@
                 <button type="button" class="conc-chip" data-val="16">16</button>
               </div>
               <input type="text" id="sweep-concurrency" class="mockup-input-subtle" value="1, 2, 4, 8, 16" placeholder="1, 2, 4, 8, 16">
+              <div class="concurrency-calibration-advisory">
+                <span class="advisory-pill">c &le; 128 Calibrated</span>
+                <span class="advisory-hint">Single-instance precision envelope. For c &gt; 500, see <a href="/docs/enterprise_scaling_architecture.md" target="_blank" class="link-subtle">Distributed Topology</a>.</span>
+              </div>
             </div>
 
             <!-- SSE streaming toggle -->
@@ -290,6 +298,11 @@
               <div class="chart-card-header">
                 <span class="chart-card-title">Concurrency vs Total Latency (p50, p95, p99)</span>
                 <div class="chart-card-actions">
+                  <button type="button" class="btn-overlay-toggle" id="btn-toggle-kv-overlay" title="Overlay GPU KV-Cache Memory % on latency curve">
+                    <span class="telemetry-sparkle">◆</span>
+                    <span>KV-Cache %</span>
+                    <span class="badge-mini" id="badge-kv-overlay">OFF</span>
+                  </button>
                   <button type="button" class="chart-toggle-btn active" data-chart="latency" data-mode="canvas">Vector</button>
                   <button type="button" class="chart-toggle-btn" data-chart="latency" data-mode="img">PNG</button>
                 </div>
@@ -305,6 +318,7 @@
                 <span class="legend-item"><span class="legend-line" style="background: #38bdf8;"></span>Concurrency</span>
                 <span class="legend-item"><span class="legend-line" style="background: #10b981;"></span>Total Latency</span>
                 <span class="legend-item"><span class="legend-line" style="background: #f59e0b;"></span>p50, p95, p99</span>
+                <span class="legend-item legend-kv-item" id="legend-kv-latency" style="display: none;"><span class="legend-diamond" style="color: #a855f7;">◆</span>KV-Cache %</span>
               </div>
             </div>
 
@@ -558,6 +572,21 @@
               <button type="button" class="btn-sidebar-subtle" id="btn-test-prom">Test</button>
             </div>
             <span id="prom-status-text" class="setting-hint">Connects to vLLM, TGI, or custom Prometheus endpoints</span>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-section-header">
+            <h4>Enterprise Security &amp; RBAC</h4>
+            <span class="badge-mini" id="modal-auth-badge">Open Access</span>
+          </div>
+          <div class="modal-field">
+            <label for="setting-auth-token">InferLoad API Bearer Token</label>
+            <div class="input-with-action">
+              <input type="password" id="setting-auth-token" class="mockup-input" placeholder="Bearer token for benchmark execution and validation">
+              <button type="button" class="btn-sidebar-subtle" id="btn-toggle-token-visibility">Show</button>
+            </div>
+            <span id="auth-status-hint" class="setting-hint">Protects mutation endpoints against unauthorized runs when hosted in public cloud clusters.</span>
           </div>
         </div>
 

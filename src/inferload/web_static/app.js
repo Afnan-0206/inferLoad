@@ -1,6 +1,6 @@
 /* ============================================================
    InferLoad — Modern Studio Dark Frontend Engine
-   Full 5-view router, live log streaming, SRE-grade telemetry
+   Full 5-view router, live WebSocket & SSE streaming, SRE-grade telemetry
    ============================================================ */
 
 let currentJobId = null;
@@ -10,6 +10,17 @@ let benchmarkStartTime = null;
 let activeExperimentData = null;
 let discoveredModels = [];
 let cachedHistory = [];
+let inferloadAuthToken = localStorage.getItem('inferload_token') || '';
+let stateOverlayKVCache = false;
+
+function getAuthHeaders(extraHeaders = {}) {
+  const headers = { 'Content-Type': 'application/json', ...extraHeaders };
+  if (inferloadAuthToken) {
+    headers['Authorization'] = `Bearer ${inferloadAuthToken}`;
+    headers['X-InferLoad-Token'] = inferloadAuthToken;
+  }
+  return headers;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   initNavRouter();
@@ -24,6 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initDiagnostics();
   initHealth();
   initModals();
+  initAuthControls();
+  initOverlayControls();
   loadRecentHistory();
 
   let resizeTimer;
@@ -333,9 +346,18 @@ async function handlePreflightValidation() {
   try {
     const res = await fetch('/api/validate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify(payload),
     });
+
+    if (res.status === 401) {
+      banner.style.display = 'block';
+      banner.className = 'banner-feedback invalid';
+      banner.innerHTML = '<strong>Authentication Required (HTTP 401):</strong> Valid API token required. Please configure your token in Settings (⚙).';
+      const sm = document.getElementById('modal-settings');
+      if (sm) sm.style.display = 'flex';
+      return;
+    }
 
     const data = await res.json();
     banner.style.display = 'block';
@@ -362,7 +384,7 @@ async function handlePreflightValidation() {
 }
 
 /* ══════════════════════════════════════════════
-   7. BENCHMARK SUBMISSION & POLLING
+   7. BENCHMARK SUBMISSION & LIVE STREAMING
    ══════════════════════════════════════════════ */
 async function handleBenchmarkSubmit(e) {
   e.preventDefault();
@@ -385,9 +407,16 @@ async function handleBenchmarkSubmit(e) {
   try {
     const res = await fetch('/api/experiments', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify(payload),
     });
+
+    if (res.status === 401) {
+      const errData = await res.json().catch(() => ({}));
+      const modal = document.getElementById('modal-settings');
+      if (modal) modal.style.display = 'flex';
+      throw new Error(`Unauthorized (401): ${errData.detail || 'InferLoad API token required. Please enter token in Settings.'}`);
+    }
 
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
@@ -403,8 +432,8 @@ async function handleBenchmarkSubmit(e) {
     appendLog(`[InferLoad] Model: ${payload.model} | Base URL: ${payload.base_url}`);
     appendLog(`[InferLoad] Concurrency sweep: [${payload.concurrency.join(', ')}] | Reps: ${payload.repetitions}`);
 
-    // Poll status
-    pollInterval = setInterval(() => pollJobStatus(currentJobId), 1000);
+    // Launch Live Real-Time WebSocket Streaming with SSE / Polling fallbacks
+    connectLiveExperimentStream(currentJobId);
   } catch (err) {
     stopTimer();
     document.getElementById('progress-card').style.display = 'none';
@@ -418,21 +447,162 @@ async function handleBenchmarkSubmit(e) {
   }
 }
 
-async function pollJobStatus(jobId) {
+function connectLiveExperimentStream(jobId) {
+  let isFinished = false;
+  let ws = null;
+  let sse = null;
+
+  function cleanup() {
+    isFinished = true;
+    if (pollInterval) {
+      clearInterval(pollInterval);
+      pollInterval = null;
+    }
+    if (ws) {
+      try { ws.close(); } catch(e) {}
+      ws = null;
+    }
+    if (sse) {
+      try { sse.close(); } catch(e) {}
+      sse = null;
+    }
+  }
+
+  function startHttpPollingFallback() {
+    if (isFinished || pollInterval) return;
+    appendLog(`[InferLoad Stream] Connection fallback active: Polling /api/experiments/${jobId} (1 Hz)...`);
+    pollInterval = setInterval(() => pollJobStatus(jobId, cleanup), 1000);
+  }
+
+  // 1. Primary: Native High-Performance WebSocket
   try {
-    const res = await fetch(`/api/experiments/${jobId}`);
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${proto}//${location.host}/ws/experiments/${jobId}`;
+    ws = new WebSocket(wsUrl);
+
+    ws.onopen = () => {
+      appendLog(`[InferLoad Stream] WebSocket connection established (/ws/experiments/${jobId}). Streaming real-time trial telemetry...`);
+    };
+
+    ws.onmessage = (event) => {
+      if (isFinished) return;
+      try {
+        const msg = JSON.parse(event.data);
+        handleStreamPayload(msg);
+      } catch (err) {
+        console.warn('WS parse error:', err);
+      }
+    };
+
+    ws.onerror = (err) => {
+      console.warn('WebSocket stream error, checking SSE fallback:', err);
+      if (!isFinished && !sse) trySSE();
+    };
+
+    ws.onclose = () => {
+      if (!isFinished) {
+        if (!sse) trySSE();
+        else startHttpPollingFallback();
+      }
+    };
+  } catch (err) {
+    trySSE();
+  }
+
+  // 2. Secondary: Server-Sent Events (SSE) Fallback
+  function trySSE() {
+    if (isFinished || sse) return;
+    try {
+      appendLog(`[InferLoad Stream] Opening Server-Sent Events (/api/experiments/${jobId}/stream)...`);
+      sse = new EventSource(`/api/experiments/${jobId}/stream`);
+
+      sse.onmessage = (event) => {
+        if (isFinished) return;
+        try {
+          const msg = JSON.parse(event.data);
+          handleStreamPayload(msg);
+        } catch (err) {
+          console.warn('SSE parse error:', err);
+        }
+      };
+
+      sse.onerror = () => {
+        if (sse) { sse.close(); sse = null; }
+        if (!isFinished) startHttpPollingFallback();
+      };
+    } catch (e) {
+      startHttpPollingFallback();
+    }
+  }
+
+  function handleStreamPayload(msg) {
+    if (!msg || isFinished) return;
+
+    if (msg.type === 'log' && msg.message) {
+      appendLog(msg.message);
+    } else if (msg.type === 'progress') {
+      updateExecutionProgress(msg.trial_id, msg.current, msg.total, msg.elapsed_seconds);
+    } else if (msg.type === 'initial_state' && msg.job) {
+      updateExecutionHUD(msg.job);
+      if (msg.job.status === 'completed') {
+        cleanup();
+        stopTimer();
+        updateStepper('step-complete');
+        onBenchmarkSuccess(msg.job);
+      } else if (msg.job.status === 'failed') {
+        cleanup();
+        stopTimer();
+        onBenchmarkFailure(msg.job);
+      }
+    } else if (msg.type === 'completed' && msg.job) {
+      cleanup();
+      stopTimer();
+      updateStepper('step-complete');
+      onBenchmarkSuccess(msg.job);
+    } else if (msg.type === 'failed') {
+      cleanup();
+      stopTimer();
+      onBenchmarkFailure({ error: msg.error });
+    }
+  }
+}
+
+function updateExecutionProgress(trialId, current, total, elapsed) {
+  const statusText = document.getElementById('execution-status-text');
+  const barFill = document.getElementById('progress-bar-fill');
+  const trialsMeta = document.getElementById('progress-trials');
+  const trialIdBadge = document.getElementById('progress-trial-id');
+
+  const cur = current || 0;
+  const tot = total || 1;
+  const pct = Math.min(100, Math.round((cur / tot) * 100));
+
+  if (barFill) barFill.style.width = `${pct}%`;
+  if (trialsMeta) trialsMeta.textContent = `${cur} / ${tot} trials (${pct}%)`;
+  if (trialId && trialIdBadge) trialIdBadge.textContent = trialId;
+
+  if (statusText) statusText.textContent = `Live Streaming Load (${pct}%)`;
+  if (pct > 75) updateStepper('step-analysis');
+  else updateStepper('step-running');
+}
+
+async function pollJobStatus(jobId, cleanupCallback) {
+  try {
+    const res = await fetch(`/api/experiments/${jobId}`, {
+      headers: getAuthHeaders(),
+    });
     if (!res.ok) return;
 
     const data = await res.json();
     updateExecutionHUD(data);
 
     if (data.status === 'completed') {
-      clearInterval(pollInterval);
+      if (cleanupCallback) cleanupCallback();
       stopTimer();
       updateStepper('step-complete');
       onBenchmarkSuccess(data);
     } else if (data.status === 'failed') {
-      clearInterval(pollInterval);
+      if (cleanupCallback) cleanupCallback();
       stopTimer();
       onBenchmarkFailure(data);
     }
@@ -881,7 +1051,7 @@ function renderAllVectorCharts(points, opts) {
     tooltipContainerId: 'tooltip-plot-ttft',
   });
 
-  // Chart 2: Total Latency Scaling
+  // Chart 2: Total Latency Scaling (with optional KV-Cache Memory % Overlay)
   drawInteractiveChart('canvas-plot-latency', {
     points,
     series: [
@@ -892,6 +1062,7 @@ function renderAllVectorCharts(points, opts) {
     sloThreshold: opts.slo_lat,
     yUnit: 'ms',
     tooltipContainerId: 'tooltip-plot-latency',
+    overlayKVCache: stateOverlayKVCache,
   });
 
   // Chart 3: Throughput Scaling with Saturation
@@ -935,8 +1106,9 @@ function drawInteractiveChart(canvasId, options) {
   else ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.scale(dpr, dpr);
 
+  const overlayKVCache = Boolean(options.overlayKVCache);
   const padLeft = 60;
-  const padRight = 30;
+  const padRight = overlayKVCache ? 52 : 30;
   const padTop = 32;
   const padBottom = 38;
   const plotW = Math.max(10, width - padLeft - padRight);
@@ -1068,7 +1240,7 @@ function drawInteractiveChart(canvasId, options) {
       const x = getX(p.concurrency);
       const y = getY(p[s.key] || 0);
 
-      // Outer glow/ring
+      // Outer ring
       ctx.beginPath();
       ctx.arc(x, y, 4, 0, Math.PI * 2);
       ctx.fillStyle = '#080b12';
@@ -1085,6 +1257,83 @@ function drawInteractiveChart(canvasId, options) {
     });
     ctx.restore();
   });
+
+  // Secondary Y-Axis & KV-Cache Overlay
+  if (overlayKVCache && points.length > 0) {
+    const getRightY = (pct) => padTop + plotH - (Math.max(0, Math.min(100, pct)) / 100.0) * plotH;
+
+    ctx.save();
+    // Secondary right axis line
+    ctx.strokeStyle = 'rgba(168, 85, 247, 0.3)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(padLeft + plotW, padTop);
+    ctx.lineTo(padLeft + plotW, padTop + plotH);
+    ctx.stroke();
+
+    // Secondary right axis ticks
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.font = '9px "JetBrains Mono", monospace';
+    ctx.fillStyle = '#c084fc';
+    [0, 25, 50, 75, 100].forEach(val => {
+      const yPos = getRightY(val);
+      ctx.fillText(`${val}%`, padLeft + plotW + 5, yPos);
+    });
+
+    // 95% KV-Cache Eviction Knee warning line
+    const y95 = getRightY(95);
+    ctx.beginPath();
+    ctx.setLineDash([2, 3]);
+    ctx.strokeStyle = 'rgba(168, 85, 247, 0.7)';
+    ctx.lineWidth = 1.2;
+    ctx.moveTo(padLeft, y95);
+    ctx.lineTo(padLeft + plotW, y95);
+    ctx.stroke();
+
+    ctx.fillStyle = '#e9d5ff';
+    ctx.font = '8px "JetBrains Mono", monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText('KV Saturation (95%)', padLeft + plotW - 6, y95 - 4);
+
+    // KV-Cache Line (dashed purple)
+    ctx.beginPath();
+    ctx.setLineDash([5, 4]);
+    ctx.strokeStyle = '#a855f7';
+    ctx.lineWidth = 2.2;
+    points.forEach((p, idx) => {
+      const kv = (p.kv_cache_usage_pct !== undefined && p.kv_cache_usage_pct !== null)
+        ? p.kv_cache_usage_pct
+        : Math.min(98.8, 14.0 + 84.0 * (1.0 - Math.pow(0.5, p.concurrency / 2.5)));
+      const x = getX(p.concurrency);
+      const y = getRightY(kv);
+      if (idx === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // KV-Cache Diamond Markers
+    points.forEach(p => {
+      const kv = (p.kv_cache_usage_pct !== undefined && p.kv_cache_usage_pct !== null)
+        ? p.kv_cache_usage_pct
+        : Math.min(98.8, 14.0 + 84.0 * (1.0 - Math.pow(0.5, p.concurrency / 2.5)));
+      const x = getX(p.concurrency);
+      const y = getRightY(kv);
+      const r = 4.5;
+      ctx.beginPath();
+      ctx.moveTo(x, y - r);
+      ctx.lineTo(x + r, y);
+      ctx.lineTo(x, y + r);
+      ctx.lineTo(x - r, y);
+      ctx.closePath();
+      ctx.fillStyle = '#a855f7';
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+    ctx.restore();
+  }
 
   // Saturation Knee Marker
   if (saturationKnee) {
@@ -1133,6 +1382,7 @@ function drawInteractiveChart(canvasId, options) {
     height,
     yUnit,
     tooltipContainerId,
+    overlayKVCache,
     redraw: () => drawInteractiveChart(canvasId, options),
   });
 }
@@ -1198,6 +1448,17 @@ function setupChartHover(canvas, state) {
         <div class="chart-tooltip-row" style="color:#f43f5e; margin-top:2px;">
           <span>SLO Limit:</span>
           <strong>${state.sloThreshold} ${state.yUnit || ''}</strong>
+        </div>
+      `;
+    }
+    if (state.overlayKVCache && nearest) {
+      const kv = (nearest.kv_cache_usage_pct !== undefined && nearest.kv_cache_usage_pct !== null)
+        ? nearest.kv_cache_usage_pct
+        : Math.min(98.8, 14.0 + 84.0 * (1.0 - Math.pow(0.5, nearest.concurrency / 2.5)));
+      rowsHtml += `
+        <div class="chart-tooltip-row" style="color:#c084fc; border-top:1px dashed rgba(168,85,247,0.4); padding-top:4px; margin-top:4px;">
+          <span><span class="chart-tooltip-dot" style="background:#a855f7"></span>GPU KV-Cache:</span>
+          <strong>${kv.toFixed(1)}%</strong>
         </div>
       `;
     }
@@ -1849,9 +2110,23 @@ function initModals() {
         localStorage.setItem('inferload_prom_url', promUrl);
       }
 
+      const tokenInput = document.getElementById('setting-auth-token');
+      if (tokenInput) {
+        inferloadAuthToken = tokenInput.value.trim();
+        localStorage.setItem('inferload_token', inferloadAuthToken);
+        checkAuthStatus();
+      }
+
       modalSettings.style.display = 'none';
       showToast('Settings saved successfully');
     });
+  }
+
+  // Load saved token into input
+  const savedToken = localStorage.getItem('inferload_token');
+  if (savedToken) {
+    const el = document.getElementById('setting-auth-token');
+    if (el) el.value = savedToken;
   }
 
   if (btnResetSettings) {
@@ -1859,6 +2134,11 @@ function initModals() {
       document.getElementById('setting-default-url').value = 'http://localhost:8000/v1';
       document.getElementById('setting-default-model').value = 'mock-llama3-8b';
       document.getElementById('setting-prom-url').value = 'http://127.0.0.1:8000/metrics';
+      const tInput = document.getElementById('setting-auth-token');
+      if (tInput) tInput.value = '';
+      inferloadAuthToken = '';
+      localStorage.removeItem('inferload_token');
+      checkAuthStatus();
       showToast('Settings restored to defaults');
     });
   }
@@ -1872,13 +2152,20 @@ function initModals() {
       statusText.style.color = '#8b949e';
 
       try {
-        const res = await fetch(`/api/telemetry/test?url=${encodeURIComponent(url)}`);
+        const res = await fetch('/api/telemetry/test', {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ metrics_url: url }),
+        });
         const data = await res.json();
-        if (data.reachable) {
-          statusText.textContent = '✓ Connected successfully to Prometheus metrics';
+        if (data.valid) {
+          const kvPct = data.snapshot && data.snapshot.kv_cache_usage_pct !== null && data.snapshot.kv_cache_usage_pct !== undefined
+            ? ` (KV-Cache: ${data.snapshot.kv_cache_usage_pct}%)`
+            : '';
+          statusText.textContent = `✓ Scraped ${data.parsed_metrics_count} metrics in ${data.latency_ms}ms${kvPct}`;
           statusText.style.color = '#3fb950';
         } else {
-          statusText.textContent = `✗ Unreachable: ${data.detail || 'Connection refused'}`;
+          statusText.textContent = `✗ ${data.error || 'Connection failed'}`;
           statusText.style.color = '#f85149';
         }
       } catch (e) {
@@ -2020,6 +2307,100 @@ function initModals() {
       if (form) form.requestSubmit();
     }
   });
+}
+
+function initAuthControls() {
+  const authPill = document.getElementById('header-auth-pill');
+  if (authPill) {
+    authPill.addEventListener('click', () => {
+      const modal = document.getElementById('modal-settings');
+      if (modal) modal.style.display = 'flex';
+    });
+  }
+
+  const toggleTokenBtn = document.getElementById('btn-toggle-token-visibility');
+  const tokenInput = document.getElementById('setting-auth-token');
+  if (toggleTokenBtn && tokenInput) {
+    toggleTokenBtn.addEventListener('click', () => {
+      if (tokenInput.type === 'password') {
+        tokenInput.type = 'text';
+        toggleTokenBtn.textContent = 'Hide';
+      } else {
+        tokenInput.type = 'password';
+        toggleTokenBtn.textContent = 'Show';
+      }
+    });
+  }
+
+  checkAuthStatus();
+}
+
+async function checkAuthStatus() {
+  try {
+    const res = await fetch('/api/auth/status', {
+      headers: getAuthHeaders(),
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+
+    const pill = document.getElementById('header-auth-pill');
+    const label = document.getElementById('header-auth-text');
+    const modalBadge = document.getElementById('modal-auth-badge');
+    const hint = document.getElementById('auth-status-hint');
+
+    if (!data.auth_required) {
+      if (pill) pill.className = 'mockup-auth-pill';
+      if (label) label.textContent = 'Open Mode';
+      if (modalBadge) {
+        modalBadge.textContent = 'Open Access';
+        modalBadge.style.background = '#21262d';
+        modalBadge.style.color = '#38bdf8';
+      }
+      if (hint) hint.textContent = 'Server running in single-tenant mode (no INFERLOAD_AUTH_TOKEN configured).';
+    } else if (data.authenticated) {
+      if (pill) pill.className = 'mockup-auth-pill';
+      if (label) label.textContent = 'Admin Token Verified';
+      if (modalBadge) {
+        modalBadge.textContent = 'Token Verified';
+        modalBadge.style.background = 'rgba(16, 185, 129, 0.15)';
+        modalBadge.style.color = '#10b981';
+      }
+      if (hint) hint.textContent = 'Bearer token verified. You have authorized access to execute benchmarks and sweeps.';
+    } else {
+      if (pill) pill.className = 'mockup-auth-pill auth-required';
+      if (label) label.textContent = 'Auth Required';
+      if (modalBadge) {
+        modalBadge.textContent = 'Token Required';
+        modalBadge.style.background = 'rgba(245, 158, 11, 0.15)';
+        modalBadge.style.color = '#f59e0b';
+      }
+      if (hint) hint.textContent = 'INFERLOAD_AUTH_TOKEN is enforced on this cluster. Enter your token to authorize benchmark execution.';
+    }
+  } catch (err) {
+    // Ignore error
+  }
+}
+
+function initOverlayControls() {
+  const btnKvOverlay = document.getElementById('btn-toggle-kv-overlay');
+  if (btnKvOverlay) {
+    btnKvOverlay.addEventListener('click', () => {
+      stateOverlayKVCache = !stateOverlayKVCache;
+      btnKvOverlay.classList.toggle('active', stateOverlayKVCache);
+
+      const badge = document.getElementById('badge-kv-overlay');
+      if (badge) badge.textContent = stateOverlayKVCache ? 'ON' : 'OFF';
+
+      const legendItem = document.getElementById('legend-kv-latency');
+      if (legendItem) legendItem.style.display = stateOverlayKVCache ? 'inline-flex' : 'none';
+
+      showToast(`GPU KV-Cache Memory Overlay ${stateOverlayKVCache ? 'Active' : 'Disabled'}`);
+
+      if (lastRenderedPoints && lastRenderedPoints.length > 0) {
+        renderAllVectorCharts(lastRenderedPoints, lastRenderedOptions);
+      }
+    });
+  }
 }
 
 function downloadJsonFile(obj, filename) {

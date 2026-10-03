@@ -2892,3 +2892,150 @@ html, body {
   font-weight: 700;
 }
 
+/* ══════════════════════════════════════════════
+   ENTERPRISE SCALING & TELEMETRY OVERLAY STYLES
+   ══════════════════════════════════════════════ */
+
+/* Auth & RBAC Status Pill */
+.mockup-auth-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-family: var(--font-mono, monospace);
+  color: #c9d1d9;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+}
+
+.mockup-auth-pill:hover {
+  border-color: #58a6ff;
+}
+
+.mockup-auth-pill .auth-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+  flex-shrink: 0;
+}
+
+.mockup-auth-pill.auth-required .auth-dot {
+  background: #f59e0b;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+}
+
+.mockup-auth-pill.auth-denied .auth-dot {
+  background: #f43f5e;
+  box-shadow: 0 0 8px rgba(244, 63, 94, 0.6);
+}
+
+/* Concurrency Calibration Advisory */
+.concurrency-calibration-advisory {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 6px;
+  padding: 6px 9px;
+  background: rgba(13, 17, 23, 0.7);
+  border: 1px solid rgba(48, 54, 61, 0.6);
+  border-radius: 6px;
+}
+
+.concurrency-calibration-advisory .advisory-pill {
+  font-size: 10px;
+  font-weight: 600;
+  color: #38bdf8;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0.4px;
+}
+
+.concurrency-calibration-advisory .advisory-hint {
+  font-size: 10px;
+  color: #8b949e;
+  line-height: 1.35;
+}
+
+.concurrency-calibration-advisory .link-subtle {
+  color: #58a6ff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* KV-Cache Telemetry Overlay Button */
+.btn-overlay-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(22, 27, 34, 0.9);
+  border: 1px solid #30363d;
+  color: #8b949e;
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-overlay-toggle:hover {
+  background: #21262d;
+  color: #c084fc;
+  border-color: #a855f7;
+}
+
+.btn-overlay-toggle.active {
+  background: rgba(168, 85, 247, 0.14);
+  color: #f3e8ff;
+  border-color: #a855f7;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.25);
+}
+
+.btn-overlay-toggle .telemetry-sparkle {
+  color: #a855f7;
+  font-size: 10px;
+}
+
+.btn-overlay-toggle.active .telemetry-sparkle {
+  color: #c084fc;
+  text-shadow: 0 0 6px #a855f7;
+}
+
+.badge-mini {
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 700;
+  background: #21262d;
+  color: #8b949e;
+}
+
+.btn-overlay-toggle.active .badge-mini {
+  background: #a855f7;
+  color: #ffffff;
+}
+
+.legend-diamond {
+  display: inline-block;
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+.modal-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.modal-section-header h4 {
+  margin: 0;
+}
+
+

@@ -114,9 +114,9 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1791014893.9049294,
-    "seen": 1791015001.1880746,
-    "ast_hash": "e4cb665f9842b4637a370bb8d567d581",
+    "mtime": 1791015911.2032683,
+    "seen": 1791016531.3431034,
+    "ast_hash": "19e14fc7ec703cc92961e8f47dd310b5",
     "semantic_hash": ""
   },
   "docs/architecture.md": {
@@ -210,9 +210,9 @@
     "semantic_hash": ""
   },
   "src/inferload/experiment.py": {
-    "mtime": 1790914717.7648697,
-    "seen": 1790915086.721031,
-    "ast_hash": "c21b73ed7d25985ef63f94f274dc971d",
+    "mtime": 1791015945.921348,
+    "seen": 1791016531.3430226,
+    "ast_hash": "bb5b28266acd349d2a36f1c4a10c1d62",
     "semantic_hash": ""
   },
   "src/inferload/experiment_config.py": {
@@ -342,21 +342,21 @@
     "semantic_hash": ""
   },
   "src/inferload/web.py": {
-    "mtime": 1791014914.684951,
-    "seen": 1791015001.1880188,
-    "ast_hash": "0cc12d17380e45e0d4194ced520991fe",
+    "mtime": 1791016046.198007,
+    "seen": 1791016531.3430483,
+    "ast_hash": "81cb1757748b56c088a4651fb3cd2276",
     "semantic_hash": ""
   },
   "src/inferload/web_static/app.js": {
-    "mtime": 1791012996.4842303,
-    "seen": 1791013059.3713145,
-    "ast_hash": "f8895bf13fc2efff6d0891ab0dec2143",
+    "mtime": 1791016450.108054,
+    "seen": 1791016531.3430512,
+    "ast_hash": "af87bd10977b8d06e31cccec23e4c2e6",
     "semantic_hash": ""
   },
   "tests/test_web.py": {
-    "mtime": 1790938650.8843296,
-    "seen": 1790940618.6857631,
-    "ast_hash": "2905a3dffa446c8663c2bffc67725b65",
+    "mtime": 1791016472.0332575,
+    "seen": 1791016531.3430912,
+    "ast_hash": "c28982a597015e679b4336d98a099a73",
     "semantic_hash": ""
   },
   "docs/web_ui.md": {
@@ -366,9 +366,9 @@
     "semantic_hash": ""
   },
   "src/inferload/web_static/index.html": {
-    "mtime": 1791014839.999055,
-    "seen": 1791015001.1881373,
-    "ast_hash": "8fb642b385662cd5610e3d676781b2a1",
+    "mtime": 1791016236.284529,
+    "seen": 1791016531.343173,
+    "ast_hash": "b577c2219b90aebcc6f0bfe3ea3b8dd0",
     "semantic_hash": ""
   },
   "api/index.py": {
@@ -399,6 +399,12 @@
     "mtime": 1791014753.761184,
     "seen": 1791015001.1881404,
     "ast_hash": "4703c31dc262ef368bea227791d2c0b5",
+    "semantic_hash": ""
+  },
+  "docs/enterprise_scaling_architecture.md": {
+    "mtime": 1791015890.2196896,
+    "seen": 1791016531.3431091,
+    "ast_hash": "4e646a6be461fa544528f63c72db15d2",
     "semantic_hash": ""
   }
 }

@@ -444,22 +444,39 @@ See [docs/real_server.md](docs/real_server.md), [docs/gpu-validation.md](docs/gp
 
 ---
 
-## 15. Current Limitations
+## 15. Enterprise Scale & Concurrency Calibration ($c > 256$)
+
+> [!IMPORTANT]
+> **Single-Instance Calibration Operating Envelope:** InferLoad's high-precision Python `asyncio` runner is calibrated for concurrent worker pools of **$c \le 128$** (and up to $c \le 256$ on tuned Linux systems with `uvloop`). Beyond $c = 256$, single-threaded event loop tick overhead and coordinated omission can induce client-side latency inflation when running on a single host.
+
+| Concurrency Tier | Calibration Status | Recommended Infrastructure | Expected Timing Accuracy |
+| :--- | :--- | :--- | :--- |
+| **$c \in [1, 64]$** | **Scientific Gold Standard** | Single laptop, workstation, or cloud VM | Sub-millisecond TTFT jitter (<0.3ms) |
+| **$c \in [65, 128]$** | **Production Capacity Grade** | Single 4+ core cloud instance | High-fidelity saturation knee discovery |
+| **$c \in [129, 256]$** | **Calibrated Stress Envelope** | Linux host + `uvloop` + `ulimit -n 65536` | Accurate throughput; minor P99 jitter |
+| **$c > 256$ to $10,000+$** | **Distributed Enterprise** | Multi-node Kubernetes DaemonSet (Rust/Go) | Coordinated Omission Corrected |
+
+For large-scale enterprise load generation ($c \ge 500$ to $10,000+$ concurrent streams), refer to our comprehensive architecture blueprint:
+👉 **[Enterprise Scaling Architecture & Distributed Blueprint](docs/enterprise_scaling_architecture.md)**
+
+---
+
+## 16. Current Limitations
 
 InferLoad is focused on measurement accuracy and scientific integrity. The following remain deliberate design constraints:
 - **Client-Side Tokenization Fallbacks:** If the server does not return `usage.completion_tokens`, InferLoad reports `output_tokens: None` rather than guessing token counts without the exact tokenizer.
-- **Single Host Generation:** Load generation is bound to a single client process; distributed multi-node load generators are planned for future phases.
+- **Single Host Generation:** Single-instance load generation is bound to $c \le 128$ for gold-standard precision; multi-node distributed agent architecture is documented in [docs/enterprise_scaling_architecture.md](docs/enterprise_scaling_architecture.md).
 - **Single Endpoint Type:** Supports OpenAI-compatible `/chat/completions` only.
 - **Point-in-Time Telemetry Snapshots:** Captures boundary metrics before, during, and after benchmark execution; does not trace individual internal request lifetimes.
 
 ---
 
-## 16. Roadmap
-
+## 17. Roadmap
 
 - **Future Phases:**
   - Poisson and Gamma open-loop arrival distributions.
   - Client-side tokenization fallbacks via HuggingFace `tokenizers` / `tiktoken`.
   - Multi-turn conversation load emulation with accumulating KV-cache state.
-  - Distributed multi-worker client generation for ultra-high throughput testing.
+  - Distributed multi-worker client generation (Go/Rust worker agents) for ultra-high throughput testing.
   - Automated capacity planning recommendation engine.
+

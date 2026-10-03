@@ -12,13 +12,23 @@ from datetime import datetime, timezone
 from enum import Enum
 import json
 import logging
+import hmac
 import os
 from pathlib import Path
 import time
 from typing import Any, AsyncGenerator
 import uuid
 
-from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, status
+from fastapi import (
+    FastAPI,
+    HTTPException,
+    BackgroundTasks,
+    Request,
+    WebSocket,
+    WebSocketDisconnect,
+    Depends,
+    status,
+)
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse, Response
 from fastapi.staticfiles import StaticFiles
@@ -120,9 +130,72 @@ class ExperimentJobState(BaseModel):
     logs: list[str] = Field(default_factory=list)
 
 
-# In-memory job repository
+# In-memory job repository & event subscriber channels
 _jobs: dict[str, ExperimentJobState] = {}
 _jobs_lock = asyncio.Lock()
+
+_job_subscribers: dict[str, set[asyncio.Queue]] = {}
+_job_subscribers_lock = asyncio.Lock()
+
+
+async def _register_subscriber(job_id: str) -> asyncio.Queue:
+    """Register an asynchronous queue to receive live real-time benchmark events."""
+    q: asyncio.Queue = asyncio.Queue(maxsize=200)
+    async with _job_subscribers_lock:
+        if job_id not in _job_subscribers:
+            _job_subscribers[job_id] = set()
+        _job_subscribers[job_id].add(q)
+    return q
+
+
+async def _unregister_subscriber(job_id: str, q: asyncio.Queue) -> None:
+    """Safely unregister an event subscriber queue."""
+    async with _job_subscribers_lock:
+        if job_id in _job_subscribers:
+            _job_subscribers[job_id].discard(q)
+            if not _job_subscribers[job_id]:
+                del _job_subscribers[job_id]
+
+
+async def _broadcast_job_event(job_id: str, event_data: dict[str, Any]) -> None:
+    """Broadcast an event payload to all active WebSocket and SSE subscribers for a job."""
+    async with _job_subscribers_lock:
+        subscribers = list(_job_subscribers.get(job_id, set()))
+    for q in subscribers:
+        try:
+            q.put_nowait(event_data)
+        except asyncio.QueueFull:
+            pass
+        except Exception:
+            pass
+
+
+# Authentication & RBAC helpers
+def get_auth_token_from_request(request: Request) -> str | None:
+    """Extract Bearer token or custom header from incoming HTTP request."""
+    auth_header = request.headers.get("Authorization")
+    if auth_header and auth_header.startswith("Bearer "):
+        return auth_header[7:].strip()
+    custom_header = request.headers.get("X-InferLoad-Token")
+    if custom_header:
+        return custom_header.strip()
+    return None
+
+
+def require_auth(request: Request) -> dict[str, Any]:
+    """Dependency that enforces API token authorization if INFERLOAD_AUTH_TOKEN is configured."""
+    configured_token = os.environ.get("INFERLOAD_AUTH_TOKEN", "").strip()
+    if not configured_token:
+        return {"auth_required": False, "authenticated": True, "role": "admin"}
+
+    provided = get_auth_token_from_request(request)
+    if not provided or not hmac.compare_digest(provided, configured_token):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Unauthorized: Valid InferLoad API Bearer token required. Provide Authorization: Bearer <token>.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return {"auth_required": True, "authenticated": True, "role": "admin"}
 
 
 def _resolve_artifacts_dir(job_id: str) -> Path | None:
@@ -188,11 +261,16 @@ async def _run_experiment_task(
     exp_config: ExperimentConfig,
     slo_config: SLOConfig,
 ) -> None:
-    """Execute the experiment runner in the background and update job state."""
+    """Execute the experiment runner in the background and stream progress in real time."""
     def _log(msg: str) -> None:
         t_str = datetime.now().strftime("%H:%M:%S")
+        formatted = f"[{t_str}] {msg}"
         if job_id in _jobs:
-            _jobs[job_id].logs.append(f"[{t_str}] {msg}")
+            _jobs[job_id].logs.append(formatted)
+        try:
+            asyncio.create_task(_broadcast_job_event(job_id, {"type": "log", "message": formatted}))
+        except Exception:
+            pass
 
     try:
         async with _jobs_lock:
@@ -203,15 +281,35 @@ async def _run_experiment_task(
             _log(f"Benchmark job started. Target: {exp_config.target.base_url} (Model: {exp_config.target.model})")
             _log(f"Concurrency sweep: {exp_config.sweep.concurrency}, Repetitions: {exp_config.sweep.repetitions}, Requests/point: {exp_config.sweep.requests_per_point}")
 
+        await _broadcast_job_event(job_id, {
+            "type": "status",
+            "status": "running",
+            "start_time": _jobs[job_id].start_time,
+            "target": exp_config.target.base_url,
+            "model": exp_config.target.model,
+        })
+
         runner = ExperimentRunner(exp_config)
 
         def on_progress(trial_id: str, current: int, total: int) -> None:
             if job_id in _jobs:
+                now_elapsed = round(time.time() - _jobs[job_id].start_time, 1)
                 _jobs[job_id].current_trial = trial_id
                 _jobs[job_id].progress_current = current
                 _jobs[job_id].progress_total = total
-                _jobs[job_id].elapsed_seconds = round(time.time() - _jobs[job_id].start_time, 1)
+                _jobs[job_id].elapsed_seconds = now_elapsed
                 _log(f"Running trial [{current}/{total}]: {trial_id}")
+                try:
+                    asyncio.create_task(_broadcast_job_event(job_id, {
+                        "type": "progress",
+                        "trial_id": trial_id,
+                        "current": current,
+                        "total": total,
+                        "elapsed_seconds": now_elapsed,
+                    }))
+                except Exception:
+                    pass
+
         exp_result, exp_dir = await runner.run(progress_callback=on_progress)
         _log("Trials complete. Evaluating SLO capacity compliance constraints...")
         capacity_res = analyze_capacity(exp_result, slo_config)
@@ -234,6 +332,11 @@ async def _run_experiment_task(
             job.plots = plot_names
             comp = capacity_res.highest_compliant_concurrency
             _log(f"Experiment completed. Highest compliant concurrency: {comp if comp is not None else 'None'}")
+
+        await _broadcast_job_event(job_id, {
+            "type": "completed",
+            "job": _jobs[job_id].model_dump(),
+        })
     except Exception as exc:
         logger.exception("Experiment job %s failed", job_id)
         _log(f"Experiment failed: {exc}")
@@ -242,6 +345,12 @@ async def _run_experiment_task(
             job.status = JobStatus.FAILED
             job.elapsed_seconds = round(time.time() - job.start_time, 1) if job.start_time > 0 else 0.0
             job.error = str(exc) or type(exc).__name__
+
+        await _broadcast_job_event(job_id, {
+            "type": "failed",
+            "error": str(exc),
+            "elapsed_seconds": _jobs[job_id].elapsed_seconds,
+        })
 
 
 def create_app() -> FastAPI:
@@ -294,9 +403,8 @@ def create_app() -> FastAPI:
             "ollama": ollama_status,
         }
 
-    @app.post("/api/validate")
-    async def validate_configuration(req: WebBenchmarkRequest) -> dict[str, Any]:
-        """Validate a benchmark configuration and check endpoint reachability."""
+    async def _do_validate_configuration(req: WebBenchmarkRequest) -> dict[str, Any]:
+        """Internal helper to validate benchmark configuration and endpoint reachability."""
         errors: list[str] = []
 
         if not req.base_url or not (req.base_url.startswith(("http://", "https://", "/"))):
@@ -351,9 +459,10 @@ def create_app() -> FastAPI:
                 endpoint_detail = f"Unreachable ({type(e).__name__})"
 
         try:
-            if req.base_url.startswith("/"):
-                req.base_url = effective_base_url
-            build_experiment_config(req)
+            req_copy = req.model_copy()
+            if req_copy.base_url.startswith("/"):
+                req_copy.base_url = effective_base_url
+            build_experiment_config(req_copy)
             return {
                 "valid": True,
                 "errors": [],
@@ -368,13 +477,77 @@ def create_app() -> FastAPI:
                 "endpoint_detail": endpoint_detail,
             }
 
+    @app.get("/api/auth/status")
+    async def get_auth_status(request: Request) -> dict[str, Any]:
+        """Return RBAC status and indicate whether an API token is required or verified."""
+        configured_token = os.environ.get("INFERLOAD_AUTH_TOKEN", "").strip()
+        if not configured_token:
+            return {
+                "auth_required": False,
+                "authenticated": True,
+                "mode": "permissive",
+                "message": "Open / Single-tenant mode (no server token configured).",
+            }
+        provided = get_auth_token_from_request(request)
+        is_valid = bool(provided and hmac.compare_digest(provided, configured_token))
+        return {
+            "auth_required": True,
+            "authenticated": is_valid,
+            "mode": "token",
+            "message": "Admin access verified via API token." if is_valid else "Token required for benchmark mutation endpoints.",
+        }
+
+    @app.post("/api/validate")
+    async def validate_configuration(
+        req: WebBenchmarkRequest,
+        _auth: dict[str, Any] = Depends(require_auth),
+    ) -> dict[str, Any]:
+        """Validate a benchmark configuration and check endpoint reachability."""
+        return await _do_validate_configuration(req)
+
+    @app.post("/api/telemetry/test")
+    async def test_telemetry_endpoint(
+        request: Request,
+        _auth: dict[str, Any] = Depends(require_auth),
+    ) -> dict[str, Any]:
+        """Test reachability and scrapability of a Prometheus telemetry endpoint."""
+        body = await request.json()
+        metrics_url = body.get("metrics_url", "").strip()
+        if not metrics_url or not metrics_url.startswith(("http://", "https://")):
+            return {"valid": False, "error": "Invalid metrics URL provided. Must start with http:// or https://"}
+
+        try:
+            t0 = time.perf_counter()
+            async with httpx.AsyncClient(timeout=3.0) as client:
+                resp = await client.get(metrics_url)
+                elapsed_ms = round((time.perf_counter() - t0) * 1000, 1)
+                if resp.status_code != 200:
+                    return {
+                        "valid": False,
+                        "status_code": resp.status_code,
+                        "error": f"Endpoint returned HTTP {resp.status_code} ({elapsed_ms}ms)",
+                    }
+                from inferload.server_telemetry import parse_prometheus_text, extract_telemetry_metrics
+                parsed = parse_prometheus_text(resp.text)
+                snapshot = extract_telemetry_metrics(parsed)
+                return {
+                    "valid": True,
+                    "status_code": 200,
+                    "latency_ms": elapsed_ms,
+                    "parsed_metrics_count": len(parsed),
+                    "snapshot": snapshot.model_dump(),
+                }
+        except Exception as exc:
+            return {"valid": False, "error": f"Failed to connect: {exc}"}
+
     @app.post("/api/experiments", status_code=status.HTTP_202_ACCEPTED)
     async def start_experiment(
         req: WebBenchmarkRequest,
         background_tasks: BackgroundTasks,
+        _auth: dict[str, Any] = Depends(require_auth),
     ) -> dict[str, Any]:
         """Validate config and start an experiment runner in the background."""
-        val_res = await validate_configuration(req)
+        val_res = await _do_validate_configuration(req)
         if not val_res["valid"]:
             raise HTTPException(status_code=400, detail={"errors": val_res["errors"]})
 
@@ -397,6 +570,75 @@ def create_app() -> FastAPI:
             "status": "pending",
             "message": "Benchmark experiment accepted and queued for execution.",
         }
+
+    @app.websocket("/ws/experiments/{job_id}")
+    async def experiment_websocket(websocket: WebSocket, job_id: str) -> None:
+        """Real-time bi-directional WebSocket connection for instant trial and log streaming."""
+        await websocket.accept()
+        if job_id not in _jobs:
+            await websocket.send_json({"type": "error", "message": f"Experiment job '{job_id}' not found."})
+            await websocket.close()
+            return
+
+        job = _jobs[job_id]
+        # Emit initial current state snapshot
+        await websocket.send_json({
+            "type": "initial_state",
+            "job": job.model_dump(),
+        })
+
+        if job.status in (JobStatus.COMPLETED, JobStatus.FAILED):
+            await websocket.close()
+            return
+
+        queue = await _register_subscriber(job_id)
+        try:
+            while True:
+                try:
+                    event = await asyncio.wait_for(queue.get(), timeout=15.0)
+                    await websocket.send_json(event)
+                    if event.get("type") in ("completed", "failed"):
+                        break
+                except asyncio.TimeoutError:
+                    # Keep-alive heartbeat
+                    await websocket.send_json({"type": "ping", "timestamp": time.time()})
+        except WebSocketDisconnect:
+            pass
+        except Exception as exc:
+            logger.debug("WebSocket client disconnected for %s: %s", job_id, exc)
+        finally:
+            await _unregister_subscriber(job_id, queue)
+            try:
+                await websocket.close()
+            except Exception:
+                pass
+
+    @app.get("/api/experiments/{job_id}/stream")
+    async def experiment_sse_stream(job_id: str) -> StreamingResponse:
+        """Server-Sent Events (SSE) streaming fallback for real-time benchmark updates."""
+        if job_id not in _jobs:
+            raise HTTPException(status_code=404, detail=f"Experiment job '{job_id}' not found.")
+
+        async def event_generator() -> AsyncGenerator[str, None]:
+            job = _jobs[job_id]
+            yield f"data: {json.dumps({'type': 'initial_state', 'job': job.model_dump()})}\n\n"
+            if job.status in (JobStatus.COMPLETED, JobStatus.FAILED):
+                return
+
+            queue = await _register_subscriber(job_id)
+            try:
+                while True:
+                    try:
+                        event = await asyncio.wait_for(queue.get(), timeout=15.0)
+                        yield f"data: {json.dumps(event)}\n\n"
+                        if event.get("type") in ("completed", "failed"):
+                            break
+                    except asyncio.TimeoutError:
+                        yield ": keepalive\n\n"
+            finally:
+                await _unregister_subscriber(job_id, queue)
+
+        return StreamingResponse(event_generator(), media_type="text/event-stream")
 
     @app.get("/api/experiments/{job_id}")
     async def get_experiment_status(job_id: str) -> dict[str, Any]:
