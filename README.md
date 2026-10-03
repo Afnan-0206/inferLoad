@@ -4,6 +4,9 @@
 
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Render](https://img.shields.io/badge/Render-Live%20Demo-46E3B7?logo=render&logoColor=white)](https://inferload.onrender.com/)
+
+🌐 **Live Production Console:** [https://inferload.onrender.com/](https://inferload.onrender.com/)
 
 For the complete architectural thesis and project vision, see [docs/project_overview.md](docs/project_overview.md).
 
@@ -208,7 +211,7 @@ Running at: http://127.0.0.1:8000
 Press Ctrl+C to stop.
 ```
 
-Open `http://127.0.0.1:8000` in any modern web browser.
+Open `http://127.0.0.1:8000` (or access the live deployment at [https://inferload.onrender.com/](https://inferload.onrender.com/)) in any modern web browser.
 
 ### Key Web UI Capabilities
 

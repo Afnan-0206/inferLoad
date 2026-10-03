@@ -23,7 +23,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "code",
       "norm_label": "capacityanalysisresult",
       "source_file": "src/inferload/capacity.py",
@@ -36,24 +36,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "code",
       "norm_label": "pointcompliance",
       "source_file": "src/inferload/capacity.py",
       "source_location": "L28"
-    },
-    {
-      "id": "src_inferload_capacity_sloconfig",
-      "label": "SLOConfig",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "sloconfig",
-      "source_file": "src/inferload/capacity.py",
-      "source_location": "L19"
     },
     {
       "id": "src_inferload_experiment_experimentresult",
@@ -62,7 +49,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "code",
       "norm_label": "experimentresult",
       "source_file": "src/inferload/experiment.py",
@@ -75,7 +62,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "code",
       "norm_label": "pointsummary",
       "source_file": "src/inferload/experiment.py",
@@ -108,13 +95,26 @@
       "source_location": "L14"
     },
     {
+      "id": "src_inferload_experiment_config_experimentconfig",
+      "label": "ExperimentConfig",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ExperimentConfig",
+      "file_type": "code",
+      "norm_label": "experimentconfig",
+      "source_file": "src/inferload/experiment_config.py",
+      "source_location": "L65"
+    },
+    {
       "id": "src_inferload_experiment_config_experimentmeta",
       "label": "ExperimentMeta",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "code",
       "norm_label": "experimentmeta",
       "source_file": "src/inferload/experiment_config.py",
@@ -127,7 +127,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "code",
       "norm_label": "experimentworkload",
       "source_file": "src/inferload/experiment_config.py",
@@ -140,24 +140,24 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "code",
       "norm_label": "sweepdefinition",
       "source_file": "src/inferload/experiment_config.py",
       "source_location": "L21"
     },
     {
-      "id": "src_inferload_web_webbenchmarkrequest",
-      "label": "WebBenchmarkRequest",
+      "id": "src_inferload_experiment_sweeppointspec",
+      "label": "SweepPointSpec",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "code",
-      "norm_label": "webbenchmarkrequest",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L51"
+      "norm_label": "sweeppointspec",
+      "source_file": "src/inferload/experiment.py",
+      "source_location": "L33"
     },
     {
       "id": "src_inferload_server_telemetry_servertelemetrysnapshot",
@@ -166,24 +166,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "code",
       "norm_label": "servertelemetrysnapshot",
       "source_file": "src/inferload/server_telemetry.py",
       "source_location": "L12"
-    },
-    {
-      "id": "src_inferload_statistics_samplestatistics",
-      "label": "SampleStatistics",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "code",
-      "norm_label": "samplestatistics",
-      "source_file": "src/inferload/statistics.py",
-      "source_location": "L56"
     },
     {
       "id": "src_inferload_config_workloadconfig",
@@ -238,6 +225,19 @@
       "source_location": "L9"
     },
     {
+      "id": "src_inferload_config_arrivalconfig",
+      "label": "ArrivalConfig",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 24,
+      "community_name": ".run",
+      "file_type": "code",
+      "norm_label": "arrivalconfig",
+      "source_file": "src/inferload/config.py",
+      "source_location": "L87"
+    },
+    {
       "id": "src_inferload_experiment_experimentrunner",
       "label": "ExperimentRunner",
       "_callable": true,
@@ -249,19 +249,6 @@
       "norm_label": "experimentrunner",
       "source_file": "src/inferload/experiment.py",
       "source_location": "L170"
-    },
-    {
-      "id": "src_inferload_server_telemetry_experimenttelemetry",
-      "label": "ExperimentTelemetry",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 24,
-      "community_name": ".run",
-      "file_type": "code",
-      "norm_label": "experimenttelemetry",
-      "source_file": "src/inferload/server_telemetry.py",
-      "source_location": "L29"
     },
     {
       "id": "src_inferload_config_targetconfig",
@@ -283,7 +270,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 28,
-      "community_name": "experiment_config.py",
+      "community_name": "config.py",
       "file_type": "code",
       "norm_label": "executionconfig",
       "source_file": "src/inferload/config.py",
@@ -296,7 +283,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 28,
-      "community_name": "experiment_config.py",
+      "community_name": "config.py",
       "file_type": "code",
       "norm_label": "exportconfig",
       "source_file": "src/inferload/config.py",
@@ -309,24 +296,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 28,
-      "community_name": "experiment_config.py",
+      "community_name": "config.py",
       "file_type": "code",
       "norm_label": "telemetryconfig",
       "source_file": "src/inferload/config.py",
       "source_location": "L104"
-    },
-    {
-      "id": "src_inferload_experiment_config_experimentconfig",
-      "label": "ExperimentConfig",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "experiment_config.py",
-      "file_type": "code",
-      "norm_label": "experimentconfig",
-      "source_file": "src/inferload/experiment_config.py",
-      "source_location": "L65"
     },
     {
       "id": "src_inferload_web_experimentjobstate",
@@ -459,30 +433,56 @@
       "source_location": "L113"
     },
     {
-      "id": "src_inferload_experiment_sweeppointspec",
-      "label": "SweepPointSpec",
+      "id": "src_inferload_capacity_sloconfig",
+      "label": "SLOConfig",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 40,
-      "community_name": "test_sweep_grid_expansion",
+      "community_name": "test_capacity.py",
       "file_type": "code",
-      "norm_label": "sweeppointspec",
-      "source_file": "src/inferload/experiment.py",
-      "source_location": "L33"
+      "norm_label": "sloconfig",
+      "source_file": "src/inferload/capacity.py",
+      "source_location": "L19"
     },
     {
-      "id": "src_inferload_config_arrivalconfig",
-      "label": "ArrivalConfig",
+      "id": "src_inferload_web_webbenchmarkrequest",
+      "label": "WebBenchmarkRequest",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 44,
+      "community_name": "web.py",
+      "file_type": "code",
+      "norm_label": "webbenchmarkrequest",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L51"
+    },
+    {
+      "id": "src_inferload_server_telemetry_experimenttelemetry",
+      "label": "ExperimentTelemetry",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 45,
-      "community_name": "ArrivalConfig",
+      "community_name": "ExperimentTelemetry",
       "file_type": "code",
-      "norm_label": "arrivalconfig",
-      "source_file": "src/inferload/config.py",
-      "source_location": "L87"
+      "norm_label": "experimenttelemetry",
+      "source_file": "src/inferload/server_telemetry.py",
+      "source_location": "L29"
+    },
+    {
+      "id": "src_inferload_statistics_samplestatistics",
+      "label": "SampleStatistics",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "SampleStatistics",
+      "file_type": "code",
+      "norm_label": "samplestatistics",
+      "source_file": "src/inferload/statistics.py",
+      "source_location": "L56"
     },
     {
       "id": "src_inferload_compare_benchmarkcomparison",
@@ -517,7 +517,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": "localmockserver",
       "source_file": "tests/integration/mock_server.py",
@@ -530,7 +530,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": "mockopenaihandler",
       "source_file": "tests/integration/mock_server.py",
@@ -543,7 +543,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": "mockserverstats",
       "source_file": "tests/integration/mock_server.py",
@@ -634,24 +634,12 @@
       "source_location": "L63"
     },
     {
-      "id": "src_inferload_capacity_analyze_capacity",
-      "label": "analyze_capacity()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "analyze_capacity()",
-      "source_file": "src/inferload/capacity.py",
-      "source_location": "L76"
-    },
-    {
       "id": "src_inferload_capacity_format_capacity_report",
       "label": "format_capacity_report()",
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "code",
       "norm_label": "format_capacity_report()",
       "source_file": "src/inferload/capacity.py",
@@ -663,7 +651,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "code",
       "norm_label": "load_slo_config()",
       "source_file": "src/inferload/capacity.py",
@@ -675,359 +663,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "code",
       "norm_label": "capacity()",
       "source_file": "src/inferload/cli.py",
       "source_location": "L208"
-    },
-    {
-      "id": "src_inferload_web_create_app",
-      "label": "create_app()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "create_app()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L247"
-    },
-    {
-      "id": "src_inferload_web_create_app_get_experiment_artifact",
-      "label": "get_experiment_artifact()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "get_experiment_artifact()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L434"
-    },
-    {
-      "id": "src_inferload_web_create_app_get_experiment_logs",
-      "label": "get_experiment_logs()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "get_experiment_logs()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L404"
-    },
-    {
-      "id": "src_inferload_web_create_app_get_experiment_report",
-      "label": "get_experiment_report()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "get_experiment_report()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L420"
-    },
-    {
-      "id": "src_inferload_web_create_app_get_experiment_status",
-      "label": "get_experiment_status()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "get_experiment_status()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L392"
-    },
-    {
-      "id": "src_inferload_web_create_app_get_historical_experiment",
-      "label": "get_historical_experiment()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "get_historical_experiment()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L513"
-    },
-    {
-      "id": "src_inferload_web_create_app_list_experiment_history",
-      "label": "list_experiment_history()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "list_experiment_history()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L470"
-    },
-    {
-      "id": "src_inferload_web_create_app_mock_chat_completions",
-      "label": "mock_chat_completions()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "mock_chat_completions()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L561"
-    },
-    {
-      "id": "src_inferload_web_create_app_mock_chat_completions_generate_mock_stream",
-      "label": "generate_mock_stream()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "generate_mock_stream()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L584"
-    },
-    {
-      "id": "src_inferload_web_create_app_mock_models",
-      "label": "mock_models()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "mock_models()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L550"
-    },
-    {
-      "id": "src_inferload_web_create_app_serve_index",
-      "label": "serve_index()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "serve_index()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L626"
-    },
-    {
-      "id": "src_inferload_web_create_app_start_experiment",
-      "label": "start_experiment()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "start_experiment()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L362"
-    },
-    {
-      "id": "src_inferload_web_create_app_validate_configuration",
-      "label": "validate_configuration()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "validate_configuration()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L288"
-    },
-    {
-      "id": "src_inferload_web_resolve_artifacts_dir",
-      "label": "_resolve_artifacts_dir()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "_resolve_artifacts_dir()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L128"
-    },
-    {
-      "id": "src_inferload_web_run_experiment_task",
-      "label": "_run_experiment_task()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "_run_experiment_task()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L186"
-    },
-    {
-      "id": "src_inferload_web_run_experiment_task_log",
-      "label": "_log()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "_log()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L192"
-    },
-    {
-      "id": "src_inferload_web_run_experiment_task_on_progress",
-      "label": "on_progress()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "on_progress()",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L208"
-    },
-    {
-      "id": "tests_test_capacity_dummy_stat",
-      "label": "_dummy_stat()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "_dummy_stat()",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L24"
-    },
-    {
-      "id": "tests_test_capacity_make_dummy_experiment",
-      "label": "_make_dummy_experiment()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "_make_dummy_experiment()",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L61"
-    },
-    {
-      "id": "tests_test_capacity_make_dummy_point",
-      "label": "_make_dummy_point()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "_make_dummy_point()",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L37"
-    },
-    {
-      "id": "tests_test_capacity_test_all_slos_satisfied",
-      "label": "test_all_slos_satisfied()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "test_all_slos_satisfied()",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L96"
-    },
-    {
-      "id": "tests_test_capacity_test_cli_capacity_command",
-      "label": "test_cli_capacity_command()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "test_cli_capacity_command()",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L222"
-    },
-    {
-      "id": "tests_test_capacity_test_error_rate_violation",
-      "label": "test_error_rate_violation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "test_error_rate_violation()",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L132"
-    },
-    {
-      "id": "tests_test_capacity_test_format_capacity_report",
-      "label": "test_format_capacity_report()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "test_format_capacity_report()",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L205"
-    },
-    {
-      "id": "tests_test_capacity_test_incomplete_or_missing_metric_values",
-      "label": "test_incomplete_or_missing_metric_values()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "test_incomplete_or_missing_metric_values()",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L192"
-    },
-    {
-      "id": "tests_test_capacity_test_multiple_compliant_points_selects_highest",
-      "label": "test_multiple_compliant_points_selects_highest()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "test_multiple_compliant_points_selects_highest()",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L175"
-    },
-    {
-      "id": "tests_test_capacity_test_no_compliant_point",
-      "label": "test_no_compliant_point()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "test_no_compliant_point()",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L160"
-    },
-    {
-      "id": "tests_test_capacity_test_throughput_violation",
-      "label": "test_throughput_violation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "test_throughput_violation()",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L146"
-    },
-    {
-      "id": "tests_test_capacity_test_ttft_violation",
-      "label": "test_ttft_violation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "test_ttft_violation()",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L117"
     },
     {
       "id": "src_inferload_exporters_export_csv",
@@ -1179,7 +819,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "code",
       "norm_label": ".ensure_prompts_exist()",
       "source_file": "src/inferload/experiment_config.py",
@@ -1191,11 +831,83 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "code",
       "norm_label": ".validate_sweep()",
       "source_file": "src/inferload/experiment_config.py",
       "source_location": "L32"
+    },
+    {
+      "id": "src_inferload_experiment_config_validate_benchmark_quality",
+      "label": "validate_benchmark_quality()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ExperimentConfig",
+      "file_type": "code",
+      "norm_label": "validate_benchmark_quality()",
+      "source_file": "src/inferload/experiment_config.py",
+      "source_location": "L79"
+    },
+    {
+      "id": "src_inferload_experiment_expand_sweep_grid",
+      "label": "expand_sweep_grid()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ExperimentConfig",
+      "file_type": "code",
+      "norm_label": "expand_sweep_grid()",
+      "source_file": "src/inferload/experiment.py",
+      "source_location": "L126"
+    },
+    {
+      "id": "src_inferload_experiment_experimentrunner_init",
+      "label": ".__init__()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ExperimentConfig",
+      "file_type": "code",
+      "norm_label": ".__init__()",
+      "source_file": "src/inferload/experiment.py",
+      "source_location": "L173"
+    },
+    {
+      "id": "src_inferload_experiment_sweeppointspec_init",
+      "label": ".__init__()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ExperimentConfig",
+      "file_type": "code",
+      "norm_label": ".__init__()",
+      "source_file": "src/inferload/experiment.py",
+      "source_location": "L36"
+    },
+    {
+      "id": "src_inferload_experiment_sweeppointspec_point_key",
+      "label": ".point_key()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ExperimentConfig",
+      "file_type": "code",
+      "norm_label": ".point_key()",
+      "source_file": "src/inferload/experiment.py",
+      "source_location": "L55"
+    },
+    {
+      "id": "src_inferload_experiment_sweeppointspec_run_id",
+      "label": ".run_id()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ExperimentConfig",
+      "file_type": "code",
+      "norm_label": ".run_id()",
+      "source_file": "src/inferload/experiment.py",
+      "source_location": "L61"
     },
     {
       "id": "src_inferload_web_build_experiment_config",
@@ -1203,11 +915,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "code",
       "norm_label": "build_experiment_config()",
       "source_file": "src/inferload/web.py",
       "source_location": "L143"
+    },
+    {
+      "id": "tests_test_capacity_test_benchmark_quality_validation_rules",
+      "label": "test_benchmark_quality_validation_rules()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ExperimentConfig",
+      "file_type": "code",
+      "norm_label": "test_benchmark_quality_validation_rules()",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L244"
     },
     {
       "id": "tests_test_experiment_test_experiment_end_to_end_mock_sweep",
@@ -1215,23 +939,35 @@
       "_callable": true,
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "code",
       "norm_label": "test_experiment_end_to_end_mock_sweep()",
       "source_file": "tests/test_experiment.py",
       "source_location": "L159"
     },
     {
-      "id": "src_inferload_server_telemetry_build_non_causal_correlation_notes",
-      "label": "build_non_causal_correlation_notes()",
+      "id": "tests_test_experiment_test_sweep_grid_expansion",
+      "label": "test_sweep_grid_expansion()",
       "_callable": true,
       "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
+      "community": 18,
+      "community_name": "ExperimentConfig",
       "file_type": "code",
-      "norm_label": "build_non_causal_correlation_notes()",
-      "source_file": "src/inferload/server_telemetry.py",
-      "source_location": "L237"
+      "norm_label": "test_sweep_grid_expansion()",
+      "source_file": "tests/test_experiment.py",
+      "source_location": "L25"
+    },
+    {
+      "id": "tests_test_server_telemetry_test_optional_telemetry_configuration_and_backward_compatibility",
+      "label": "test_optional_telemetry_configuration_and_backward_compatibility()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ExperimentConfig",
+      "file_type": "code",
+      "norm_label": "test_optional_telemetry_configuration_and_backward_compatibility()",
+      "source_file": "tests/test_server_telemetry.py",
+      "source_location": "L139"
     },
     {
       "id": "src_inferload_server_telemetry_extract_telemetry_metrics",
@@ -1239,7 +975,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "code",
       "norm_label": "extract_telemetry_metrics()",
       "source_file": "src/inferload/server_telemetry.py",
@@ -1251,35 +987,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "code",
       "norm_label": "parse_prometheus_text()",
       "source_file": "src/inferload/server_telemetry.py",
       "source_location": "L43"
-    },
-    {
-      "id": "src_inferload_server_telemetry_render_telemetry_correlation_markdown",
-      "label": "render_telemetry_correlation_markdown()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "code",
-      "norm_label": "render_telemetry_correlation_markdown()",
-      "source_file": "src/inferload/server_telemetry.py",
-      "source_location": "L300"
-    },
-    {
-      "id": "src_inferload_server_telemetry_render_telemetry_correlation_markdown_fmt_val",
-      "label": "_fmt_val()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "code",
-      "norm_label": "_fmt_val()",
-      "source_file": "src/inferload/server_telemetry.py",
-      "source_location": "L367"
     },
     {
       "id": "src_inferload_server_telemetry_servertelemetrycollector_capture_snapshot",
@@ -1287,83 +999,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "code",
       "norm_label": ".capture_snapshot()",
       "source_file": "src/inferload/server_telemetry.py",
       "source_location": "L197"
-    },
-    {
-      "id": "src_inferload_statistics_compute_sample_statistics",
-      "label": "compute_sample_statistics()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "code",
-      "norm_label": "compute_sample_statistics()",
-      "source_file": "src/inferload/statistics.py",
-      "source_location": "L79"
-    },
-    {
-      "id": "src_inferload_statistics_get_student_t_critical",
-      "label": "get_student_t_critical()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "code",
-      "norm_label": "get_student_t_critical()",
-      "source_file": "src/inferload/statistics.py",
-      "source_location": "L45"
-    },
-    {
-      "id": "src_inferload_statistics_samplestatistics_maximum",
-      "label": ".maximum()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "code",
-      "norm_label": ".maximum()",
-      "source_file": "src/inferload/statistics.py",
-      "source_location": "L75"
-    },
-    {
-      "id": "src_inferload_statistics_samplestatistics_minimum",
-      "label": ".minimum()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "code",
-      "norm_label": ".minimum()",
-      "source_file": "src/inferload/statistics.py",
-      "source_location": "L71"
-    },
-    {
-      "id": "tests_test_experiment_test_sample_statistics_and_confidence_intervals",
-      "label": "test_sample_statistics_and_confidence_intervals()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "code",
-      "norm_label": "test_sample_statistics_and_confidence_intervals()",
-      "source_file": "tests/test_experiment.py",
-      "source_location": "L54"
-    },
-    {
-      "id": "tests_test_server_telemetry_build_mock_point_summary",
-      "label": "_build_mock_point_summary()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "code",
-      "norm_label": "_build_mock_point_summary()",
-      "source_file": "tests/test_server_telemetry.py",
-      "source_location": "L180"
     },
     {
       "id": "tests_test_server_telemetry_test_parse_prometheus_malformed_response",
@@ -1371,7 +1011,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "code",
       "norm_label": "test_parse_prometheus_malformed_response()",
       "source_file": "tests/test_server_telemetry.py",
@@ -1383,35 +1023,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "code",
       "norm_label": "test_parse_prometheus_text_known_and_histogram()",
       "source_file": "tests/test_server_telemetry.py",
       "source_location": "L31"
-    },
-    {
-      "id": "tests_test_server_telemetry_test_report_rendering_with_telemetry_and_non_causal_wording",
-      "label": "test_report_rendering_with_telemetry_and_non_causal_wording()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "code",
-      "norm_label": "test_report_rendering_with_telemetry_and_non_causal_wording()",
-      "source_file": "tests/test_server_telemetry.py",
-      "source_location": "L212"
-    },
-    {
-      "id": "tests_test_server_telemetry_test_report_rendering_without_telemetry",
-      "label": "test_report_rendering_without_telemetry()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "code",
-      "norm_label": "test_report_rendering_without_telemetry()",
-      "source_file": "tests/test_server_telemetry.py",
-      "source_location": "L201"
     },
     {
       "id": "tests_test_server_telemetry_test_unknown_and_missing_metrics",
@@ -1419,7 +1035,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "code",
       "norm_label": "test_unknown_and_missing_metrics()",
       "source_file": "tests/test_server_telemetry.py",
@@ -1699,7 +1315,7 @@
       "file_type": "code",
       "norm_label": "appendlog()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L484"
+      "source_location": "L485"
     },
     {
       "id": "src_inferload_web_static_app_attachpromptdelete",
@@ -1711,7 +1327,7 @@
       "file_type": "code",
       "norm_label": "attachpromptdelete()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L255"
+      "source_location": "L256"
     },
     {
       "id": "src_inferload_web_static_app_buildpayload",
@@ -1723,7 +1339,19 @@
       "file_type": "code",
       "norm_label": "buildpayload()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L275"
+      "source_location": "L276"
+    },
+    {
+      "id": "src_inferload_web_static_app_downloadjsonfile",
+      "label": "downloadJsonFile()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 20,
+      "community_name": "app.js",
+      "file_type": "code",
+      "norm_label": "downloadjsonfile()",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L2025"
     },
     {
       "id": "src_inferload_web_static_app_drawinteractivechart",
@@ -1735,7 +1363,7 @@
       "file_type": "code",
       "norm_label": "drawinteractivechart()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L862"
+      "source_location": "L921"
     },
     {
       "id": "src_inferload_web_static_app_extractnormalizedpoints",
@@ -1747,7 +1375,7 @@
       "file_type": "code",
       "norm_label": "extractnormalizedpoints()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L599"
+      "source_location": "L600"
     },
     {
       "id": "src_inferload_web_static_app_getpromptslist",
@@ -1759,7 +1387,7 @@
       "file_type": "code",
       "norm_label": "getpromptslist()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L267"
+      "source_location": "L268"
     },
     {
       "id": "src_inferload_web_static_app_handlebenchmarksubmit",
@@ -1771,7 +1399,7 @@
       "file_type": "code",
       "norm_label": "handlebenchmarksubmit()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L366"
+      "source_location": "L367"
     },
     {
       "id": "src_inferload_web_static_app_handlepreflightvalidation",
@@ -1783,7 +1411,7 @@
       "file_type": "code",
       "norm_label": "handlepreflightvalidation()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L322"
+      "source_location": "L323"
     },
     {
       "id": "src_inferload_web_static_app_initcharttoggles",
@@ -1795,7 +1423,7 @@
       "file_type": "code",
       "norm_label": "initcharttoggles()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1167"
+      "source_location": "L1226"
     },
     {
       "id": "src_inferload_web_static_app_initdiagnostics",
@@ -1807,7 +1435,7 @@
       "file_type": "code",
       "norm_label": "initdiagnostics()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1583"
+      "source_location": "L1761"
     },
     {
       "id": "src_inferload_web_static_app_initformcontrols",
@@ -1819,7 +1447,7 @@
       "file_type": "code",
       "norm_label": "initformcontrols()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L144"
+      "source_location": "L145"
     },
     {
       "id": "src_inferload_web_static_app_initgraphfilters",
@@ -1831,7 +1459,7 @@
       "file_type": "code",
       "norm_label": "initgraphfilters()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1277"
+      "source_location": "L1348"
     },
     {
       "id": "src_inferload_web_static_app_inithealth",
@@ -1843,7 +1471,7 @@
       "file_type": "code",
       "norm_label": "inithealth()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1517"
+      "source_location": "L1695"
     },
     {
       "id": "src_inferload_web_static_app_inithistorycontrols",
@@ -1855,7 +1483,19 @@
       "file_type": "code",
       "norm_label": "inithistorycontrols()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1340"
+      "source_location": "L1411"
+    },
+    {
+      "id": "src_inferload_web_static_app_initmodals",
+      "label": "initModals()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 20,
+      "community_name": "app.js",
+      "file_type": "code",
+      "norm_label": "initmodals()",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L1795"
     },
     {
       "id": "src_inferload_web_static_app_initnavrouter",
@@ -1867,7 +1507,7 @@
       "file_type": "code",
       "norm_label": "initnavrouter()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L51"
+      "source_location": "L52"
     },
     {
       "id": "src_inferload_web_static_app_initpresets",
@@ -1879,7 +1519,7 @@
       "file_type": "code",
       "norm_label": "initpresets()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L90"
+      "source_location": "L91"
     },
     {
       "id": "src_inferload_web_static_app_initpresets_setactivepreset",
@@ -1891,7 +1531,7 @@
       "file_type": "code",
       "norm_label": "setactivepreset()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L95"
+      "source_location": "L96"
     },
     {
       "id": "src_inferload_web_static_app_initpromptsmanager",
@@ -1903,7 +1543,7 @@
       "file_type": "code",
       "norm_label": "initpromptsmanager()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L235"
+      "source_location": "L236"
     },
     {
       "id": "src_inferload_web_static_app_initreportsviewer",
@@ -1915,7 +1555,7 @@
       "file_type": "code",
       "norm_label": "initreportsviewer()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1458"
+      "source_location": "L1636"
     },
     {
       "id": "src_inferload_web_static_app_initsweepchips",
@@ -1927,7 +1567,19 @@
       "file_type": "code",
       "norm_label": "initsweepchips()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1211"
+      "source_location": "L1268"
+    },
+    {
+      "id": "src_inferload_web_static_app_initsweepchips_syncchipsfrominput",
+      "label": "syncChipsFromInput()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 20,
+      "community_name": "app.js",
+      "file_type": "code",
+      "norm_label": "syncchipsfrominput()",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L1275"
     },
     {
       "id": "src_inferload_web_static_app_initterminalactions",
@@ -1939,7 +1591,7 @@
       "file_type": "code",
       "norm_label": "initterminalactions()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1316"
+      "source_location": "L1387"
     },
     {
       "id": "src_inferload_web_static_app_inspectexperiment",
@@ -1951,7 +1603,19 @@
       "file_type": "code",
       "norm_label": "inspectexperiment()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1432"
+      "source_location": "L1610"
+    },
+    {
+      "id": "src_inferload_web_static_app_loadbaselinemockupdata",
+      "label": "loadBaselineMockupData()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 20,
+      "community_name": "app.js",
+      "file_type": "code",
+      "norm_label": "loadbaselinemockupdata()",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L1460"
     },
     {
       "id": "src_inferload_web_static_app_loadfullhistoryarchive",
@@ -1963,7 +1627,7 @@
       "file_type": "code",
       "norm_label": "loadfullhistoryarchive()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1373"
+      "source_location": "L1551"
     },
     {
       "id": "src_inferload_web_static_app_loadrecenthistory",
@@ -1975,7 +1639,7 @@
       "file_type": "code",
       "norm_label": "loadrecenthistory()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1363"
+      "source_location": "L1434"
     },
     {
       "id": "src_inferload_web_static_app_loadreportcontent",
@@ -1987,7 +1651,7 @@
       "file_type": "code",
       "norm_label": "loadreportcontent()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1496"
+      "source_location": "L1674"
     },
     {
       "id": "src_inferload_web_static_app_onbenchmarkfailure",
@@ -1999,7 +1663,7 @@
       "file_type": "code",
       "norm_label": "onbenchmarkfailure()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L564"
+      "source_location": "L565"
     },
     {
       "id": "src_inferload_web_static_app_onbenchmarksuccess",
@@ -2011,7 +1675,7 @@
       "file_type": "code",
       "norm_label": "onbenchmarksuccess()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L539"
+      "source_location": "L540"
     },
     {
       "id": "src_inferload_web_static_app_polljobstatus",
@@ -2023,7 +1687,7 @@
       "file_type": "code",
       "norm_label": "polljobstatus()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L420"
+      "source_location": "L421"
     },
     {
       "id": "src_inferload_web_static_app_polllogs",
@@ -2035,7 +1699,7 @@
       "file_type": "code",
       "norm_label": "polllogs()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L469"
+      "source_location": "L470"
     },
     {
       "id": "src_inferload_web_static_app_populatereportsselector",
@@ -2047,7 +1711,7 @@
       "file_type": "code",
       "norm_label": "populatereportsselector()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1478"
+      "source_location": "L1656"
     },
     {
       "id": "src_inferload_web_static_app_populatetrialselector",
@@ -2059,7 +1723,7 @@
       "file_type": "code",
       "norm_label": "populatetrialselector()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1232"
+      "source_location": "L1303"
     },
     {
       "id": "src_inferload_web_static_app_readreportdirectly",
@@ -2071,7 +1735,7 @@
       "file_type": "code",
       "norm_label": "readreportdirectly()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1446"
+      "source_location": "L1624"
     },
     {
       "id": "src_inferload_web_static_app_renderallvectorcharts",
@@ -2083,7 +1747,7 @@
       "file_type": "code",
       "norm_label": "renderallvectorcharts()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L812"
+      "source_location": "L871"
     },
     {
       "id": "src_inferload_web_static_app_renderfullanalyticsview",
@@ -2095,7 +1759,7 @@
       "file_type": "code",
       "norm_label": "renderfullanalyticsview()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L667"
+      "source_location": "L668"
     },
     {
       "id": "src_inferload_web_static_app_renderhistorytable",
@@ -2107,7 +1771,7 @@
       "file_type": "code",
       "norm_label": "renderhistorytable()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1389"
+      "source_location": "L1567"
     },
     {
       "id": "src_inferload_web_static_app_rendermodeldropdown",
@@ -2119,7 +1783,7 @@
       "file_type": "code",
       "norm_label": "rendermodeldropdown()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L215"
+      "source_location": "L216"
     },
     {
       "id": "src_inferload_web_static_app_renderstudiosummarydrawer",
@@ -2131,7 +1795,7 @@
       "file_type": "code",
       "norm_label": "renderstudiosummarydrawer()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L577"
+      "source_location": "L578"
     },
     {
       "id": "src_inferload_web_static_app_resetexecutiontelemetry",
@@ -2143,7 +1807,7 @@
       "file_type": "code",
       "norm_label": "resetexecutiontelemetry()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L527"
+      "source_location": "L528"
     },
     {
       "id": "src_inferload_web_static_app_setupcharthover",
@@ -2155,7 +1819,7 @@
       "file_type": "code",
       "norm_label": "setupcharthover()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1081"
+      "source_location": "L1140"
     },
     {
       "id": "src_inferload_web_static_app_showtoast",
@@ -2167,7 +1831,7 @@
       "file_type": "code",
       "norm_label": "showtoast()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L40"
+      "source_location": "L41"
     },
     {
       "id": "src_inferload_web_static_app_starttimer",
@@ -2179,7 +1843,7 @@
       "file_type": "code",
       "norm_label": "starttimer()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L510"
+      "source_location": "L511"
     },
     {
       "id": "src_inferload_web_static_app_stoptimer",
@@ -2191,7 +1855,7 @@
       "file_type": "code",
       "norm_label": "stoptimer()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L523"
+      "source_location": "L524"
     },
     {
       "id": "src_inferload_web_static_app_switchview",
@@ -2203,7 +1867,7 @@
       "file_type": "code",
       "norm_label": "switchview()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L68"
+      "source_location": "L69"
     },
     {
       "id": "src_inferload_web_static_app_updateexecutionhud",
@@ -2215,7 +1879,7 @@
       "file_type": "code",
       "norm_label": "updateexecutionhud()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L443"
+      "source_location": "L444"
     },
     {
       "id": "src_inferload_web_static_app_updatestepper",
@@ -2227,7 +1891,7 @@
       "file_type": "code",
       "norm_label": "updatestepper()",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L491"
+      "source_location": "L492"
     },
     {
       "id": "src_inferload_analysis_detect_saturation_regions",
@@ -2254,16 +1918,16 @@
       "source_location": "L84"
     },
     {
-      "id": "src_inferload_experiment_experimentrunner_init",
-      "label": ".__init__()",
+      "id": "src_inferload_config_arrivalconfig_validate_arrival",
+      "label": ".validate_arrival()",
       "_callable": true,
       "_origin": "ast",
       "community": 24,
       "community_name": ".run",
       "file_type": "code",
-      "norm_label": ".__init__()",
-      "source_file": "src/inferload/experiment.py",
-      "source_location": "L173"
+      "norm_label": ".validate_arrival()",
+      "source_file": "src/inferload/config.py",
+      "source_location": "L94"
     },
     {
       "id": "src_inferload_experiment_experimentrunner_render_report_markdown",
@@ -2302,16 +1966,16 @@
       "source_location": "L418"
     },
     {
-      "id": "src_inferload_plots_generate_experiment_plots",
-      "label": "generate_experiment_plots()",
+      "id": "src_inferload_config_exportconfig_validate_formats",
+      "label": ".validate_formats()",
       "_callable": true,
       "_origin": "ast",
-      "community": 24,
-      "community_name": ".run",
+      "community": 27,
+      "community_name": "TargetConfig",
       "file_type": "code",
-      "norm_label": "generate_experiment_plots()",
-      "source_file": "src/inferload/plots.py",
-      "source_location": "L16"
+      "norm_label": ".validate_formats()",
+      "source_file": "src/inferload/config.py",
+      "source_location": "L78"
     },
     {
       "id": "src_inferload_config_targetconfig_chat_completions_url",
@@ -2324,6 +1988,30 @@
       "norm_label": ".chat_completions_url()",
       "source_file": "src/inferload/config.py",
       "source_location": "L34"
+    },
+    {
+      "id": "src_inferload_config_targetconfig_validate_base_url",
+      "label": ".validate_base_url()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 27,
+      "community_name": "TargetConfig",
+      "file_type": "code",
+      "norm_label": ".validate_base_url()",
+      "source_file": "src/inferload/config.py",
+      "source_location": "L24"
+    },
+    {
+      "id": "src_inferload_config_workloadconfig_validate_prompts",
+      "label": ".validate_prompts()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 27,
+      "community_name": "TargetConfig",
+      "file_type": "code",
+      "norm_label": ".validate_prompts()",
+      "source_file": "src/inferload/config.py",
+      "source_location": "L55"
     },
     {
       "id": "tests_test_config_test_target_config_already_has_chat_completions",
@@ -2384,54 +2072,6 @@
       "norm_label": "test_workload_config_validation()",
       "source_file": "tests/test_config.py",
       "source_location": "L55"
-    },
-    {
-      "id": "tests_test_experiment_test_open_loop_constant_rate_scheduling",
-      "label": "test_open_loop_constant_rate_scheduling()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 27,
-      "community_name": "TargetConfig",
-      "file_type": "code",
-      "norm_label": "test_open_loop_constant_rate_scheduling()",
-      "source_file": "tests/test_experiment.py",
-      "source_location": "L115"
-    },
-    {
-      "id": "tests_test_experiment_test_open_loop_constant_rate_scheduling_mock_handler",
-      "label": "mock_handler()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 27,
-      "community_name": "TargetConfig",
-      "file_type": "code",
-      "norm_label": "mock_handler()",
-      "source_file": "tests/test_experiment.py",
-      "source_location": "L119"
-    },
-    {
-      "id": "src_inferload_experiment_config_validate_benchmark_quality",
-      "label": "validate_benchmark_quality()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "experiment_config.py",
-      "file_type": "code",
-      "norm_label": "validate_benchmark_quality()",
-      "source_file": "src/inferload/experiment_config.py",
-      "source_location": "L79"
-    },
-    {
-      "id": "tests_test_capacity_test_benchmark_quality_validation_rules",
-      "label": "test_benchmark_quality_validation_rules()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "experiment_config.py",
-      "file_type": "code",
-      "norm_label": "test_benchmark_quality_validation_rules()",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L244"
     },
     {
       "id": "src_inferload_compare_compare_benchmarks",
@@ -2842,6 +2482,30 @@
       "source_location": "L16"
     },
     {
+      "id": "tests_test_experiment_test_open_loop_constant_rate_scheduling",
+      "label": "test_open_loop_constant_rate_scheduling()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "BenchmarkConfig",
+      "file_type": "code",
+      "norm_label": "test_open_loop_constant_rate_scheduling()",
+      "source_file": "tests/test_experiment.py",
+      "source_location": "L115"
+    },
+    {
+      "id": "tests_test_experiment_test_open_loop_constant_rate_scheduling_mock_handler",
+      "label": "mock_handler()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "BenchmarkConfig",
+      "file_type": "code",
+      "norm_label": "mock_handler()",
+      "source_file": "tests/test_experiment.py",
+      "source_location": "L119"
+    },
+    {
       "id": "tests_test_workload_test_workload_round_robin_deterministic",
       "label": "test_workload_round_robin_deterministic()",
       "_callable": true,
@@ -3178,64 +2842,160 @@
       "source_location": "L36"
     },
     {
-      "id": "src_inferload_experiment_expand_sweep_grid",
-      "label": "expand_sweep_grid()",
+      "id": "src_inferload_capacity_analyze_capacity",
+      "label": "analyze_capacity()",
       "_callable": true,
       "_origin": "ast",
       "community": 40,
-      "community_name": "test_sweep_grid_expansion",
+      "community_name": "test_capacity.py",
       "file_type": "code",
-      "norm_label": "expand_sweep_grid()",
-      "source_file": "src/inferload/experiment.py",
-      "source_location": "L126"
+      "norm_label": "analyze_capacity()",
+      "source_file": "src/inferload/capacity.py",
+      "source_location": "L76"
     },
     {
-      "id": "src_inferload_experiment_sweeppointspec_init",
-      "label": ".__init__()",
+      "id": "tests_test_capacity_dummy_stat",
+      "label": "_dummy_stat()",
       "_callable": true,
       "_origin": "ast",
       "community": 40,
-      "community_name": "test_sweep_grid_expansion",
+      "community_name": "test_capacity.py",
       "file_type": "code",
-      "norm_label": ".__init__()",
-      "source_file": "src/inferload/experiment.py",
-      "source_location": "L36"
+      "norm_label": "_dummy_stat()",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L24"
     },
     {
-      "id": "src_inferload_experiment_sweeppointspec_point_key",
-      "label": ".point_key()",
+      "id": "tests_test_capacity_make_dummy_experiment",
+      "label": "_make_dummy_experiment()",
       "_callable": true,
       "_origin": "ast",
       "community": 40,
-      "community_name": "test_sweep_grid_expansion",
+      "community_name": "test_capacity.py",
       "file_type": "code",
-      "norm_label": ".point_key()",
-      "source_file": "src/inferload/experiment.py",
-      "source_location": "L55"
-    },
-    {
-      "id": "src_inferload_experiment_sweeppointspec_run_id",
-      "label": ".run_id()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "test_sweep_grid_expansion",
-      "file_type": "code",
-      "norm_label": ".run_id()",
-      "source_file": "src/inferload/experiment.py",
+      "norm_label": "_make_dummy_experiment()",
+      "source_file": "tests/test_capacity.py",
       "source_location": "L61"
     },
     {
-      "id": "tests_test_experiment_test_sweep_grid_expansion",
-      "label": "test_sweep_grid_expansion()",
+      "id": "tests_test_capacity_make_dummy_point",
+      "label": "_make_dummy_point()",
       "_callable": true,
       "_origin": "ast",
       "community": 40,
-      "community_name": "test_sweep_grid_expansion",
+      "community_name": "test_capacity.py",
       "file_type": "code",
-      "norm_label": "test_sweep_grid_expansion()",
-      "source_file": "tests/test_experiment.py",
-      "source_location": "L25"
+      "norm_label": "_make_dummy_point()",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L37"
+    },
+    {
+      "id": "tests_test_capacity_test_all_slos_satisfied",
+      "label": "test_all_slos_satisfied()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 40,
+      "community_name": "test_capacity.py",
+      "file_type": "code",
+      "norm_label": "test_all_slos_satisfied()",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L96"
+    },
+    {
+      "id": "tests_test_capacity_test_cli_capacity_command",
+      "label": "test_cli_capacity_command()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 40,
+      "community_name": "test_capacity.py",
+      "file_type": "code",
+      "norm_label": "test_cli_capacity_command()",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L222"
+    },
+    {
+      "id": "tests_test_capacity_test_error_rate_violation",
+      "label": "test_error_rate_violation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 40,
+      "community_name": "test_capacity.py",
+      "file_type": "code",
+      "norm_label": "test_error_rate_violation()",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L132"
+    },
+    {
+      "id": "tests_test_capacity_test_format_capacity_report",
+      "label": "test_format_capacity_report()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 40,
+      "community_name": "test_capacity.py",
+      "file_type": "code",
+      "norm_label": "test_format_capacity_report()",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L205"
+    },
+    {
+      "id": "tests_test_capacity_test_incomplete_or_missing_metric_values",
+      "label": "test_incomplete_or_missing_metric_values()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 40,
+      "community_name": "test_capacity.py",
+      "file_type": "code",
+      "norm_label": "test_incomplete_or_missing_metric_values()",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L192"
+    },
+    {
+      "id": "tests_test_capacity_test_multiple_compliant_points_selects_highest",
+      "label": "test_multiple_compliant_points_selects_highest()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 40,
+      "community_name": "test_capacity.py",
+      "file_type": "code",
+      "norm_label": "test_multiple_compliant_points_selects_highest()",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L175"
+    },
+    {
+      "id": "tests_test_capacity_test_no_compliant_point",
+      "label": "test_no_compliant_point()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 40,
+      "community_name": "test_capacity.py",
+      "file_type": "code",
+      "norm_label": "test_no_compliant_point()",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L160"
+    },
+    {
+      "id": "tests_test_capacity_test_throughput_violation",
+      "label": "test_throughput_violation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 40,
+      "community_name": "test_capacity.py",
+      "file_type": "code",
+      "norm_label": "test_throughput_violation()",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L146"
+    },
+    {
+      "id": "tests_test_capacity_test_ttft_violation",
+      "label": "test_ttft_violation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 40,
+      "community_name": "test_capacity.py",
+      "file_type": "code",
+      "norm_label": "test_ttft_violation()",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L117"
     },
     {
       "id": "tests_test_cli_test_cli_validate_failure",
@@ -3274,6 +3034,174 @@
       "source_location": "L11"
     },
     {
+      "id": "src_inferload_web_create_app",
+      "label": "create_app()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "create_app()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L247"
+    },
+    {
+      "id": "src_inferload_web_create_app_get_experiment_artifact",
+      "label": "get_experiment_artifact()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "get_experiment_artifact()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L434"
+    },
+    {
+      "id": "src_inferload_web_create_app_get_experiment_logs",
+      "label": "get_experiment_logs()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "get_experiment_logs()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L404"
+    },
+    {
+      "id": "src_inferload_web_create_app_get_experiment_report",
+      "label": "get_experiment_report()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "get_experiment_report()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L420"
+    },
+    {
+      "id": "src_inferload_web_create_app_get_experiment_status",
+      "label": "get_experiment_status()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "get_experiment_status()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L392"
+    },
+    {
+      "id": "src_inferload_web_create_app_get_historical_experiment",
+      "label": "get_historical_experiment()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "get_historical_experiment()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L513"
+    },
+    {
+      "id": "src_inferload_web_create_app_list_experiment_history",
+      "label": "list_experiment_history()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "list_experiment_history()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L470"
+    },
+    {
+      "id": "src_inferload_web_create_app_mock_chat_completions",
+      "label": "mock_chat_completions()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "mock_chat_completions()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L561"
+    },
+    {
+      "id": "src_inferload_web_create_app_mock_chat_completions_generate_mock_stream",
+      "label": "generate_mock_stream()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "generate_mock_stream()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L584"
+    },
+    {
+      "id": "src_inferload_web_create_app_mock_models",
+      "label": "mock_models()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "mock_models()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L550"
+    },
+    {
+      "id": "src_inferload_web_create_app_serve_index",
+      "label": "serve_index()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "serve_index()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L626"
+    },
+    {
+      "id": "src_inferload_web_create_app_start_experiment",
+      "label": "start_experiment()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "start_experiment()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L362"
+    },
+    {
+      "id": "src_inferload_web_create_app_validate_configuration",
+      "label": "validate_configuration()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "validate_configuration()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L288"
+    },
+    {
+      "id": "src_inferload_web_resolve_artifacts_dir",
+      "label": "_resolve_artifacts_dir()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "code",
+      "norm_label": "_resolve_artifacts_dir()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L128"
+    },
+    {
       "id": "src_inferload_workload_workloadgenerator_generate_benchmark_requests",
       "label": ".generate_benchmark_requests()",
       "_callable": true,
@@ -3310,64 +3238,184 @@
       "source_location": "L21"
     },
     {
-      "id": "src_inferload_config_exportconfig_validate_formats",
-      "label": ".validate_formats()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 44,
-      "community_name": "field_validator",
-      "file_type": "code",
-      "norm_label": ".validate_formats()",
-      "source_file": "src/inferload/config.py",
-      "source_location": "L78"
-    },
-    {
-      "id": "src_inferload_config_targetconfig_validate_base_url",
-      "label": ".validate_base_url()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 44,
-      "community_name": "field_validator",
-      "file_type": "code",
-      "norm_label": ".validate_base_url()",
-      "source_file": "src/inferload/config.py",
-      "source_location": "L24"
-    },
-    {
-      "id": "src_inferload_config_workloadconfig_validate_prompts",
-      "label": ".validate_prompts()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 44,
-      "community_name": "field_validator",
-      "file_type": "code",
-      "norm_label": ".validate_prompts()",
-      "source_file": "src/inferload/config.py",
-      "source_location": "L55"
-    },
-    {
-      "id": "src_inferload_config_arrivalconfig_validate_arrival",
-      "label": ".validate_arrival()",
+      "id": "src_inferload_server_telemetry_build_non_causal_correlation_notes",
+      "label": "build_non_causal_correlation_notes()",
       "_callable": true,
       "_origin": "ast",
       "community": 45,
-      "community_name": "ArrivalConfig",
+      "community_name": "ExperimentTelemetry",
       "file_type": "code",
-      "norm_label": ".validate_arrival()",
-      "source_file": "src/inferload/config.py",
-      "source_location": "L94"
+      "norm_label": "build_non_causal_correlation_notes()",
+      "source_file": "src/inferload/server_telemetry.py",
+      "source_location": "L237"
     },
     {
-      "id": "tests_test_server_telemetry_test_optional_telemetry_configuration_and_backward_compatibility",
-      "label": "test_optional_telemetry_configuration_and_backward_compatibility()",
+      "id": "src_inferload_server_telemetry_render_telemetry_correlation_markdown",
+      "label": "render_telemetry_correlation_markdown()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 45,
+      "community_name": "ExperimentTelemetry",
+      "file_type": "code",
+      "norm_label": "render_telemetry_correlation_markdown()",
+      "source_file": "src/inferload/server_telemetry.py",
+      "source_location": "L300"
+    },
+    {
+      "id": "src_inferload_server_telemetry_render_telemetry_correlation_markdown_fmt_val",
+      "label": "_fmt_val()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 45,
+      "community_name": "ExperimentTelemetry",
+      "file_type": "code",
+      "norm_label": "_fmt_val()",
+      "source_file": "src/inferload/server_telemetry.py",
+      "source_location": "L367"
+    },
+    {
+      "id": "tests_test_server_telemetry_build_mock_point_summary",
+      "label": "_build_mock_point_summary()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 45,
+      "community_name": "ExperimentTelemetry",
+      "file_type": "code",
+      "norm_label": "_build_mock_point_summary()",
+      "source_file": "tests/test_server_telemetry.py",
+      "source_location": "L180"
+    },
+    {
+      "id": "tests_test_server_telemetry_test_report_rendering_with_telemetry_and_non_causal_wording",
+      "label": "test_report_rendering_with_telemetry_and_non_causal_wording()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 45,
+      "community_name": "ExperimentTelemetry",
+      "file_type": "code",
+      "norm_label": "test_report_rendering_with_telemetry_and_non_causal_wording()",
+      "source_file": "tests/test_server_telemetry.py",
+      "source_location": "L212"
+    },
+    {
+      "id": "tests_test_server_telemetry_test_report_rendering_without_telemetry",
+      "label": "test_report_rendering_without_telemetry()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 45,
+      "community_name": "ExperimentTelemetry",
+      "file_type": "code",
+      "norm_label": "test_report_rendering_without_telemetry()",
+      "source_file": "tests/test_server_telemetry.py",
+      "source_location": "L201"
+    },
+    {
+      "id": "src_inferload_plots_generate_experiment_plots",
+      "label": "generate_experiment_plots()",
       "_callable": true,
       "_origin": "ast",
       "community": 46,
-      "community_name": "test_optional_telemetry_configuration_and_backward_compatibility",
+      "community_name": "SampleStatistics",
       "file_type": "code",
-      "norm_label": "test_optional_telemetry_configuration_and_backward_compatibility()",
-      "source_file": "tests/test_server_telemetry.py",
-      "source_location": "L139"
+      "norm_label": "generate_experiment_plots()",
+      "source_file": "src/inferload/plots.py",
+      "source_location": "L16"
+    },
+    {
+      "id": "src_inferload_statistics_samplestatistics_maximum",
+      "label": ".maximum()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "SampleStatistics",
+      "file_type": "code",
+      "norm_label": ".maximum()",
+      "source_file": "src/inferload/statistics.py",
+      "source_location": "L75"
+    },
+    {
+      "id": "src_inferload_statistics_samplestatistics_minimum",
+      "label": ".minimum()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "SampleStatistics",
+      "file_type": "code",
+      "norm_label": ".minimum()",
+      "source_file": "src/inferload/statistics.py",
+      "source_location": "L71"
+    },
+    {
+      "id": "src_inferload_statistics_compute_sample_statistics",
+      "label": "compute_sample_statistics()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "compute_sample_statistics",
+      "file_type": "code",
+      "norm_label": "compute_sample_statistics()",
+      "source_file": "src/inferload/statistics.py",
+      "source_location": "L79"
+    },
+    {
+      "id": "src_inferload_statistics_get_student_t_critical",
+      "label": "get_student_t_critical()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "compute_sample_statistics",
+      "file_type": "code",
+      "norm_label": "get_student_t_critical()",
+      "source_file": "src/inferload/statistics.py",
+      "source_location": "L45"
+    },
+    {
+      "id": "tests_test_experiment_test_sample_statistics_and_confidence_intervals",
+      "label": "test_sample_statistics_and_confidence_intervals()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "compute_sample_statistics",
+      "file_type": "code",
+      "norm_label": "test_sample_statistics_and_confidence_intervals()",
+      "source_file": "tests/test_experiment.py",
+      "source_location": "L54"
+    },
+    {
+      "id": "src_inferload_web_run_experiment_task",
+      "label": "_run_experiment_task()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 49,
+      "community_name": "_run_experiment_task",
+      "file_type": "code",
+      "norm_label": "_run_experiment_task()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L186"
+    },
+    {
+      "id": "src_inferload_web_run_experiment_task_log",
+      "label": "_log()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 49,
+      "community_name": "_run_experiment_task",
+      "file_type": "code",
+      "norm_label": "_log()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L192"
+    },
+    {
+      "id": "src_inferload_web_run_experiment_task_on_progress",
+      "label": "on_progress()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 49,
+      "community_name": "_run_experiment_task",
+      "file_type": "code",
+      "norm_label": "on_progress()",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L208"
     },
     {
       "id": "src_inferload_compare_benchmarkcomparison_get_metric",
@@ -3507,7 +3555,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": ".base_url()",
       "source_file": "tests/integration/mock_server.py",
@@ -3519,7 +3567,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "tests/integration/mock_server.py",
@@ -3531,7 +3579,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": ".start()",
       "source_file": "tests/integration/mock_server.py",
@@ -3543,7 +3591,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": ".stop()",
       "source_file": "tests/integration/mock_server.py",
@@ -3555,7 +3603,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": "._detect_error_in_prompt()",
       "source_file": "tests/integration/mock_server.py",
@@ -3567,7 +3615,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": ".do_get()",
       "source_file": "tests/integration/mock_server.py",
@@ -3579,7 +3627,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": ".do_post()",
       "source_file": "tests/integration/mock_server.py",
@@ -3591,7 +3639,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": "._handle_non_streaming()",
       "source_file": "tests/integration/mock_server.py",
@@ -3603,7 +3651,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": "._handle_streaming()",
       "source_file": "tests/integration/mock_server.py",
@@ -3615,7 +3663,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": ".log_message()",
       "source_file": "tests/integration/mock_server.py",
@@ -3627,7 +3675,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": "._send_error_json()",
       "source_file": "tests/integration/mock_server.py",
@@ -3639,7 +3687,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": ".__init__()",
       "source_file": "tests/integration/mock_server.py",
@@ -3651,7 +3699,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": ".on_request_end()",
       "source_file": "tests/integration/mock_server.py",
@@ -3663,7 +3711,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": ".on_request_start()",
       "source_file": "tests/integration/mock_server.py",
@@ -3675,7 +3723,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": ".reset()",
       "source_file": "tests/integration/mock_server.py",
@@ -3687,7 +3735,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": ".to_dict()",
       "source_file": "tests/integration/mock_server.py",
@@ -3699,7 +3747,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": "mock_server()",
       "source_file": "tests/integration/test_end_to_end.py",
@@ -3806,22 +3854,11 @@
       "source_location": "L98"
     },
     {
-      "id": "fastapi",
-      "label": "FastAPI",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "fastapi",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
       "id": "src_inferload_capacity",
       "label": "capacity.py",
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "code",
       "norm_label": "capacity.py",
       "source_file": "src/inferload/capacity.py",
@@ -3832,7 +3869,7 @@
       "label": "BaseModel",
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "code",
       "norm_label": "basemodel",
       "source_file": "",
@@ -3843,7 +3880,7 @@
       "label": "Path",
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "code",
       "norm_label": "path",
       "source_file": "",
@@ -3854,42 +3891,9 @@
       "label": "BaseModel",
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "code",
       "norm_label": "basemodel",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "src_inferload_web_py_path",
-      "label": "Path",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "tests_test_capacity",
-      "label": "test_capacity.py",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "test_capacity.py",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_capacity_py_path",
-      "label": "Path",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "code",
-      "norm_label": "path",
       "source_file": "",
       "source_location": ""
     },
@@ -3898,7 +3902,7 @@
       "label": "Deterministic capacity analysis against measured benchmark Service Level\u2026",
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "rationale",
       "norm_label": "deterministic capacity analysis against measured benchmark service level...",
       "source_file": "src/inferload/capacity.py",
@@ -3909,29 +3913,18 @@
       "label": "Format the capacity analysis output into a clean, human-readable report.",
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "rationale",
       "norm_label": "format the capacity analysis output into a clean, human-readable report.",
       "source_file": "src/inferload/capacity.py",
       "source_location": "L174"
     },
     {
-      "id": "src_inferload_capacity_rationale_20",
-      "label": "Target Service Level Objectives (SLOs) for inference capacity assessment.",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "rationale",
-      "norm_label": "target service level objectives (slos) for inference capacity assessment.",
-      "source_file": "src/inferload/capacity.py",
-      "source_location": "L20"
-    },
-    {
       "id": "src_inferload_capacity_rationale_29",
       "label": "Compliance assessment for a single tested benchmark parameter point.",
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "rationale",
       "norm_label": "compliance assessment for a single tested benchmark parameter point.",
       "source_file": "src/inferload/capacity.py",
@@ -3942,7 +3935,7 @@
       "label": "Deterministic capacity analysis outcome over observed benchmark sweep points.",
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "rationale",
       "norm_label": "deterministic capacity analysis outcome over observed benchmark sweep points.",
       "source_file": "src/inferload/capacity.py",
@@ -3953,29 +3946,18 @@
       "label": "Load and parse an SLO configuration from a YAML file.",
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "rationale",
       "norm_label": "load and parse an slo configuration from a yaml file.",
       "source_file": "src/inferload/capacity.py",
       "source_location": "L58"
     },
     {
-      "id": "src_inferload_capacity_rationale_80",
-      "label": "Evaluate tested benchmark points against configured SLO constraints. Identifies\u2026",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "rationale",
-      "norm_label": "evaluate tested benchmark points against configured slo constraints. identifies...",
-      "source_file": "src/inferload/capacity.py",
-      "source_location": "L80"
-    },
-    {
       "id": "src_inferload_cli_rationale_213",
       "label": "Analyze empirical capacity and SLO compliance over tested benchmark sweep\u2026",
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "rationale",
       "norm_label": "analyze empirical capacity and slo compliance over tested benchmark sweep...",
       "source_file": "src/inferload/cli.py",
@@ -3986,7 +3968,7 @@
       "label": "Aggregated statistics across repetitions for a distinct parameter point.",
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "rationale",
       "norm_label": "aggregated statistics across repetitions for a distinct parameter point.",
       "source_file": "src/inferload/experiment.py",
@@ -3997,55 +3979,11 @@
       "label": "Complete, versioned output artifact of an experiment.",
       "_origin": "ast",
       "community": 1,
-      "community_name": "test_capacity.py",
+      "community_name": "capacity.py",
       "file_type": "rationale",
       "norm_label": "complete, versioned output artifact of an experiment.",
       "source_file": "src/inferload/experiment.py",
       "source_location": "L89"
-    },
-    {
-      "id": "src_inferload_web_rationale_129",
-      "label": "Resolve artifacts directory for either an active in-memory job or a historical\u2026",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "rationale",
-      "norm_label": "resolve artifacts directory for either an active in-memory job or a historical...",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L129"
-    },
-    {
-      "id": "src_inferload_web_rationale_191",
-      "label": "Execute the experiment runner in the background and update job state.",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "rationale",
-      "norm_label": "execute the experiment runner in the background and update job state.",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L191"
-    },
-    {
-      "id": "src_inferload_web_rationale_248",
-      "label": "Create and configure the FastAPI web application.",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "rationale",
-      "norm_label": "create and configure the fastapi web application.",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L248"
-    },
-    {
-      "id": "tests_test_capacity_rationale_1",
-      "label": "Unit and integration tests for deterministic capacity analysis and SLO\u2026",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "test_capacity.py",
-      "file_type": "rationale",
-      "norm_label": "unit and integration tests for deterministic capacity analysis and slo...",
-      "source_file": "tests/test_capacity.py",
-      "source_location": "L1"
     },
     {
       "id": "src_inferload_exporters",
@@ -4874,17 +4812,6 @@
       "source_location": "L311"
     },
     {
-      "id": "api_index",
-      "label": "index.py",
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "environment.py",
-      "file_type": "code",
-      "norm_label": "index.py",
-      "source_file": "api/index.py",
-      "source_location": "L1"
-    },
-    {
       "id": "src_inferload_environment",
       "label": "environment.py",
       "_origin": "ast",
@@ -4966,7 +4893,7 @@
       "label": "BaseModel",
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "code",
       "norm_label": "basemodel",
       "source_file": "",
@@ -4977,31 +4904,31 @@
       "label": "model_validator",
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "code",
       "norm_label": "model_validator",
       "source_file": "",
       "source_location": ""
     },
     {
-      "id": "src_inferload_web",
-      "label": "web.py",
+      "id": "src_inferload_experiment_py_asyncclient",
+      "label": "AsyncClient",
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "code",
-      "norm_label": "web.py",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L1"
+      "norm_label": "asyncclient",
+      "source_file": "",
+      "source_location": ""
     },
     {
-      "id": "src_inferload_web_py_basemodel",
-      "label": "BaseModel",
+      "id": "tests_test_server_telemetry_py_path",
+      "label": "Path",
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "code",
-      "norm_label": "basemodel",
+      "norm_label": "path",
       "source_file": "",
       "source_location": ""
     },
@@ -5010,7 +4937,7 @@
       "label": "Metadata describing an experiment run.",
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "rationale",
       "norm_label": "metadata describing an experiment run.",
       "source_file": "src/inferload/experiment_config.py",
@@ -5021,7 +4948,7 @@
       "label": "Parameters to vary systematically across the experiment.",
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "rationale",
       "norm_label": "parameters to vary systematically across the experiment.",
       "source_file": "src/inferload/experiment_config.py",
@@ -5032,84 +4959,95 @@
       "label": "Base workload template and prompt definitions for an experiment.",
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "rationale",
       "norm_label": "base workload template and prompt definitions for an experiment.",
       "source_file": "src/inferload/experiment_config.py",
       "source_location": "L48"
     },
     {
-      "id": "src_inferload_web_rationale_1",
-      "label": "InferLoad Web Server and REST API. Provides local browser UI endpoints for\u2026",
+      "id": "src_inferload_experiment_config_rationale_66",
+      "label": "Root configuration for a multi-point performance experiment sweep.",
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "rationale",
-      "norm_label": "inferload web server and rest api. provides local browser ui endpoints for...",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L1"
+      "norm_label": "root configuration for a multi-point performance experiment sweep.",
+      "source_file": "src/inferload/experiment_config.py",
+      "source_location": "L66"
+    },
+    {
+      "id": "src_inferload_experiment_config_rationale_80",
+      "label": "Validate benchmark experiment configuration and emit quality warnings. Enforces\u2026",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ExperimentConfig",
+      "file_type": "rationale",
+      "norm_label": "validate benchmark experiment configuration and emit quality warnings. enforces...",
+      "source_file": "src/inferload/experiment_config.py",
+      "source_location": "L80"
+    },
+    {
+      "id": "src_inferload_experiment_rationale_127",
+      "label": "Expand experiment configuration into deterministic sweep point executions.",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ExperimentConfig",
+      "file_type": "rationale",
+      "norm_label": "expand experiment configuration into deterministic sweep point executions.",
+      "source_file": "src/inferload/experiment.py",
+      "source_location": "L127"
+    },
+    {
+      "id": "src_inferload_experiment_rationale_34",
+      "label": "A single concrete benchmark trial in the sweep grid.",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ExperimentConfig",
+      "file_type": "rationale",
+      "norm_label": "a single concrete benchmark trial in the sweep grid.",
+      "source_file": "src/inferload/experiment.py",
+      "source_location": "L34"
     },
     {
       "id": "src_inferload_web_rationale_144",
       "label": "Convert web request into canonical ExperimentConfig and SLOConfig instances.",
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "rationale",
       "norm_label": "convert web request into canonical experimentconfig and sloconfig instances.",
       "source_file": "src/inferload/web.py",
       "source_location": "L144"
     },
     {
-      "id": "src_inferload_web_rationale_52",
-      "label": "Payload submitted from the browser to configure and launch an experiment.",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "web.py",
-      "file_type": "rationale",
-      "norm_label": "payload submitted from the browser to configure and launch an experiment.",
-      "source_file": "src/inferload/web.py",
-      "source_location": "L52"
-    },
-    {
       "id": "tests_test_experiment_rationale_160",
       "label": "Run an end-to-end experiment sweep against a live mock server and verify\u2026",
       "_origin": "ast",
       "community": 18,
-      "community_name": "web.py",
+      "community_name": "ExperimentConfig",
       "file_type": "rationale",
       "norm_label": "run an end-to-end experiment sweep against a live mock server and verify...",
       "source_file": "tests/test_experiment.py",
       "source_location": "L160"
     },
     {
-      "id": "src_inferload_server_telemetry_py_any",
-      "label": "Any",
+      "id": "tests_test_server_telemetry_rationale_140",
+      "label": "Verify backward compatibility: configs without telemetry section load with\u2026",
       "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "code",
-      "norm_label": "any",
-      "source_file": "",
-      "source_location": ""
+      "community": 18,
+      "community_name": "ExperimentConfig",
+      "file_type": "rationale",
+      "norm_label": "verify backward compatibility: configs without telemetry section load with...",
+      "source_file": "tests/test_server_telemetry.py",
+      "source_location": "L140"
     },
     {
       "id": "src_inferload_server_telemetry_py_basemodel",
       "label": "BaseModel",
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "code",
-      "norm_label": "basemodel",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "src_inferload_statistics_py_basemodel",
-      "label": "BaseModel",
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "code",
       "norm_label": "basemodel",
       "source_file": "",
@@ -5120,7 +5058,7 @@
       "label": "Point-in-time snapshot of inference server telemetry metrics.",
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "rationale",
       "norm_label": "point-in-time snapshot of inference server telemetry metrics.",
       "source_file": "src/inferload/server_telemetry.py",
@@ -5131,40 +5069,18 @@
       "label": "Poll the configured metrics endpoint and return a structured snapshot. Never\u2026",
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "rationale",
       "norm_label": "poll the configured metrics endpoint and return a structured snapshot. never...",
       "source_file": "src/inferload/server_telemetry.py",
       "source_location": "L198"
     },
     {
-      "id": "src_inferload_server_telemetry_rationale_243",
-      "label": "Generate strictly observational correlation notes without inferring causality.",
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "rationale",
-      "norm_label": "generate strictly observational correlation notes without inferring causality.",
-      "source_file": "src/inferload/server_telemetry.py",
-      "source_location": "L243"
-    },
-    {
-      "id": "src_inferload_server_telemetry_rationale_304",
-      "label": "Render markdown section for server telemetry correlation report.",
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "rationale",
-      "norm_label": "render markdown section for server telemetry correlation report.",
-      "source_file": "src/inferload/server_telemetry.py",
-      "source_location": "L304"
-    },
-    {
       "id": "src_inferload_server_telemetry_rationale_44",
       "label": "Parse Prometheus text exposition format into a name-value mapping. Handles\u2026",
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "rationale",
       "norm_label": "parse prometheus text exposition format into a name-value mapping. handles...",
       "source_file": "src/inferload/server_telemetry.py",
@@ -5175,84 +5091,18 @@
       "label": "Extract standard inference metrics from parsed Prometheus metrics dictionary.\u2026",
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "rationale",
       "norm_label": "extract standard inference metrics from parsed prometheus metrics dictionary....",
       "source_file": "src/inferload/server_telemetry.py",
       "source_location": "L78"
     },
     {
-      "id": "src_inferload_statistics_rationale_46",
-      "label": "Return Student's t critical value for 95% confidence interval given degrees of\u2026",
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "rationale",
-      "norm_label": "return student's t critical value for 95% confidence interval given degrees of...",
-      "source_file": "src/inferload/statistics.py",
-      "source_location": "L46"
-    },
-    {
-      "id": "src_inferload_statistics_rationale_57",
-      "label": "Statistical summary and uncertainty estimates over repeated benchmark\u2026",
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "rationale",
-      "norm_label": "statistical summary and uncertainty estimates over repeated benchmark...",
-      "source_file": "src/inferload/statistics.py",
-      "source_location": "L57"
-    },
-    {
-      "id": "src_inferload_statistics_rationale_80",
-      "label": "Compute mean, median, sample std dev (Bessel's correction), min, max, CV, and\u2026",
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "rationale",
-      "norm_label": "compute mean, median, sample std dev (bessel's correction), min, max, cv, and...",
-      "source_file": "src/inferload/statistics.py",
-      "source_location": "L80"
-    },
-    {
-      "id": "tests_test_server_telemetry_rationale_181",
-      "label": "Helper to construct synthetic PointSummary for report rendering tests.",
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "rationale",
-      "norm_label": "helper to construct synthetic pointsummary for report rendering tests.",
-      "source_file": "tests/test_server_telemetry.py",
-      "source_location": "L181"
-    },
-    {
-      "id": "tests_test_server_telemetry_rationale_202",
-      "label": "Verify that reports without telemetry clearly state unavailability and proceed\u2026",
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "rationale",
-      "norm_label": "verify that reports without telemetry clearly state unavailability and proceed...",
-      "source_file": "tests/test_server_telemetry.py",
-      "source_location": "L202"
-    },
-    {
-      "id": "tests_test_server_telemetry_rationale_213",
-      "label": "Verify report rendering with active telemetry adheres to non-causal\u2026",
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "SampleStatistics",
-      "file_type": "rationale",
-      "norm_label": "verify report rendering with active telemetry adheres to non-causal...",
-      "source_file": "tests/test_server_telemetry.py",
-      "source_location": "L213"
-    },
-    {
       "id": "tests_test_server_telemetry_rationale_32",
       "label": "Verify parsing of standard gauges and histogram sums/counts.",
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "rationale",
       "norm_label": "verify parsing of standard gauges and histogram sums/counts.",
       "source_file": "tests/test_server_telemetry.py",
@@ -5263,7 +5113,7 @@
       "label": "Verify that unparseable or malformed Prometheus lines do not cause exceptions.",
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "rationale",
       "norm_label": "verify that unparseable or malformed prometheus lines do not cause exceptions.",
       "source_file": "tests/test_server_telemetry.py",
@@ -5274,7 +5124,7 @@
       "label": "Verify handling when inference server metrics are absent or legacy formats are\u2026",
       "_origin": "ast",
       "community": 19,
-      "community_name": "SampleStatistics",
+      "community_name": "extract_telemetry_metrics",
       "file_type": "rationale",
       "norm_label": "verify handling when inference server metrics are absent or legacy formats are...",
       "source_file": "tests/test_server_telemetry.py",
@@ -5465,7 +5315,7 @@
       "file_type": "code",
       "norm_label": "lastrenderedoptions",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L665"
+      "source_location": "L666"
     },
     {
       "id": "src_inferload_web_static_app_lastrenderedpoints",
@@ -5476,7 +5326,7 @@
       "file_type": "code",
       "norm_label": "lastrenderedpoints",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L664"
+      "source_location": "L665"
     },
     {
       "id": "src_inferload_analysis_py_basemodel",
@@ -6195,13 +6045,13 @@
       "source_location": "L261"
     },
     {
-      "id": "src_inferload_experiment_py_asyncclient",
-      "label": "AsyncClient",
+      "id": "src_inferload_config_py_model_validator",
+      "label": "model_validator",
       "_origin": "ast",
       "community": 24,
       "community_name": ".run",
       "file_type": "code",
-      "norm_label": "asyncclient",
+      "norm_label": "model_validator",
       "source_file": "",
       "source_location": ""
     },
@@ -6217,15 +6067,15 @@
       "source_location": ""
     },
     {
-      "id": "src_inferload_plots_py_path",
-      "label": "Path",
+      "id": "src_inferload_config_rationale_88",
+      "label": "Arrival process configuration: closed-loop concurrency vs open-loop rate.",
       "_origin": "ast",
       "community": 24,
       "community_name": ".run",
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "",
-      "source_location": ""
+      "file_type": "rationale",
+      "norm_label": "arrival process configuration: closed-loop concurrency vs open-loop rate.",
+      "source_file": "src/inferload/config.py",
+      "source_location": "L88"
     },
     {
       "id": "src_inferload_experiment_rationale_171",
@@ -6250,26 +6100,15 @@
       "source_location": "L185"
     },
     {
-      "id": "src_inferload_plots_rationale_20",
-      "label": "Generate reproducible PNG plots for an experiment and return list of saved file\u2026",
+      "id": "scripts_test_web_api",
+      "label": "test_web_api.py",
       "_origin": "ast",
-      "community": 24,
-      "community_name": ".run",
-      "file_type": "rationale",
-      "norm_label": "generate reproducible png plots for an experiment and return list of saved file...",
-      "source_file": "src/inferload/plots.py",
-      "source_location": "L20"
-    },
-    {
-      "id": "src_inferload_server_telemetry_rationale_30",
-      "label": "Container for experiment telemetry snapshots and non-causal correlation notes.",
-      "_origin": "ast",
-      "community": 24,
-      "community_name": ".run",
-      "file_type": "rationale",
-      "norm_label": "container for experiment telemetry snapshots and non-causal correlation notes.",
-      "source_file": "src/inferload/server_telemetry.py",
-      "source_location": "L30"
+      "community": 25,
+      "community_name": "experiment.py",
+      "file_type": "code",
+      "norm_label": "test_web_api.py",
+      "source_file": "scripts/test_web_api.py",
+      "source_location": "L1"
     },
     {
       "id": "src_inferload_analysis",
@@ -6302,17 +6141,6 @@
       "file_type": "code",
       "norm_label": "compare.py",
       "source_file": "src/inferload/compare.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_inferload_config",
-      "label": "config.py",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "experiment.py",
-      "file_type": "code",
-      "norm_label": "config.py",
-      "source_file": "src/inferload/config.py",
       "source_location": "L1"
     },
     {
@@ -6349,17 +6177,6 @@
       "source_location": "L1"
     },
     {
-      "id": "src_inferload_plots",
-      "label": "plots.py",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "experiment.py",
-      "file_type": "code",
-      "norm_label": "plots.py",
-      "source_file": "src/inferload/plots.py",
-      "source_location": "L1"
-    },
-    {
       "id": "src_inferload_runner",
       "label": "runner.py",
       "_origin": "ast",
@@ -6393,6 +6210,17 @@
       "source_location": "L1"
     },
     {
+      "id": "src_inferload_workload",
+      "label": "workload.py",
+      "_origin": "ast",
+      "community": 25,
+      "community_name": "experiment.py",
+      "file_type": "code",
+      "norm_label": "workload.py",
+      "source_file": "src/inferload/workload.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_test_experiment",
       "label": "test_experiment.py",
       "_origin": "ast",
@@ -6401,17 +6229,6 @@
       "file_type": "code",
       "norm_label": "test_experiment.py",
       "source_file": "tests/test_experiment.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_server_telemetry",
-      "label": "test_server_telemetry.py",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "experiment.py",
-      "file_type": "code",
-      "norm_label": "test_server_telemetry.py",
-      "source_file": "tests/test_server_telemetry.py",
       "source_location": "L1"
     },
     {
@@ -6448,17 +6265,6 @@
       "source_location": "L1"
     },
     {
-      "id": "src_inferload_config_rationale_1",
-      "label": "Configuration schema and validation for InferLoad.",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "experiment.py",
-      "file_type": "rationale",
-      "norm_label": "configuration schema and validation for inferload.",
-      "source_file": "src/inferload/config.py",
-      "source_location": "L1"
-    },
-    {
       "id": "src_inferload_experiment_rationale_1",
       "label": "Experiment orchestration, sweep expansion, statistical aggregation, and\u2026",
       "_origin": "ast",
@@ -6489,17 +6295,6 @@
       "file_type": "rationale",
       "norm_label": "data models for inferload benchmark requests, records, metrics, and results.",
       "source_file": "src/inferload/models.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_inferload_plots_rationale_1",
-      "label": "Static plot generation using matplotlib for benchmark experiment sweeps.",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "experiment.py",
-      "file_type": "rationale",
-      "norm_label": "static plot generation using matplotlib for benchmark experiment sweeps.",
-      "source_file": "src/inferload/plots.py",
       "source_location": "L1"
     },
     {
@@ -6536,6 +6331,17 @@
       "source_location": "L1"
     },
     {
+      "id": "src_inferload_workload_rationale_1",
+      "label": "Workload generation: creates reproducible sequences of request specifications.",
+      "_origin": "ast",
+      "community": 25,
+      "community_name": "experiment.py",
+      "file_type": "rationale",
+      "norm_label": "workload generation: creates reproducible sequences of request specifications.",
+      "source_file": "src/inferload/workload.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_test_experiment_rationale_1",
       "label": "Comprehensive tests for experiment configuration, sweep expansion, statistics,\u2026",
       "_origin": "ast",
@@ -6544,17 +6350,6 @@
       "file_type": "rationale",
       "norm_label": "comprehensive tests for experiment configuration, sweep expansion, statistics,...",
       "source_file": "tests/test_experiment.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_server_telemetry_rationale_1",
-      "label": "Unit tests for optional server telemetry collection, Prometheus parsing, and\u2026",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "experiment.py",
-      "file_type": "rationale",
-      "norm_label": "unit tests for optional server telemetry collection, prometheus parsing, and...",
-      "source_file": "tests/test_server_telemetry.py",
       "source_location": "L1"
     },
     {
@@ -6702,6 +6497,17 @@
       "source_location": "L1"
     },
     {
+      "id": "field_validator",
+      "label": "field_validator",
+      "_origin": "ast",
+      "community": 27,
+      "community_name": "TargetConfig",
+      "file_type": "code",
+      "norm_label": "field_validator",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
       "id": "tests_test_config",
       "label": "test_config.py",
       "_origin": "ast",
@@ -6711,17 +6517,6 @@
       "norm_label": "test_config.py",
       "source_file": "tests/test_config.py",
       "source_location": "L1"
-    },
-    {
-      "id": "tests_test_experiment_py_asyncio",
-      "label": "asyncio",
-      "_origin": "ast",
-      "community": 27,
-      "community_name": "TargetConfig",
-      "file_type": "code",
-      "norm_label": "asyncio",
-      "source_file": "",
-      "source_location": ""
     },
     {
       "id": "src_inferload_config_rationale_14",
@@ -6757,22 +6552,22 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_test_experiment_rationale_116",
-      "label": "Verify open-loop dispatch initiates requests at target intervals without\u2026",
+      "id": "src_inferload_config",
+      "label": "config.py",
       "_origin": "ast",
-      "community": 27,
-      "community_name": "TargetConfig",
-      "file_type": "rationale",
-      "norm_label": "verify open-loop dispatch initiates requests at target intervals without...",
-      "source_file": "tests/test_experiment.py",
-      "source_location": "L116"
+      "community": 28,
+      "community_name": "config.py",
+      "file_type": "code",
+      "norm_label": "config.py",
+      "source_file": "src/inferload/config.py",
+      "source_location": "L1"
     },
     {
       "id": "src_inferload_config_py_basemodel",
       "label": "BaseModel",
       "_origin": "ast",
       "community": 28,
-      "community_name": "experiment_config.py",
+      "community_name": "config.py",
       "file_type": "code",
       "norm_label": "basemodel",
       "source_file": "",
@@ -6783,10 +6578,32 @@
       "label": "experiment_config.py",
       "_origin": "ast",
       "community": 28,
-      "community_name": "experiment_config.py",
+      "community_name": "config.py",
       "file_type": "code",
       "norm_label": "experiment_config.py",
       "source_file": "src/inferload/experiment_config.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_server_telemetry",
+      "label": "test_server_telemetry.py",
+      "_origin": "ast",
+      "community": 28,
+      "community_name": "config.py",
+      "file_type": "code",
+      "norm_label": "test_server_telemetry.py",
+      "source_file": "tests/test_server_telemetry.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_inferload_config_rationale_1",
+      "label": "Configuration schema and validation for InferLoad.",
+      "_origin": "ast",
+      "community": 28,
+      "community_name": "config.py",
+      "file_type": "rationale",
+      "norm_label": "configuration schema and validation for inferload.",
+      "source_file": "src/inferload/config.py",
       "source_location": "L1"
     },
     {
@@ -6794,7 +6611,7 @@
       "label": "Optional configuration for collecting server-side Prometheus metrics.",
       "_origin": "ast",
       "community": 28,
-      "community_name": "experiment_config.py",
+      "community_name": "config.py",
       "file_type": "rationale",
       "norm_label": "optional configuration for collecting server-side prometheus metrics.",
       "source_file": "src/inferload/config.py",
@@ -6805,7 +6622,7 @@
       "label": "Execution options: warmup, delay, limits.",
       "_origin": "ast",
       "community": 28,
-      "community_name": "experiment_config.py",
+      "community_name": "config.py",
       "file_type": "rationale",
       "norm_label": "execution options: warmup, delay, limits.",
       "source_file": "src/inferload/config.py",
@@ -6816,7 +6633,7 @@
       "label": "Export configuration for benchmark output artifacts.",
       "_origin": "ast",
       "community": 28,
-      "community_name": "experiment_config.py",
+      "community_name": "config.py",
       "file_type": "rationale",
       "norm_label": "export configuration for benchmark output artifacts.",
       "source_file": "src/inferload/config.py",
@@ -6827,33 +6644,22 @@
       "label": "Experiment configuration schema and sweep definition.",
       "_origin": "ast",
       "community": 28,
-      "community_name": "experiment_config.py",
+      "community_name": "config.py",
       "file_type": "rationale",
       "norm_label": "experiment configuration schema and sweep definition.",
       "source_file": "src/inferload/experiment_config.py",
       "source_location": "L1"
     },
     {
-      "id": "src_inferload_experiment_config_rationale_66",
-      "label": "Root configuration for a multi-point performance experiment sweep.",
+      "id": "tests_test_server_telemetry_rationale_1",
+      "label": "Unit tests for optional server telemetry collection, Prometheus parsing, and\u2026",
       "_origin": "ast",
       "community": 28,
-      "community_name": "experiment_config.py",
+      "community_name": "config.py",
       "file_type": "rationale",
-      "norm_label": "root configuration for a multi-point performance experiment sweep.",
-      "source_file": "src/inferload/experiment_config.py",
-      "source_location": "L66"
-    },
-    {
-      "id": "src_inferload_experiment_config_rationale_80",
-      "label": "Validate benchmark experiment configuration and emit quality warnings. Enforces\u2026",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "experiment_config.py",
-      "file_type": "rationale",
-      "norm_label": "validate benchmark experiment configuration and emit quality warnings. enforces...",
-      "source_file": "src/inferload/experiment_config.py",
-      "source_location": "L80"
+      "norm_label": "unit tests for optional server telemetry collection, prometheus parsing, and...",
+      "source_file": "tests/test_server_telemetry.py",
+      "source_location": "L1"
     },
     {
       "id": "src_inferload_compare_py_path",
@@ -6920,17 +6726,6 @@
       "norm_label": "tests for benchmark comparison logic and cli compare command.",
       "source_file": "tests/test_compare.py",
       "source_location": "L1"
-    },
-    {
-      "id": "enum",
-      "label": "Enum",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "test_web.py",
-      "file_type": "code",
-      "norm_label": "enum",
-      "source_file": "",
-      "source_location": ""
     },
     {
       "id": "str",
@@ -7351,15 +7146,15 @@
       "source_location": "L136"
     },
     {
-      "id": "src_inferload_workload",
-      "label": "workload.py",
+      "id": "tests_test_experiment_py_asyncio",
+      "label": "asyncio",
       "_origin": "ast",
       "community": 34,
       "community_name": "BenchmarkConfig",
       "file_type": "code",
-      "norm_label": "workload.py",
-      "source_file": "src/inferload/workload.py",
-      "source_location": "L1"
+      "norm_label": "asyncio",
+      "source_file": "",
+      "source_location": ""
     },
     {
       "id": "tests_test_workload",
@@ -7384,17 +7179,6 @@
       "source_location": "L116"
     },
     {
-      "id": "src_inferload_workload_rationale_1",
-      "label": "Workload generation: creates reproducible sequences of request specifications.",
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "BenchmarkConfig",
-      "file_type": "rationale",
-      "norm_label": "workload generation: creates reproducible sequences of request specifications.",
-      "source_file": "src/inferload/workload.py",
-      "source_location": "L1"
-    },
-    {
       "id": "src_inferload_workload_rationale_14",
       "label": "Generates request specifications for warmup and benchmark phases.",
       "_origin": "ast",
@@ -7404,6 +7188,17 @@
       "norm_label": "generates request specifications for warmup and benchmark phases.",
       "source_file": "src/inferload/workload.py",
       "source_location": "L14"
+    },
+    {
+      "id": "tests_test_experiment_rationale_116",
+      "label": "Verify open-loop dispatch initiates requests at target intervals without\u2026",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "BenchmarkConfig",
+      "file_type": "rationale",
+      "norm_label": "verify open-loop dispatch initiates requests at target intervals without...",
+      "source_file": "tests/test_experiment.py",
+      "source_location": "L116"
     },
     {
       "id": "tests_test_workload_rationale_1",
@@ -8361,26 +8156,59 @@
       "source_location": "L1"
     },
     {
-      "id": "src_inferload_experiment_rationale_127",
-      "label": "Expand experiment configuration into deterministic sweep point executions.",
+      "id": "tests_test_capacity",
+      "label": "test_capacity.py",
       "_origin": "ast",
       "community": 40,
-      "community_name": "test_sweep_grid_expansion",
-      "file_type": "rationale",
-      "norm_label": "expand experiment configuration into deterministic sweep point executions.",
-      "source_file": "src/inferload/experiment.py",
-      "source_location": "L127"
+      "community_name": "test_capacity.py",
+      "file_type": "code",
+      "norm_label": "test_capacity.py",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L1"
     },
     {
-      "id": "src_inferload_experiment_rationale_34",
-      "label": "A single concrete benchmark trial in the sweep grid.",
+      "id": "tests_test_capacity_py_path",
+      "label": "Path",
       "_origin": "ast",
       "community": 40,
-      "community_name": "test_sweep_grid_expansion",
+      "community_name": "test_capacity.py",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_inferload_capacity_rationale_20",
+      "label": "Target Service Level Objectives (SLOs) for inference capacity assessment.",
+      "_origin": "ast",
+      "community": 40,
+      "community_name": "test_capacity.py",
       "file_type": "rationale",
-      "norm_label": "a single concrete benchmark trial in the sweep grid.",
-      "source_file": "src/inferload/experiment.py",
-      "source_location": "L34"
+      "norm_label": "target service level objectives (slos) for inference capacity assessment.",
+      "source_file": "src/inferload/capacity.py",
+      "source_location": "L20"
+    },
+    {
+      "id": "src_inferload_capacity_rationale_80",
+      "label": "Evaluate tested benchmark points against configured SLO constraints. Identifies\u2026",
+      "_origin": "ast",
+      "community": 40,
+      "community_name": "test_capacity.py",
+      "file_type": "rationale",
+      "norm_label": "evaluate tested benchmark points against configured slo constraints. identifies...",
+      "source_file": "src/inferload/capacity.py",
+      "source_location": "L80"
+    },
+    {
+      "id": "tests_test_capacity_rationale_1",
+      "label": "Unit and integration tests for deterministic capacity analysis and SLO\u2026",
+      "_origin": "ast",
+      "community": 40,
+      "community_name": "test_capacity.py",
+      "file_type": "rationale",
+      "norm_label": "unit and integration tests for deterministic capacity analysis and slo...",
+      "source_file": "tests/test_capacity.py",
+      "source_location": "L1"
     },
     {
       "id": "tests_test_cli",
@@ -8416,37 +8244,37 @@
       "source_location": "L1"
     },
     {
-      "id": "scripts_test_web_api",
-      "label": "test_web_api.py",
+      "id": "src_inferload_web_py_path",
+      "label": "Path",
       "_origin": "ast",
       "community": 42,
-      "community_name": "mock_server.py",
+      "community_name": "create_app",
       "file_type": "code",
-      "norm_label": "test_web_api.py",
-      "source_file": "scripts/test_web_api.py",
-      "source_location": "L1"
+      "norm_label": "path",
+      "source_file": "",
+      "source_location": ""
     },
     {
-      "id": "tests_integration_mock_server",
-      "label": "mock_server.py",
+      "id": "src_inferload_web_rationale_129",
+      "label": "Resolve artifacts directory for either an active in-memory job or a historical\u2026",
       "_origin": "ast",
       "community": 42,
-      "community_name": "mock_server.py",
-      "file_type": "code",
-      "norm_label": "mock_server.py",
-      "source_file": "tests/integration/mock_server.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_integration_mock_server_rationale_1",
-      "label": "Lightweight local mock OpenAI-compatible HTTP server for integration testing.\u2026",
-      "_origin": "ast",
-      "community": 42,
-      "community_name": "mock_server.py",
+      "community_name": "create_app",
       "file_type": "rationale",
-      "norm_label": "lightweight local mock openai-compatible http server for integration testing....",
-      "source_file": "tests/integration/mock_server.py",
-      "source_location": "L1"
+      "norm_label": "resolve artifacts directory for either an active in-memory job or a historical...",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L129"
+    },
+    {
+      "id": "src_inferload_web_rationale_248",
+      "label": "Create and configure the FastAPI web application.",
+      "_origin": "ast",
+      "community": 42,
+      "community_name": "create_app",
+      "file_type": "rationale",
+      "norm_label": "create and configure the fastapi web application.",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L248"
     },
     {
       "id": "src_inferload_workload_rationale_22",
@@ -8482,59 +8310,224 @@
       "source_location": "L50"
     },
     {
-      "id": "field_validator",
-      "label": "field_validator",
+      "id": "api_index",
+      "label": "index.py",
       "_origin": "ast",
       "community": 44,
-      "community_name": "field_validator",
+      "community_name": "web.py",
       "file_type": "code",
-      "norm_label": "field_validator",
+      "norm_label": "index.py",
+      "source_file": "api/index.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "enum",
+      "label": "Enum",
+      "_origin": "ast",
+      "community": 44,
+      "community_name": "web.py",
+      "file_type": "code",
+      "norm_label": "enum",
       "source_file": "",
       "source_location": ""
     },
     {
-      "id": "src_inferload_config_py_model_validator",
-      "label": "model_validator",
+      "id": "fastapi",
+      "label": "FastAPI",
       "_origin": "ast",
-      "community": 45,
-      "community_name": "ArrivalConfig",
+      "community": 44,
+      "community_name": "web.py",
       "file_type": "code",
-      "norm_label": "model_validator",
+      "norm_label": "fastapi",
       "source_file": "",
       "source_location": ""
     },
     {
-      "id": "src_inferload_config_rationale_88",
-      "label": "Arrival process configuration: closed-loop concurrency vs open-loop rate.",
+      "id": "src_inferload_web",
+      "label": "web.py",
       "_origin": "ast",
-      "community": 45,
-      "community_name": "ArrivalConfig",
+      "community": 44,
+      "community_name": "web.py",
+      "file_type": "code",
+      "norm_label": "web.py",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_inferload_web_py_basemodel",
+      "label": "BaseModel",
+      "_origin": "ast",
+      "community": 44,
+      "community_name": "web.py",
+      "file_type": "code",
+      "norm_label": "basemodel",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_inferload_web_rationale_1",
+      "label": "InferLoad Web Server and REST API. Provides local browser UI endpoints for\u2026",
+      "_origin": "ast",
+      "community": 44,
+      "community_name": "web.py",
       "file_type": "rationale",
-      "norm_label": "arrival process configuration: closed-loop concurrency vs open-loop rate.",
-      "source_file": "src/inferload/config.py",
-      "source_location": "L88"
+      "norm_label": "inferload web server and rest api. provides local browser ui endpoints for...",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L1"
     },
     {
-      "id": "tests_test_server_telemetry_py_path",
+      "id": "src_inferload_web_rationale_52",
+      "label": "Payload submitted from the browser to configure and launch an experiment.",
+      "_origin": "ast",
+      "community": 44,
+      "community_name": "web.py",
+      "file_type": "rationale",
+      "norm_label": "payload submitted from the browser to configure and launch an experiment.",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L52"
+    },
+    {
+      "id": "src_inferload_server_telemetry_py_any",
+      "label": "Any",
+      "_origin": "ast",
+      "community": 45,
+      "community_name": "ExperimentTelemetry",
+      "file_type": "code",
+      "norm_label": "any",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_inferload_server_telemetry_rationale_243",
+      "label": "Generate strictly observational correlation notes without inferring causality.",
+      "_origin": "ast",
+      "community": 45,
+      "community_name": "ExperimentTelemetry",
+      "file_type": "rationale",
+      "norm_label": "generate strictly observational correlation notes without inferring causality.",
+      "source_file": "src/inferload/server_telemetry.py",
+      "source_location": "L243"
+    },
+    {
+      "id": "src_inferload_server_telemetry_rationale_30",
+      "label": "Container for experiment telemetry snapshots and non-causal correlation notes.",
+      "_origin": "ast",
+      "community": 45,
+      "community_name": "ExperimentTelemetry",
+      "file_type": "rationale",
+      "norm_label": "container for experiment telemetry snapshots and non-causal correlation notes.",
+      "source_file": "src/inferload/server_telemetry.py",
+      "source_location": "L30"
+    },
+    {
+      "id": "src_inferload_server_telemetry_rationale_304",
+      "label": "Render markdown section for server telemetry correlation report.",
+      "_origin": "ast",
+      "community": 45,
+      "community_name": "ExperimentTelemetry",
+      "file_type": "rationale",
+      "norm_label": "render markdown section for server telemetry correlation report.",
+      "source_file": "src/inferload/server_telemetry.py",
+      "source_location": "L304"
+    },
+    {
+      "id": "tests_test_server_telemetry_rationale_181",
+      "label": "Helper to construct synthetic PointSummary for report rendering tests.",
+      "_origin": "ast",
+      "community": 45,
+      "community_name": "ExperimentTelemetry",
+      "file_type": "rationale",
+      "norm_label": "helper to construct synthetic pointsummary for report rendering tests.",
+      "source_file": "tests/test_server_telemetry.py",
+      "source_location": "L181"
+    },
+    {
+      "id": "tests_test_server_telemetry_rationale_202",
+      "label": "Verify that reports without telemetry clearly state unavailability and proceed\u2026",
+      "_origin": "ast",
+      "community": 45,
+      "community_name": "ExperimentTelemetry",
+      "file_type": "rationale",
+      "norm_label": "verify that reports without telemetry clearly state unavailability and proceed...",
+      "source_file": "tests/test_server_telemetry.py",
+      "source_location": "L202"
+    },
+    {
+      "id": "tests_test_server_telemetry_rationale_213",
+      "label": "Verify report rendering with active telemetry adheres to non-causal\u2026",
+      "_origin": "ast",
+      "community": 45,
+      "community_name": "ExperimentTelemetry",
+      "file_type": "rationale",
+      "norm_label": "verify report rendering with active telemetry adheres to non-causal...",
+      "source_file": "tests/test_server_telemetry.py",
+      "source_location": "L213"
+    },
+    {
+      "id": "src_inferload_plots",
+      "label": "plots.py",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "SampleStatistics",
+      "file_type": "code",
+      "norm_label": "plots.py",
+      "source_file": "src/inferload/plots.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_inferload_plots_py_path",
       "label": "Path",
       "_origin": "ast",
       "community": 46,
-      "community_name": "test_optional_telemetry_configuration_and_backward_compatibility",
+      "community_name": "SampleStatistics",
       "file_type": "code",
       "norm_label": "path",
       "source_file": "",
       "source_location": ""
     },
     {
-      "id": "tests_test_server_telemetry_rationale_140",
-      "label": "Verify backward compatibility: configs without telemetry section load with\u2026",
+      "id": "src_inferload_statistics_py_basemodel",
+      "label": "BaseModel",
       "_origin": "ast",
       "community": 46,
-      "community_name": "test_optional_telemetry_configuration_and_backward_compatibility",
+      "community_name": "SampleStatistics",
+      "file_type": "code",
+      "norm_label": "basemodel",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_inferload_plots_rationale_1",
+      "label": "Static plot generation using matplotlib for benchmark experiment sweeps.",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "SampleStatistics",
       "file_type": "rationale",
-      "norm_label": "verify backward compatibility: configs without telemetry section load with...",
-      "source_file": "tests/test_server_telemetry.py",
-      "source_location": "L140"
+      "norm_label": "static plot generation using matplotlib for benchmark experiment sweeps.",
+      "source_file": "src/inferload/plots.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_inferload_plots_rationale_20",
+      "label": "Generate reproducible PNG plots for an experiment and return list of saved file\u2026",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "SampleStatistics",
+      "file_type": "rationale",
+      "norm_label": "generate reproducible png plots for an experiment and return list of saved file...",
+      "source_file": "src/inferload/plots.py",
+      "source_location": "L20"
+    },
+    {
+      "id": "src_inferload_statistics_rationale_57",
+      "label": "Statistical summary and uncertainty estimates over repeated benchmark\u2026",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "SampleStatistics",
+      "file_type": "rationale",
+      "norm_label": "statistical summary and uncertainty estimates over repeated benchmark...",
+      "source_file": "src/inferload/statistics.py",
+      "source_location": "L57"
     },
     {
       "id": "vercel",
@@ -8557,6 +8550,39 @@
       "norm_label": "rewrites",
       "source_file": "vercel.json",
       "source_location": "L2"
+    },
+    {
+      "id": "src_inferload_statistics_rationale_46",
+      "label": "Return Student's t critical value for 95% confidence interval given degrees of\u2026",
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "compute_sample_statistics",
+      "file_type": "rationale",
+      "norm_label": "return student's t critical value for 95% confidence interval given degrees of...",
+      "source_file": "src/inferload/statistics.py",
+      "source_location": "L46"
+    },
+    {
+      "id": "src_inferload_statistics_rationale_80",
+      "label": "Compute mean, median, sample std dev (Bessel's correction), min, max, CV, and\u2026",
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "compute_sample_statistics",
+      "file_type": "rationale",
+      "norm_label": "compute mean, median, sample std dev (bessel's correction), min, max, cv, and...",
+      "source_file": "src/inferload/statistics.py",
+      "source_location": "L80"
+    },
+    {
+      "id": "src_inferload_web_rationale_191",
+      "label": "Execute the experiment runner in the background and update job state.",
+      "_origin": "ast",
+      "community": 49,
+      "community_name": "_run_experiment_task",
+      "file_type": "rationale",
+      "norm_label": "execute the experiment runner in the background and update job state.",
+      "source_file": "src/inferload/web.py",
+      "source_location": "L191"
     },
     {
       "id": "docs_experiments",
@@ -9185,18 +9211,29 @@
       "label": "BaseHTTPRequestHandler",
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": "basehttprequesthandler",
       "source_file": "",
       "source_location": ""
     },
     {
+      "id": "tests_integration_mock_server",
+      "label": "mock_server.py",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "mock_server.py",
+      "file_type": "code",
+      "norm_label": "mock_server.py",
+      "source_file": "tests/integration/mock_server.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_integration_mock_server_py_any",
       "label": "Any",
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": "any",
       "source_file": "",
@@ -9207,18 +9244,29 @@
       "label": "fixture",
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "code",
       "norm_label": "fixture",
       "source_file": "",
       "source_location": ""
     },
     {
+      "id": "tests_integration_mock_server_rationale_1",
+      "label": "Lightweight local mock OpenAI-compatible HTTP server for integration testing.\u2026",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "mock_server.py",
+      "file_type": "rationale",
+      "norm_label": "lightweight local mock openai-compatible http server for integration testing....",
+      "source_file": "tests/integration/mock_server.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_integration_mock_server_rationale_118",
       "label": "Handle /chat/completions request.",
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "rationale",
       "norm_label": "handle /chat/completions request.",
       "source_file": "tests/integration/mock_server.py",
@@ -9229,7 +9277,7 @@
       "label": "Thread-safe statistics and concurrency tracker for the mock server.",
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "rationale",
       "norm_label": "thread-safe statistics and concurrency tracker for the mock server.",
       "source_file": "tests/integration/mock_server.py",
@@ -9240,7 +9288,7 @@
       "label": "Stream SSE chunks with precise artificial delays.",
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "rationale",
       "norm_label": "stream sse chunks with precise artificial delays.",
       "source_file": "tests/integration/mock_server.py",
@@ -9251,7 +9299,7 @@
       "label": "Handle non-streaming request by simulating total generation delay.",
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "rationale",
       "norm_label": "handle non-streaming request by simulating total generation delay.",
       "source_file": "tests/integration/mock_server.py",
@@ -9262,7 +9310,7 @@
       "label": "Wrapper to start and stop the local mock server in a background thread.",
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "rationale",
       "norm_label": "wrapper to start and stop the local mock server in a background thread.",
       "source_file": "tests/integration/mock_server.py",
@@ -9273,7 +9321,7 @@
       "label": "Start the server on host and ephemeral or requested port. Returns base_url.",
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "rationale",
       "norm_label": "start the server on host and ephemeral or requested port. returns base_url.",
       "source_file": "tests/integration/mock_server.py",
@@ -9284,7 +9332,7 @@
       "label": "Stop and shutdown the HTTP server.",
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "rationale",
       "norm_label": "stop and shutdown the http server.",
       "source_file": "tests/integration/mock_server.py",
@@ -9295,7 +9343,7 @@
       "label": "HTTP request handler simulating OpenAI /v1/chat/completions.",
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "rationale",
       "norm_label": "http request handler simulating openai /v1/chat/completions.",
       "source_file": "tests/integration/mock_server.py",
@@ -9306,7 +9354,7 @@
       "label": "Diagnostic endpoints.",
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "rationale",
       "norm_label": "diagnostic endpoints.",
       "source_file": "tests/integration/mock_server.py",
@@ -9317,7 +9365,7 @@
       "label": "Start and automatically shut down a local mock OpenAI server.",
       "_origin": "ast",
       "community": 9,
-      "community_name": "LocalMockServer",
+      "community_name": "mock_server.py",
       "file_type": "rationale",
       "norm_label": "start and automatically shut down a local mock openai server.",
       "source_file": "tests/integration/test_end_to_end.py",
@@ -9332,18 +9380,6 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "csv",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "os",
-      "label": "os",
-      "_origin": "semantic",
-      "community": 17,
-      "community_name": "environment.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "os",
       "source_file": "",
       "type": "external"
     },
@@ -9384,66 +9420,6 @@
       "type": "external"
     },
     {
-      "id": "sys",
-      "label": "sys",
-      "_origin": "semantic",
-      "community": 17,
-      "community_name": "environment.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "sys",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "fastapi_middleware_cors",
-      "label": "fastapi_middleware_cors",
-      "_origin": "semantic",
-      "community": 18,
-      "community_name": "web.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "fastapi_middleware_cors",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "fastapi_responses",
-      "label": "fastapi_responses",
-      "_origin": "semantic",
-      "community": 18,
-      "community_name": "web.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "fastapi_responses",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "fastapi_staticfiles",
-      "label": "fastapi_staticfiles",
-      "_origin": "semantic",
-      "community": 18,
-      "community_name": "web.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "fastapi_staticfiles",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "logging",
-      "label": "logging",
-      "_origin": "semantic",
-      "community": 18,
-      "community_name": "web.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "logging",
-      "source_file": "",
-      "type": "external"
-    },
-    {
       "id": "datetime",
       "label": "datetime",
       "_origin": "semantic",
@@ -9480,42 +9456,6 @@
       "type": "external"
     },
     {
-      "id": "matplotlib",
-      "label": "matplotlib",
-      "_origin": "semantic",
-      "community": 25,
-      "community_name": "experiment.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "matplotlib",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "matplotlib_pyplot",
-      "label": "matplotlib_pyplot",
-      "_origin": "semantic",
-      "community": 25,
-      "community_name": "experiment.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "matplotlib_pyplot",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "pathlib",
-      "label": "pathlib",
-      "_origin": "semantic",
-      "community": 25,
-      "community_name": "experiment.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "pathlib",
-      "source_file": "",
-      "type": "external"
-    },
-    {
       "id": "pydantic",
       "label": "pydantic",
       "_origin": "semantic",
@@ -9524,6 +9464,18 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "pydantic",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "random",
+      "label": "random",
+      "_origin": "semantic",
+      "community": 25,
+      "community_name": "experiment.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "random",
       "source_file": "",
       "type": "external"
     },
@@ -9540,6 +9492,18 @@
       "type": "external"
     },
     {
+      "id": "time",
+      "label": "time",
+      "_origin": "semantic",
+      "community": 25,
+      "community_name": "experiment.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "time",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "typing",
       "label": "typing",
       "_origin": "semantic",
@@ -9552,14 +9516,14 @@
       "type": "external"
     },
     {
-      "id": "urllib_parse",
-      "label": "urllib_parse",
+      "id": "urllib_request",
+      "label": "urllib_request",
       "_origin": "semantic",
       "community": 25,
       "community_name": "experiment.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "urllib_parse",
+      "norm_label": "urllib_request",
       "source_file": "",
       "type": "external"
     },
@@ -9576,11 +9540,35 @@
       "type": "external"
     },
     {
+      "id": "pathlib",
+      "label": "pathlib",
+      "_origin": "semantic",
+      "community": 28,
+      "community_name": "config.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "pathlib",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "urllib_parse",
+      "label": "urllib_parse",
+      "_origin": "semantic",
+      "community": 28,
+      "community_name": "config.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "urllib_parse",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "yaml",
       "label": "yaml",
       "_origin": "semantic",
-      "community": 25,
-      "community_name": "experiment.py",
+      "community": 28,
+      "community_name": "config.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "yaml",
@@ -9596,18 +9584,6 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "starlette_testclient",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "random",
-      "label": "random",
-      "_origin": "semantic",
-      "community": 34,
-      "community_name": "BenchmarkConfig",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "random",
       "source_file": "",
       "type": "external"
     },
@@ -9648,50 +9624,98 @@
       "type": "external"
     },
     {
-      "id": "http_server",
-      "label": "http_server",
+      "id": "fastapi_middleware_cors",
+      "label": "fastapi_middleware_cors",
       "_origin": "semantic",
-      "community": 42,
-      "community_name": "mock_server.py",
+      "community": 44,
+      "community_name": "web.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "http_server",
+      "norm_label": "fastapi_middleware_cors",
       "source_file": "",
       "type": "external"
     },
     {
-      "id": "threading",
-      "label": "threading",
+      "id": "fastapi_responses",
+      "label": "fastapi_responses",
       "_origin": "semantic",
-      "community": 42,
-      "community_name": "mock_server.py",
+      "community": 44,
+      "community_name": "web.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "threading",
+      "norm_label": "fastapi_responses",
       "source_file": "",
       "type": "external"
     },
     {
-      "id": "time",
-      "label": "time",
+      "id": "fastapi_staticfiles",
+      "label": "fastapi_staticfiles",
       "_origin": "semantic",
-      "community": 42,
-      "community_name": "mock_server.py",
+      "community": 44,
+      "community_name": "web.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "time",
+      "norm_label": "fastapi_staticfiles",
       "source_file": "",
       "type": "external"
     },
     {
-      "id": "urllib_request",
-      "label": "urllib_request",
+      "id": "logging",
+      "label": "logging",
       "_origin": "semantic",
-      "community": 42,
-      "community_name": "mock_server.py",
+      "community": 44,
+      "community_name": "web.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "urllib_request",
+      "norm_label": "logging",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "os",
+      "label": "os",
+      "_origin": "semantic",
+      "community": 44,
+      "community_name": "web.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "os",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "sys",
+      "label": "sys",
+      "_origin": "semantic",
+      "community": 44,
+      "community_name": "web.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "sys",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "matplotlib",
+      "label": "matplotlib",
+      "_origin": "semantic",
+      "community": 46,
+      "community_name": "SampleStatistics",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "matplotlib",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "matplotlib_pyplot",
+      "label": "matplotlib_pyplot",
+      "_origin": "semantic",
+      "community": 46,
+      "community_name": "SampleStatistics",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "matplotlib_pyplot",
       "source_file": "",
       "type": "external"
     },
@@ -9740,6 +9764,30 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "typer",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "http_server",
+      "label": "http_server",
+      "_origin": "semantic",
+      "community": 9,
+      "community_name": "mock_server.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "http_server",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "threading",
+      "label": "threading",
+      "_origin": "semantic",
+      "community": 9,
+      "community_name": "mock_server.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "threading",
       "source_file": "",
       "type": "external"
     }
@@ -10918,7 +10966,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L262",
+      "source_location": "L263",
       "weight": 1.0
     },
     {
@@ -10930,7 +10978,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L300",
+      "source_location": "L301",
       "weight": 1.0
     },
     {
@@ -10942,7 +10990,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1062",
+      "source_location": "L1121",
       "weight": 1.0
     },
     {
@@ -10954,7 +11002,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1077",
+      "source_location": "L1136",
       "weight": 1.0
     },
     {
@@ -10966,7 +11014,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L370",
+      "source_location": "L371",
       "weight": 1.0
     },
     {
@@ -10978,7 +11026,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L378",
+      "source_location": "L379",
       "weight": 1.0
     },
     {
@@ -10990,7 +11038,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L379",
+      "source_location": "L380",
       "weight": 1.0
     },
     {
@@ -11002,7 +11050,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L399",
+      "source_location": "L400",
       "weight": 1.0
     },
     {
@@ -11014,7 +11062,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L401",
+      "source_location": "L402",
       "weight": 1.0
     },
     {
@@ -11026,7 +11074,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L406",
+      "source_location": "L407",
       "weight": 1.0
     },
     {
@@ -11038,7 +11086,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L408",
+      "source_location": "L409",
       "weight": 1.0
     },
     {
@@ -11050,19 +11098,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L330",
-      "weight": 1.0
-    },
-    {
-      "source": "src_inferload_web_static_app_initcharttoggles",
-      "target": "src_inferload_web_static_app_showtoast",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1196",
+      "source_location": "L331",
       "weight": 1.0
     },
     {
@@ -11074,7 +11110,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L166",
+      "source_location": "L167",
       "weight": 1.0
     },
     {
@@ -11086,7 +11122,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L190",
+      "source_location": "L191",
       "weight": 1.0
     },
     {
@@ -11098,7 +11134,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1309",
+      "source_location": "L1380",
       "weight": 1.0
     },
     {
@@ -11110,7 +11146,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1566",
+      "source_location": "L1744",
       "weight": 1.0
     },
     {
@@ -11122,7 +11158,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1344",
+      "source_location": "L1415",
       "weight": 1.0
     },
     {
@@ -11134,7 +11170,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1345",
+      "source_location": "L1416",
       "weight": 1.0
     },
     {
@@ -11146,7 +11182,43 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1358",
+      "source_location": "L1429",
+      "weight": 1.0
+    },
+    {
+      "source": "src_inferload_web_static_app_initmodals",
+      "target": "src_inferload_web_static_app_showtoast",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L1853",
+      "weight": 1.0
+    },
+    {
+      "source": "src_inferload_web_static_app_initmodals",
+      "target": "src_inferload_web_static_app_downloadjsonfile",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L1936",
+      "weight": 1.0
+    },
+    {
+      "source": "src_inferload_web_static_app_initmodals",
+      "target": "src_inferload_web_static_app_renderallvectorcharts",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L1996",
       "weight": 1.0
     },
     {
@@ -11158,7 +11230,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L56",
+      "source_location": "L57",
       "weight": 1.0
     },
     {
@@ -11170,7 +11242,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L110",
+      "source_location": "L111",
       "weight": 1.0
     },
     {
@@ -11182,7 +11254,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L248",
+      "source_location": "L249",
       "weight": 1.0
     },
     {
@@ -11194,7 +11266,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1463",
+      "source_location": "L1641",
       "weight": 1.0
     },
     {
@@ -11206,7 +11278,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1472",
+      "source_location": "L1650",
       "weight": 1.0
     },
     {
@@ -11218,7 +11290,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1324",
+      "source_location": "L1395",
       "weight": 1.0
     },
     {
@@ -11230,7 +11302,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1437",
+      "source_location": "L1615",
       "weight": 1.0
     },
     {
@@ -11242,7 +11314,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1438",
+      "source_location": "L1616",
       "weight": 1.0
     },
     {
@@ -11254,7 +11326,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1439",
+      "source_location": "L1617",
       "weight": 1.0
     },
     {
@@ -11266,7 +11338,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1440",
+      "source_location": "L1618",
+      "weight": 1.0
+    },
+    {
+      "source": "src_inferload_web_static_app_loadbaselinemockupdata",
+      "target": "src_inferload_web_static_app_renderfullanalyticsview",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L1548",
       "weight": 1.0
     },
     {
@@ -11278,7 +11362,31 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1383",
+      "source_location": "L1561",
+      "weight": 1.0
+    },
+    {
+      "source": "src_inferload_web_static_app_loadrecenthistory",
+      "target": "src_inferload_web_static_app_inspectexperiment",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L1454",
+      "weight": 1.0
+    },
+    {
+      "source": "src_inferload_web_static_app_loadrecenthistory",
+      "target": "src_inferload_web_static_app_loadbaselinemockupdata",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L1456",
       "weight": 1.0
     },
     {
@@ -11290,24 +11398,12 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L574",
+      "source_location": "L575",
       "weight": 1.0
     },
     {
       "source": "src_inferload_web_static_app_onbenchmarksuccess",
       "target": "src_inferload_web_static_app_appendlog",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L547",
-      "weight": 1.0
-    },
-    {
-      "source": "src_inferload_web_static_app_onbenchmarksuccess",
-      "target": "src_inferload_web_static_app_showtoast",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -11319,19 +11415,19 @@
     },
     {
       "source": "src_inferload_web_static_app_onbenchmarksuccess",
-      "target": "src_inferload_web_static_app_renderstudiosummarydrawer",
+      "target": "src_inferload_web_static_app_showtoast",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L556",
+      "source_location": "L549",
       "weight": 1.0
     },
     {
       "source": "src_inferload_web_static_app_onbenchmarksuccess",
-      "target": "src_inferload_web_static_app_renderfullanalyticsview",
+      "target": "src_inferload_web_static_app_renderstudiosummarydrawer",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -11343,7 +11439,7 @@
     },
     {
       "source": "src_inferload_web_static_app_onbenchmarksuccess",
-      "target": "src_inferload_web_static_app_loadrecenthistory",
+      "target": "src_inferload_web_static_app_renderfullanalyticsview",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -11351,6 +11447,18 @@
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
       "source_location": "L558",
+      "weight": 1.0
+    },
+    {
+      "source": "src_inferload_web_static_app_onbenchmarksuccess",
+      "target": "src_inferload_web_static_app_loadrecenthistory",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L559",
       "weight": 1.0
     },
     {
@@ -11362,7 +11470,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L426",
+      "source_location": "L427",
       "weight": 1.0
     },
     {
@@ -11374,24 +11482,12 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L430",
-      "weight": 1.0
-    },
-    {
-      "source": "src_inferload_web_static_app_polljobstatus",
-      "target": "src_inferload_web_static_app_updatestepper",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/inferload/web_static/app.js",
       "source_location": "L431",
       "weight": 1.0
     },
     {
       "source": "src_inferload_web_static_app_polljobstatus",
-      "target": "src_inferload_web_static_app_onbenchmarksuccess",
+      "target": "src_inferload_web_static_app_updatestepper",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -11403,6 +11499,18 @@
     },
     {
       "source": "src_inferload_web_static_app_polljobstatus",
+      "target": "src_inferload_web_static_app_onbenchmarksuccess",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L433",
+      "weight": 1.0
+    },
+    {
+      "source": "src_inferload_web_static_app_polljobstatus",
       "target": "src_inferload_web_static_app_onbenchmarkfailure",
       "relation": "calls",
       "_origin": "ast",
@@ -11410,7 +11518,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L436",
+      "source_location": "L437",
       "weight": 1.0
     },
     {
@@ -11422,7 +11530,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L439",
+      "source_location": "L440",
       "weight": 1.0
     },
     {
@@ -11434,7 +11542,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1485",
+      "source_location": "L1663",
       "weight": 1.0
     },
     {
@@ -11446,7 +11554,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1447",
+      "source_location": "L1625",
       "weight": 1.0
     },
     {
@@ -11458,7 +11566,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1451",
+      "source_location": "L1629",
       "weight": 1.0
     },
     {
@@ -11470,7 +11578,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L814",
+      "source_location": "L873",
       "weight": 1.0
     },
     {
@@ -11482,7 +11590,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L669",
+      "source_location": "L670",
       "weight": 1.0
     },
     {
@@ -11494,7 +11602,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L779",
+      "source_location": "L838",
       "weight": 1.0
     },
     {
@@ -11506,7 +11614,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L782",
+      "source_location": "L841",
       "weight": 1.0
     },
     {
@@ -11518,7 +11626,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L806",
+      "source_location": "L865",
       "weight": 1.0
     },
     {
@@ -11530,7 +11638,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1425",
+      "source_location": "L1603",
       "weight": 1.0
     },
     {
@@ -11542,7 +11650,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1426",
+      "source_location": "L1604",
       "weight": 1.0
     },
     {
@@ -11554,7 +11662,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L81",
+      "source_location": "L82",
       "weight": 1.0
     },
     {
@@ -11566,7 +11674,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L83",
+      "source_location": "L84",
       "weight": 1.0
     },
     {
@@ -11578,7 +11686,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L462",
+      "source_location": "L463",
       "weight": 1.0
     },
     {
@@ -11590,7 +11698,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L466",
+      "source_location": "L467",
       "weight": 1.0
     },
     {
@@ -12658,7 +12766,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1211",
+      "source_location": "L1268",
       "weight": 1.0
     },
     {
@@ -12670,7 +12778,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1277",
+      "source_location": "L1348",
       "weight": 1.0
     },
     {
@@ -12682,7 +12790,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1316",
+      "source_location": "L1387",
       "weight": 1.0
     },
     {
@@ -12694,7 +12802,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1340",
+      "source_location": "L1411",
       "weight": 1.0
     },
     {
@@ -12706,7 +12814,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1363",
+      "source_location": "L1434",
       "weight": 1.0
     },
     {
@@ -12718,7 +12826,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L144",
+      "source_location": "L145",
       "weight": 1.0
     },
     {
@@ -12730,7 +12838,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1458",
+      "source_location": "L1636",
       "weight": 1.0
     },
     {
@@ -12742,7 +12850,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1517",
+      "source_location": "L1695",
       "weight": 1.0
     },
     {
@@ -12754,7 +12862,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1583",
+      "source_location": "L1761",
+      "weight": 1.0
+    },
+    {
+      "source": "src_inferload_web_static_app",
+      "target": "src_inferload_web_static_app_initmodals",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L1795",
       "weight": 1.0
     },
     {
@@ -12766,7 +12886,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L235",
+      "source_location": "L236",
       "weight": 1.0
     },
     {
@@ -12778,7 +12898,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L51",
+      "source_location": "L52",
       "weight": 1.0
     },
     {
@@ -12790,7 +12910,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L812",
+      "source_location": "L871",
       "weight": 1.0
     },
     {
@@ -12802,7 +12922,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L90",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -12814,7 +12934,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L95",
+      "source_location": "L96",
       "weight": 1.0
     },
     {
@@ -21524,17 +21644,6 @@
     },
     {
       "source": "src_inferload_web_static_app",
-      "target": "src_inferload_web_static_app_setupcharthover",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1081",
-      "weight": 1.0
-    },
-    {
-      "source": "src_inferload_web_static_app",
       "target": "src_inferload_web_static_app_discoveredmodels",
       "relation": "contains",
       "_origin": "ast",
@@ -21546,13 +21655,13 @@
     },
     {
       "source": "src_inferload_web_static_app",
-      "target": "src_inferload_web_static_app_initcharttoggles",
+      "target": "src_inferload_web_static_app_setupcharthover",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1167",
+      "source_location": "L1140",
       "weight": 1.0
     },
     {
@@ -21568,13 +21677,35 @@
     },
     {
       "source": "src_inferload_web_static_app",
+      "target": "src_inferload_web_static_app_initcharttoggles",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L1226",
+      "weight": 1.0
+    },
+    {
+      "source": "src_inferload_web_static_app",
       "target": "src_inferload_web_static_app_populatetrialselector",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1232",
+      "source_location": "L1303",
+      "weight": 1.0
+    },
+    {
+      "source": "src_inferload_web_static_app",
+      "target": "src_inferload_web_static_app_loadbaselinemockupdata",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L1460",
       "weight": 1.0
     },
     {
@@ -21585,7 +21716,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1373",
+      "source_location": "L1551",
       "weight": 1.0
     },
     {
@@ -21596,7 +21727,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1389",
+      "source_location": "L1567",
       "weight": 1.0
     },
     {
@@ -21607,7 +21738,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1432",
+      "source_location": "L1610",
       "weight": 1.0
     },
     {
@@ -21618,7 +21749,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1446",
+      "source_location": "L1624",
       "weight": 1.0
     },
     {
@@ -21629,7 +21760,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1478",
+      "source_location": "L1656",
       "weight": 1.0
     },
     {
@@ -21640,7 +21771,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L1496",
+      "source_location": "L1674",
+      "weight": 1.0
+    },
+    {
+      "source": "src_inferload_web_static_app",
+      "target": "src_inferload_web_static_app_downloadjsonfile",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L2025",
       "weight": 1.0
     },
     {
@@ -21651,7 +21793,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L215",
+      "source_location": "L216",
       "weight": 1.0
     },
     {
@@ -21662,7 +21804,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L255",
+      "source_location": "L256",
       "weight": 1.0
     },
     {
@@ -21673,7 +21815,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L267",
+      "source_location": "L268",
       "weight": 1.0
     },
     {
@@ -21684,7 +21826,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L275",
+      "source_location": "L276",
       "weight": 1.0
     },
     {
@@ -21695,7 +21837,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L322",
+      "source_location": "L323",
       "weight": 1.0
     },
     {
@@ -21706,7 +21848,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L366",
+      "source_location": "L367",
       "weight": 1.0
     },
     {
@@ -21717,7 +21859,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L40",
+      "source_location": "L41",
       "weight": 1.0
     },
     {
@@ -21728,7 +21870,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L420",
+      "source_location": "L421",
       "weight": 1.0
     },
     {
@@ -21739,7 +21881,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L443",
+      "source_location": "L444",
       "weight": 1.0
     },
     {
@@ -21750,7 +21892,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L469",
+      "source_location": "L470",
       "weight": 1.0
     },
     {
@@ -21761,7 +21903,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L484",
+      "source_location": "L485",
       "weight": 1.0
     },
     {
@@ -21772,7 +21914,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L491",
+      "source_location": "L492",
       "weight": 1.0
     },
     {
@@ -21783,7 +21925,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L510",
+      "source_location": "L511",
       "weight": 1.0
     },
     {
@@ -21794,7 +21936,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L523",
+      "source_location": "L524",
       "weight": 1.0
     },
     {
@@ -21805,7 +21947,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L527",
+      "source_location": "L528",
       "weight": 1.0
     },
     {
@@ -21816,7 +21958,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L539",
+      "source_location": "L540",
       "weight": 1.0
     },
     {
@@ -21827,7 +21969,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L564",
+      "source_location": "L565",
       "weight": 1.0
     },
     {
@@ -21838,7 +21980,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L577",
+      "source_location": "L578",
       "weight": 1.0
     },
     {
@@ -21849,7 +21991,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L599",
+      "source_location": "L600",
       "weight": 1.0
     },
     {
@@ -21860,7 +22002,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L664",
+      "source_location": "L665",
       "weight": 1.0
     },
     {
@@ -21871,7 +22013,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L665",
+      "source_location": "L666",
       "weight": 1.0
     },
     {
@@ -21882,7 +22024,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L667",
+      "source_location": "L668",
       "weight": 1.0
     },
     {
@@ -21893,7 +22035,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L68",
+      "source_location": "L69",
       "weight": 1.0
     },
     {
@@ -21904,7 +22046,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L862",
+      "source_location": "L921",
       "weight": 1.0
     },
     {
@@ -25934,7 +26076,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L197",
+      "source_location": "L198",
       "weight": 1.0
     },
     {
@@ -25946,7 +26088,19 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/inferload/web_static/app.js",
-      "source_location": "L203",
+      "source_location": "L204",
+      "weight": 1.0
+    },
+    {
+      "source": "src_inferload_web_static_app_initsweepchips",
+      "target": "src_inferload_web_static_app_initsweepchips_syncchipsfrominput",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "argument",
+      "source_file": "src/inferload/web_static/app.js",
+      "source_location": "L1299",
       "weight": 1.0
     },
     {

@@ -20,7 +20,7 @@ import uuid
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse, Response
 from fastapi.staticfiles import StaticFiles
 import httpx
 from pydantic import BaseModel, Field
@@ -259,6 +259,16 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    @app.get("/favicon.ico", include_in_schema=False)
+    async def favicon() -> Response:
+        ico_path = static_dir / "favicon.ico"
+        if ico_path.is_file():
+            return FileResponse(ico_path, media_type="image/x-icon")
+        svg_path = static_dir / "favicon.svg"
+        if svg_path.is_file():
+            return FileResponse(svg_path, media_type="image/svg+xml")
+        return Response(status_code=204)
 
     @app.get("/api/health")
     async def get_health() -> dict[str, Any]:
