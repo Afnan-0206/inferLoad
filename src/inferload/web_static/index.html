@@ -13,7 +13,6 @@
 </head>
 <body>
   <!-- ===== TOP HEADER NAVIGATION BAR ===== -->
-  <!-- ===== TOP HEADER NAVIGATION BAR (MOCKUP ALIGNED) ===== -->
   <header class="app-header">
     <div class="header-left">
       <button type="button" class="btn-hamburger" id="btn-toggle-sidebar" title="Toggle Navigation">
@@ -23,12 +22,18 @@
         <span class="brand-title">InferLoad</span>
       </div>
 
-      <!-- Main Navigation Tabs -->
+      <!-- Main Navigation Tabs: Staged Journey + History/About -->
       <nav class="nav-mockup-tabs" aria-label="Main Navigation">
-        <button type="button" class="nav-tab active" data-tab="tab-studio" id="nav-tab-studio">Home</button>
-        <button type="button" class="nav-tab" data-tab="tab-history" id="nav-tab-history">Control</button>
-        <button type="button" class="nav-tab" data-tab="tab-reports" id="nav-tab-reports">Reports</button>
-        <button type="button" class="nav-tab" data-tab="tab-env" id="nav-tab-env">About</button>
+        <button type="button" class="nav-tab active" data-tab="tab-new" id="nav-tab-new">New Benchmark</button>
+        <button type="button" class="nav-tab" data-tab="tab-running" id="nav-tab-running">
+          <span class="pulse-indicator" id="nav-running-pulse" style="display: none;"></span>
+          Running
+        </button>
+        <button type="button" class="nav-tab" data-tab="tab-results" id="nav-tab-results">Results</button>
+        <button type="button" class="nav-tab" data-tab="tab-reports" id="nav-tab-reports">Report</button>
+        <span class="nav-divider"></span>
+        <button type="button" class="nav-tab" data-tab="tab-history" id="nav-tab-history">History</button>
+        <button type="button" class="nav-tab" data-tab="tab-about" id="nav-tab-about">About</button>
       </nav>
     </div>
 
@@ -57,370 +62,642 @@
   <main class="app-canvas">
 
     <!-- ========================================================
-         VIEW 1: UNIFIED BENCHMARK & CAPACITY CONSOLE (MOCKUP EXACT)
+         STAGE 1: NEW BENCHMARK
          ======================================================== -->
-    <section class="view-panel active" id="tab-studio">
-      <div class="mockup-grid-layout">
-        
-        <!-- LEFT CONTROL DECK -->
-        <aside class="mockup-sidebar">
-          <form id="benchmark-form" class="mockup-form" autocomplete="off">
+    <section class="view-panel active" id="tab-new">
+      <div class="workflow-stepper">
+        <div class="stepper-step active" data-step="tab-new">
+          <span class="step-num">1</span>
+          <span class="step-title">New Benchmark</span>
+        </div>
+        <div class="stepper-connector"></div>
+        <div class="stepper-step" data-step="tab-running">
+          <span class="step-num">2</span>
+          <span class="step-title">Running</span>
+        </div>
+        <div class="stepper-connector"></div>
+        <div class="stepper-step" data-step="tab-results">
+          <span class="step-num">3</span>
+          <span class="step-title">Results</span>
+        </div>
+        <div class="stepper-connector"></div>
+        <div class="stepper-step" data-step="tab-reports">
+          <span class="step-num">4</span>
+          <span class="step-title">Report</span>
+        </div>
+      </div>
+
+      <div class="new-benchmark-container">
+        <form id="benchmark-form" class="mockup-form" autocomplete="off">
+          <div class="new-benchmark-cards-grid">
             
-            <!-- Quick Presets -->
-            <div class="sidebar-group">
-              <span class="group-title">Target preset</span>
-              <div class="preset-pill-row">
-                <button type="button" class="preset-pill-btn active" id="preset-mock">Demo Mock</button>
-                <button type="button" class="preset-pill-btn" id="preset-ollama">Ollama</button>
-                <button type="button" class="preset-pill-btn" id="preset-vllm">vLLM</button>
-              </div>
-            </div>
-
-            <!-- Target endpoint -->
-            <div class="sidebar-group">
-              <label for="target-base-url" class="group-title">Target endpoint</label>
-              <input type="text" id="target-base-url" class="mockup-input" value="http://localhost:8000/v1" placeholder="http://localhost:8000/v1" required>
-            </div>
-
-            <!-- Model -->
-            <div class="sidebar-group">
-              <label for="target-model" class="group-title">Model</label>
-              <div class="autocomplete-wrap">
-                <input type="text" id="target-model" class="mockup-input" value="mock-llama3-8b" placeholder="LLM model" required>
-                <div class="dropdown-popover" id="model-dropdown"></div>
-              </div>
-            </div>
-
-            <!-- Multi-concurrency sweep -->
-            <div class="sidebar-group">
-              <label for="sweep-concurrency" class="group-title">Multi-concurrency sweep</label>
-              <div class="concurrency-chips-bar" id="sweep-preset-chips">
-                <button type="button" class="conc-chip" data-val="1">1</button>
-                <button type="button" class="conc-chip" data-val="2">2</button>
-                <button type="button" class="conc-chip active" data-val="4">4</button>
-                <button type="button" class="conc-chip" data-val="8">8</button>
-                <button type="button" class="conc-chip" data-val="16">16</button>
-              </div>
-              <input type="text" id="sweep-concurrency" class="mockup-input-subtle" value="1, 2, 4, 8, 16" placeholder="1, 2, 4, 8, 16">
-              <div class="concurrency-calibration-advisory">
-                <span class="advisory-pill">c &le; 128 Calibrated</span>
-                <span class="advisory-hint">Single-instance precision envelope. For c &gt; 500, see <a href="/docs/enterprise_scaling_architecture.md" target="_blank" class="link-subtle">Distributed Topology</a>.</span>
-              </div>
-            </div>
-
-            <!-- SSE streaming toggle -->
-            <div class="sidebar-group">
-              <div class="toggle-row-labeled">
-                <span class="group-title">SSE streaming <span class="info-circle" title="Stream response tokens via Server-Sent Events (SSE)">ⓘ</span></span>
-                <label class="mockup-switch">
-                  <input type="checkbox" id="workload-stream" checked>
-                  <span class="mockup-slider"></span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Strict SLO thresholds -->
-            <div class="sidebar-group">
-              <span class="group-title">Strict SLO thresholds</span>
-              <div class="slo-inline-row">
-                <span class="slo-tag">TTFT &lt;</span>
-                <div class="slo-input-wrap">
-                  <input type="number" id="slo-ttft" value="350" min="1" step="50" class="slo-input">
-                  <span class="slo-unit">ms</span>
+            <!-- Card 1: Target Endpoint & Presets -->
+            <div class="config-card">
+              <div class="config-card-header">
+                <div>
+                  <h3 class="config-card-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Target Inference Server
+                  </h3>
+                  <p class="config-card-desc">Select a preset or configure an OpenAI-compatible endpoint URL.</p>
                 </div>
               </div>
-              <div class="slo-inline-row">
-                <span class="slo-tag">Latency &lt;</span>
-                <div class="slo-input-wrap">
-                  <input type="number" id="slo-latency" value="1500" min="1" step="50" class="slo-input">
-                  <span class="slo-unit">ms</span>
+
+              <div class="sidebar-group">
+                <span class="group-title">Target preset</span>
+                <div class="preset-pill-row">
+                  <button type="button" class="preset-pill-btn active" id="preset-mock" data-preset="mock">
+                    <span>Demo Mock</span>
+                    <span class="preset-pill-tag">Built-in</span>
+                  </button>
+                  <button type="button" class="preset-pill-btn" id="preset-ollama" data-preset="ollama">
+                    <span>Ollama</span>
+                    <span class="preset-pill-tag tag-amber">Local only</span>
+                  </button>
+                  <button type="button" class="preset-pill-btn" id="preset-vllm" data-preset="vllm">
+                    <span>vLLM</span>
+                    <span class="preset-pill-tag tag-blue">Remote endpoint required</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="sidebar-group" style="margin-top: 12px;">
+                <label for="target-base-url" class="group-title">Target endpoint URL</label>
+                <input type="text" id="target-base-url" class="mockup-input" value="/mock/v1" placeholder="/mock/v1" required>
+              </div>
+
+              <!-- Dynamic Advisory Banner for Cloud / Local Endpoint Clarity -->
+              <div class="endpoint-advisory-box mock" id="endpoint-advisory" style="margin-top: 10px;">
+                <span class="info-icon">ℹ️</span>
+                <span id="endpoint-advisory-text">Demo mode — runs against InferLoad's built-in test endpoint. Works immediately on cloud deployments without requiring external models or GPU servers.</span>
+              </div>
+
+              <div class="sidebar-group" style="margin-top: 12px;">
+                <label for="target-model" class="group-title">Model name</label>
+                <div class="autocomplete-wrap">
+                  <input type="text" id="target-model" class="mockup-input" value="mock-llama3-8b" placeholder="LLM model (e.g. mock-llama3-8b, qwen2.5:0.5b)" required>
+                  <div class="dropdown-popover" id="model-dropdown"></div>
                 </div>
               </div>
             </div>
 
-            <!-- Collapsible Advanced Settings -->
-            <details class="sidebar-advanced">
-              <summary>Advanced Traffic &amp; Prompts</summary>
-              <div class="advanced-body">
+            <!-- Card 2: Multi-Concurrency Sweep & Workload -->
+            <div class="config-card">
+              <div class="config-card-header">
+                <div>
+                  <h3 class="config-card-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v14"></path></svg>
+                    Multi-Concurrency Sweep &amp; Physics
+                  </h3>
+                  <p class="config-card-desc">Define tested load steps to observe TTFT and latency scaling knee.</p>
+                </div>
+              </div>
+
+              <div class="sidebar-group">
+                <label for="sweep-concurrency" class="group-title">Concurrency sweep levels</label>
+                <div class="concurrency-chips-bar" id="sweep-preset-chips">
+                  <button type="button" class="conc-chip active" data-val="1">1</button>
+                  <button type="button" class="conc-chip active" data-val="2">2</button>
+                  <button type="button" class="conc-chip active" data-val="4">4</button>
+                  <button type="button" class="conc-chip" data-val="8">8</button>
+                  <button type="button" class="conc-chip" data-val="16">16</button>
+                </div>
+                <input type="text" id="sweep-concurrency" class="mockup-input-subtle" value="1, 2, 4" placeholder="1, 2, 4">
+                <div class="concurrency-calibration-advisory">
+                  <span class="advisory-pill">c &le; 128 Calibrated</span>
+                  <span class="advisory-hint">Single-instance precision envelope. For c &gt; 500, see distributed topology.</span>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
                 <div class="sidebar-group">
-                  <label for="sweep-repetitions" class="group-title">Reps / Point</label>
-                  <input type="number" id="sweep-repetitions" class="mockup-input" value="2" min="1" max="10">
-                </div>
-                <div class="sidebar-group">
-                  <label for="sweep-requests" class="group-title">Reqs / Point</label>
-                  <input type="number" id="sweep-requests" class="mockup-input" value="5" min="1" max="200">
+                  <div class="toggle-row-labeled">
+                    <span class="group-title">SSE streaming <span class="info-circle" title="Stream response tokens via Server-Sent Events to capture TTFT">ⓘ</span></span>
+                    <label class="mockup-switch">
+                      <input type="checkbox" id="workload-stream" checked>
+                      <span class="mockup-slider"></span>
+                    </label>
+                  </div>
                 </div>
                 <div class="sidebar-group">
                   <label for="workload-max-tokens" class="group-title">Max Tokens</label>
                   <input type="number" id="workload-max-tokens" class="mockup-input" value="32" min="1" max="4096">
                 </div>
-                <div class="sidebar-group">
-                  <label for="workload-temperature" class="group-title">Temperature</label>
-                  <input type="number" id="workload-temperature" class="mockup-input" value="0.0" min="0" max="2" step="0.1">
+              </div>
+            </div>
+
+            <!-- Card 3: Prompts -->
+            <div class="config-card">
+              <div class="config-card-header">
+                <div>
+                  <h3 class="config-card-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path></svg>
+                    Benchmark Prompts
+                  </h3>
+                  <p class="config-card-desc">Prompts dispatched uniformly or randomly across client streams.</p>
                 </div>
-                <div class="sidebar-group">
-                  <label for="workload-seed" class="group-title">Seed</label>
-                  <input type="number" id="workload-seed" class="mockup-input" value="42">
+                <button type="button" class="btn-subtle-add" id="btn-add-prompt">+ Add Prompt</button>
+              </div>
+
+              <div id="prompts-container" class="prompts-stack">
+                <div class="prompt-item">
+                  <input type="text" class="prompt-text-input" value="Explain how database indexing optimizes search latency." required>
+                  <button type="button" class="btn-del-prompt" title="Remove">&times;</button>
                 </div>
-                <div class="sidebar-group">
-                  <label for="exec-warmup" class="group-title">Warmup Requests</label>
-                  <input type="number" id="exec-warmup" class="mockup-input" value="1" min="0" max="20">
+              </div>
+            </div>
+
+            <!-- Card 4: Strict SLO Gates -->
+            <div class="config-card">
+              <div class="config-card-header">
+                <div>
+                  <h3 class="config-card-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Strict SLO Gates (Service Level Objectives)
+                  </h3>
+                  <p class="config-card-desc">Thresholds used to determine Highest Observed Compliant Tested Concurrency.</p>
                 </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;">
                 <div class="sidebar-group">
-                  <label for="slo-throughput" class="group-title">Min Throughput (req/s)</label>
-                  <input type="number" id="slo-throughput" class="mockup-input" value="1.0" min="0.1" step="0.5">
-                </div>
-                <div class="sidebar-group">
-                  <label for="slo-error" class="group-title">Max Error Rate (%)</label>
-                  <input type="number" id="slo-error" class="mockup-input" value="1.0" min="0" max="100" step="0.5">
-                </div>
-                <div class="sidebar-group">
-                  <label for="target-timeout" class="group-title">Request Timeout (s)</label>
-                  <input type="number" id="target-timeout" class="mockup-input" value="60" min="5" step="5">
-                </div>
-                <div class="sidebar-group">
-                  <label for="target-api-key" class="group-title">API Key (optional)</label>
-                  <input type="password" id="target-api-key" class="mockup-input" placeholder="Bearer token">
-                </div>
-                <div class="sidebar-group">
-                  <label for="arrival-mode" class="group-title">Arrival Mode</label>
-                  <select id="arrival-mode" class="mockup-input">
-                    <option value="closed" selected>Closed-loop</option>
-                    <option value="rate">Open-loop</option>
-                  </select>
-                </div>
-                <div class="sidebar-group" id="open-loop-rate-group" style="display: none;">
-                  <label for="arrival-rate" class="group-title">Target Arrival Rate (req/s)</label>
-                  <input type="number" id="arrival-rate" class="mockup-input" value="2.0" min="0.1" step="0.5">
-                </div>
-                <div class="sidebar-group">
-                  <div class="group-title-row">
-                    <span class="group-title">Benchmark Prompts</span>
-                    <button type="button" class="btn-subtle-add" id="btn-add-prompt">+ Add</button>
-                  </div>
-                  <div id="prompts-container" class="prompts-stack">
-                    <div class="prompt-item">
-                      <input type="text" class="prompt-text-input" value="Explain how database indexing optimizes search latency." required>
-                      <button type="button" class="btn-del-prompt" title="Remove">&times;</button>
+                  <label for="slo-ttft" class="group-title">TTFT p95 Threshold</label>
+                  <div class="slo-inline-row">
+                    <span class="slo-tag">&lt;</span>
+                    <div class="slo-input-wrap">
+                      <input type="number" id="slo-ttft" value="350" min="1" step="50" class="slo-input">
+                      <span class="slo-unit">ms</span>
                     </div>
+                  </div>
+                </div>
+
+                <div class="sidebar-group">
+                  <label for="slo-latency" class="group-title">Total Latency p95</label>
+                  <div class="slo-inline-row">
+                    <span class="slo-tag">&lt;</span>
+                    <div class="slo-input-wrap">
+                      <input type="number" id="slo-latency" value="1500" min="1" step="50" class="slo-input">
+                      <span class="slo-unit">ms</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sidebar-group">
+                  <label for="slo-throughput" class="group-title">Min Throughput</label>
+                  <div class="slo-inline-row">
+                    <span class="slo-tag">&ge;</span>
+                    <div class="slo-input-wrap">
+                      <input type="number" id="slo-throughput" value="1.0" min="0.1" step="0.5" class="slo-input">
+                      <span class="slo-unit">req/s</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sidebar-group">
+                  <label for="slo-error" class="group-title">Max Error Rate</label>
+                  <div class="slo-inline-row">
+                    <span class="slo-tag">&le;</span>
+                    <div class="slo-input-wrap">
+                      <input type="number" id="slo-error" value="1.0" min="0" max="100" step="0.5" class="slo-input">
+                      <span class="slo-unit">%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 5: Advanced Traffic & Execution -->
+            <details class="sidebar-advanced config-card">
+              <summary class="config-card-title" style="cursor: pointer;">
+                <span>Advanced Traffic &amp; Repeatability Controls</span>
+              </summary>
+              <div class="advanced-body" style="margin-top: 14px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;">
+                  <div class="sidebar-group">
+                    <label for="sweep-repetitions" class="group-title">Reps / Point</label>
+                    <input type="number" id="sweep-repetitions" class="mockup-input" value="2" min="1" max="10">
+                  </div>
+                  <div class="sidebar-group">
+                    <label for="sweep-requests" class="group-title">Reqs / Point</label>
+                    <input type="number" id="sweep-requests" class="mockup-input" value="5" min="1" max="200">
+                  </div>
+                  <div class="sidebar-group">
+                    <label for="exec-warmup" class="group-title">Warmup Requests</label>
+                    <input type="number" id="exec-warmup" class="mockup-input" value="1" min="0" max="20">
+                  </div>
+                  <div class="sidebar-group">
+                    <label for="workload-temperature" class="group-title">Temperature</label>
+                    <input type="number" id="workload-temperature" class="mockup-input" value="0.0" min="0" max="2" step="0.1">
+                  </div>
+                  <div class="sidebar-group">
+                    <label for="workload-seed" class="group-title">Seed</label>
+                    <input type="number" id="workload-seed" class="mockup-input" value="42">
+                  </div>
+                  <div class="sidebar-group">
+                    <label for="target-timeout" class="group-title">Request Timeout (s)</label>
+                    <input type="number" id="target-timeout" class="mockup-input" value="60" min="5" step="5">
+                  </div>
+                  <div class="sidebar-group">
+                    <label for="target-api-key" class="group-title">API Key (optional)</label>
+                    <input type="password" id="target-api-key" class="mockup-input" placeholder="Bearer token">
+                  </div>
+                  <div class="sidebar-group">
+                    <label for="arrival-mode" class="group-title">Arrival Mode</label>
+                    <select id="arrival-mode" class="mockup-input">
+                      <option value="closed" selected>Closed-loop</option>
+                      <option value="rate">Open-loop</option>
+                    </select>
+                  </div>
+                  <div class="sidebar-group" id="open-loop-rate-group" style="display: none;">
+                    <label for="arrival-rate" class="group-title">Target Arrival Rate (req/s)</label>
+                    <input type="number" id="arrival-rate" class="mockup-input" value="2.0" min="0.1" step="0.5">
                   </div>
                 </div>
               </div>
             </details>
 
-            <!-- Prominent Blue Action Button (matches mockup) -->
-            <button type="submit" class="btn-mockup-blue" id="btn-run">
-              <span id="btn-run-text">Save</span>
-            </button>
+            <!-- Card 6: Action Deck -->
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-top: 8px;">
+              <div style="display: flex; gap: 10px;">
+                <button type="button" class="btn-sidebar-subtle" id="btn-validate">Validate Target</button>
+                <button type="button" class="btn-sidebar-subtle" id="btn-reset">Reset</button>
+              </div>
 
-            <!-- Secondary Actions -->
-            <div class="sidebar-secondary-btns">
-              <button type="button" class="btn-sidebar-subtle" id="btn-validate">Validate</button>
-              <button type="button" class="btn-sidebar-subtle" id="btn-reset">Reset</button>
+              <button type="submit" class="btn-mockup-blue btn-action-large" id="btn-run">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span id="btn-run-text">Run Benchmark</span>
+              </button>
             </div>
 
             <!-- Feedback -->
             <div id="validation-banner" class="banner-feedback" style="display: none;"></div>
-          </form>
-        </aside>
 
-        <!-- RIGHT MAIN TELEMETRY & RESULTS DECK (MOCKUP EXACT) -->
-        <main class="mockup-main">
-          
-          <!-- Live Execution Banner (Active only during runs) -->
-          <div class="live-execution-banner" id="progress-card" style="display: none;">
-            <div class="live-exec-header">
-              <div class="live-status-chip">
-                <span class="status-pulse-dot" style="background:#8b5cf6;"></span>
-                <span id="execution-status-text">Benchmark in Progress</span>
-              </div>
-              <span class="live-timer" id="progress-timer">0m 00s</span>
-            </div>
-            <div class="hud-progress-track">
-              <div class="hud-progress-fill" id="progress-bar-fill" style="width: 0%;"></div>
-            </div>
-            <div class="hud-progress-meta">
-              <span id="progress-trials">0 / 0 trials completed</span>
-              <span id="progress-trial-id" class="badge-trial-id">Initializing...</span>
-            </div>
           </div>
-
-          <!-- Error Alert Banner -->
-          <div class="monitor-error-card" id="error-card" style="display: none;">
-            <div class="error-header-bar">
-              <span class="error-title">Execution Error</span>
-              <button type="button" class="btn-dismiss-err" id="btn-dismiss-error">&times;</button>
-            </div>
-            <p class="error-detail-msg" id="error-card-msg"></p>
-          </div>
-
-          <!-- 1. Executive Capacity Planner Card -->
-          <div class="mockup-capacity-card" id="capacity-hero">
-            <div class="capacity-card-top">
-              <span class="capacity-card-title">Executive Capacity Planner</span>
-              <span class="badge-compliance-pill compliant" id="hero-capacity-badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Compliance</span>
-              </span>
-            </div>
-            <div class="capacity-card-body">
-              <span class="capacity-statement">Highest Observed Compliant Tested Concurrency:</span>
-              <span class="capacity-number-badge" id="hero-capacity-value">8</span>
-            </div>
-          </div>
-
-          <!-- 2. Performance Scaling Curves (2x2 Grid matching mockup) -->
-          <div class="mockup-charts-grid" id="plots-grid">
-            <!-- Curve 1: TTFT p95 -->
-            <div class="mockup-chart-card" id="card-plot-ttft" data-metric="ttft">
-              <div class="chart-card-header">
-                <span class="chart-card-title">Concurrency vs TTFT p95 (ms)</span>
-                <div class="chart-card-actions">
-                  <button type="button" class="chart-toggle-btn active" data-chart="ttft" data-mode="canvas">Vector</button>
-                  <button type="button" class="chart-toggle-btn" data-chart="ttft" data-mode="img">PNG</button>
-                </div>
-              </div>
-              <div class="chart-canvas-wrapper" id="wrap-plot-ttft">
-                <canvas id="canvas-plot-ttft" class="interactive-chart-canvas"></canvas>
-                <div class="chart-img-wrapper" id="img-wrap-ttft" style="display: none;">
-                  <img id="plot-ttft" class="chart-image" alt="TTFT Scaling Plot">
-                </div>
-                <div class="chart-tooltip" id="tooltip-plot-ttft"></div>
-              </div>
-              <div class="chart-mockup-legend">
-                <span class="legend-item"><span class="legend-line" style="background: #10b981;"></span>Concurrency</span>
-                <span class="legend-item"><span class="legend-line" style="background: #34d399;"></span>TTFT p95 (ms)</span>
-              </div>
-            </div>
-
-            <!-- Curve 2: Total Latency -->
-            <div class="mockup-chart-card" id="card-plot-latency" data-metric="latency">
-              <div class="chart-card-header">
-                <span class="chart-card-title">Concurrency vs Total Latency (p50, p95, p99)</span>
-                <div class="chart-card-actions">
-                  <button type="button" class="btn-overlay-toggle" id="btn-toggle-kv-overlay" title="Overlay GPU KV-Cache Memory % on latency curve">
-                    <span class="telemetry-sparkle">◆</span>
-                    <span>KV-Cache %</span>
-                    <span class="badge-mini" id="badge-kv-overlay">OFF</span>
-                  </button>
-                  <button type="button" class="chart-toggle-btn active" data-chart="latency" data-mode="canvas">Vector</button>
-                  <button type="button" class="chart-toggle-btn" data-chart="latency" data-mode="img">PNG</button>
-                </div>
-              </div>
-              <div class="chart-canvas-wrapper" id="wrap-plot-latency">
-                <canvas id="canvas-plot-latency" class="interactive-chart-canvas"></canvas>
-                <div class="chart-img-wrapper" id="img-wrap-latency" style="display: none;">
-                  <img id="plot-latency" class="chart-image" alt="Total Latency Plot">
-                </div>
-                <div class="chart-tooltip" id="tooltip-plot-latency"></div>
-              </div>
-              <div class="chart-mockup-legend">
-                <span class="legend-item"><span class="legend-line" style="background: #38bdf8;"></span>Concurrency</span>
-                <span class="legend-item"><span class="legend-line" style="background: #10b981;"></span>Total Latency</span>
-                <span class="legend-item"><span class="legend-line" style="background: #f59e0b;"></span>p50, p95, p99</span>
-                <span class="legend-item legend-kv-item" id="legend-kv-latency" style="display: none;"><span class="legend-diamond" style="color: #a855f7;">◆</span>KV-Cache %</span>
-              </div>
-            </div>
-
-            <!-- Curve 3: Throughput (with Saturation Inflection) -->
-            <div class="mockup-chart-card" id="card-plot-throughput" data-metric="throughput">
-              <div class="chart-card-header">
-                <span class="chart-card-title">Throughput (req/s &amp; tok/s)</span>
-                <div class="chart-card-actions">
-                  <button type="button" class="chart-toggle-btn active" data-chart="throughput" data-mode="canvas">Vector</button>
-                  <button type="button" class="chart-toggle-btn" data-chart="throughput" data-mode="img">PNG</button>
-                </div>
-              </div>
-              <div class="chart-canvas-wrapper" id="wrap-plot-throughput">
-                <canvas id="canvas-plot-throughput" class="interactive-chart-canvas"></canvas>
-                <div class="chart-img-wrapper" id="img-wrap-throughput" style="display: none;">
-                  <img id="plot-throughput" class="chart-image" alt="Throughput Plot">
-                </div>
-                <div class="chart-tooltip" id="tooltip-plot-throughput"></div>
-              </div>
-              <div class="chart-mockup-legend">
-                <span class="legend-item"><span class="legend-line" style="background: #10b981;"></span>Throughput (req/s &amp; tok/s)</span>
-                <span class="legend-item"><span class="legend-line" style="background: #38bdf8;"></span>(req/s &amp; tok/s)</span>
-              </div>
-            </div>
-
-            <!-- Curve 4: Error Rate % -->
-            <div class="mockup-chart-card" id="card-plot-errors" data-metric="errors">
-              <div class="chart-card-header">
-                <span class="chart-card-title">Error rate %</span>
-                <div class="chart-card-actions">
-                  <button type="button" class="chart-toggle-btn active" data-chart="errors" data-mode="canvas">Vector</button>
-                  <button type="button" class="chart-toggle-btn" data-chart="errors" data-mode="img">PNG</button>
-                </div>
-              </div>
-              <div class="chart-canvas-wrapper" id="wrap-plot-errors">
-                <canvas id="canvas-plot-errors" class="interactive-chart-canvas"></canvas>
-                <div class="chart-img-wrapper" id="img-wrap-errors" style="display: none;">
-                  <img id="plot-errors" class="chart-image" alt="Error Rate Plot">
-                </div>
-                <div class="chart-tooltip" id="tooltip-plot-errors"></div>
-              </div>
-              <div class="chart-mockup-legend">
-                <span class="legend-item"><span class="legend-line" style="background: #10b981;"></span>Error rate</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Saturation Notice Card (if saturation was found) -->
-          <div class="saturation-card" id="saturation-section" style="display: none; margin-top: 16px;">
-            <div class="saturation-badge">Saturation Behavior Detected</div>
-            <div id="saturation-findings" class="saturation-details"></div>
-          </div>
-
-          <!-- 3. Measured Breakdown Table -->
-          <div class="mockup-table-card">
-            <div class="table-card-top">
-              <span class="table-card-heading">Measured Breakdown</span>
-            </div>
-            <div class="data-table-scroll">
-              <table class="mockup-data-table" id="table-breakdown">
-                <thead>
-                  <tr>
-                    <th>Concurrency</th>
-                    <th>Repetitions</th>
-                    <th>TTFT percentiles</th>
-                    <th>Latency percentiles</th>
-                    <th>RPS</th>
-                    <th>SLO</th>
-                  </tr>
-                </thead>
-                <tbody id="breakdown-tbody">
-                  <!-- Populated dynamically by app.js -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Audit Links & Per-token inspector -->
-          <details class="mockup-audit-details">
-            <summary>Artifacts &amp; Real-time Execution Logs</summary>
-            <div class="audit-details-body">
-              <div class="artifacts-grid-links" id="artifact-links-list"></div>
-              <div class="studio-terminal">
-                <div class="terminal-bar">
-                  <div class="terminal-dots"><span></span><span></span><span></span></div>
-                  <span class="terminal-label">Execution Log Stream</span>
-                  <div class="terminal-btns">
-                    <button type="button" class="btn-micro" id="btn-copy-logs">Copy Logs</button>
-                    <button type="button" class="btn-micro" id="btn-clear-logs">Clear</button>
-                  </div>
-                </div>
-                <pre class="terminal-screen" id="terminal-output">[InferLoad] Ready.</pre>
-              </div>
-            </div>
-          </details>
-
-        </main>
+        </form>
       </div>
     </section>
 
     <!-- ========================================================
-         VIEW 3: EXPERIMENTS HISTORY ARCHIVE
+         STAGE 2: RUNNING (LIVE EXECUTION COCKPIT)
+         ======================================================== -->
+    <section class="view-panel" id="tab-running">
+      <div class="workflow-stepper">
+        <div class="stepper-step completed" data-step="tab-new">
+          <span class="step-num">✓</span>
+          <span class="step-title">New Benchmark</span>
+        </div>
+        <div class="stepper-connector"></div>
+        <div class="stepper-step active" data-step="tab-running">
+          <span class="step-num">2</span>
+          <span class="step-title">Running</span>
+        </div>
+        <div class="stepper-connector"></div>
+        <div class="stepper-step" data-step="tab-results">
+          <span class="step-num">3</span>
+          <span class="step-title">Results</span>
+        </div>
+        <div class="stepper-connector"></div>
+        <div class="stepper-step" data-step="tab-reports">
+          <span class="step-num">4</span>
+          <span class="step-title">Report</span>
+        </div>
+      </div>
+
+      <div class="running-cockpit-card" id="running-card">
+        <div class="cockpit-header">
+          <div class="cockpit-title-wrap">
+            <h2 class="cockpit-title" id="running-exp-title">Experiment Sweep in Progress</h2>
+            <span class="cockpit-meta" id="running-exp-target">Target: /mock/v1 (mock-llama3-8b)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="live-status-pill running" id="running-status-pill">
+              <span class="status-pulse-dot"></span>
+              <span id="execution-status-text">Benchmark in Progress</span>
+            </div>
+            <span class="live-timer" id="progress-timer">0m 00s</span>
+          </div>
+        </div>
+
+        <!-- Progress Track -->
+        <div class="hud-progress-track">
+          <div class="hud-progress-fill" id="progress-bar-fill" style="width: 0%;"></div>
+        </div>
+        <div class="hud-progress-meta">
+          <span id="progress-trials">0 / 6 trials completed (0%)</span>
+          <span id="progress-trial-id" class="badge-trial-id">Initializing sweep...</span>
+        </div>
+
+        <!-- Error Card (shown only if execution fails) -->
+        <div class="monitor-error-card" id="error-card" style="display: none;">
+          <div class="error-header-bar">
+            <span class="error-title">Execution Error</span>
+            <button type="button" class="btn-dismiss-err" id="btn-dismiss-error">&times;</button>
+          </div>
+          <p class="error-detail-msg" id="error-card-msg"></p>
+          <div style="margin-top: 10px;">
+            <button type="button" class="btn-sidebar-subtle" id="btn-error-back-new">← Back to Benchmark Configuration</button>
+          </div>
+        </div>
+
+        <!-- Live Terminal Stream -->
+        <div class="studio-terminal">
+          <div class="terminal-bar">
+            <div class="terminal-dots"><span></span><span></span><span></span></div>
+            <span class="terminal-label">Live Execution Log</span>
+            <div class="terminal-btns">
+              <button type="button" class="btn-micro" id="btn-copy-logs">Copy Logs</button>
+              <button type="button" class="btn-micro" id="btn-clear-logs">Clear</button>
+            </div>
+          </div>
+          <pre class="terminal-screen" id="terminal-output">[InferLoad] Ready. Waiting for benchmark start...</pre>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="btn-sidebar-subtle" id="btn-view-results-in-progress" style="display: none;">View Live Results →</button>
+          <button type="button" class="btn-sidebar-subtle" id="btn-abort-job" style="display: none;">Cancel Benchmark</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         STAGE 3: RESULTS (VERDICT, KPIS, SCALING CURVES & TABLE)
+         ======================================================== -->
+    <section class="view-panel" id="tab-results">
+      <div class="workflow-stepper">
+        <div class="stepper-step completed" data-step="tab-new">
+          <span class="step-num">✓</span>
+          <span class="step-title">New Benchmark</span>
+        </div>
+        <div class="stepper-connector"></div>
+        <div class="stepper-step completed" data-step="tab-running">
+          <span class="step-num">✓</span>
+          <span class="step-title">Running</span>
+        </div>
+        <div class="stepper-connector"></div>
+        <div class="stepper-step active" data-step="tab-results">
+          <span class="step-num">3</span>
+          <span class="step-title">Results</span>
+        </div>
+        <div class="stepper-connector"></div>
+        <div class="stepper-step" data-step="tab-reports">
+          <span class="step-num">4</span>
+          <span class="step-title">Report</span>
+        </div>
+      </div>
+
+      <!-- State A: Initial Empty State (When no benchmark has run yet) -->
+      <div class="results-empty-card" id="results-empty-state">
+        <div class="empty-icon-circle">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v14"></path></svg>
+        </div>
+        <h3 class="empty-heading">No benchmark run yet</h3>
+        <p class="empty-subtext">Configure a workload and run your first experiment to measure defensible client-observed LLM capacity and latency curves.</p>
+        <button type="button" class="btn-mockup-blue btn-action-large" id="btn-results-to-new">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <span>Configure New Benchmark</span>
+        </button>
+      </div>
+
+      <!-- State B: Active Results Deck (Visible after real experiment completes) -->
+      <div class="results-active-deck" id="results-active-deck" style="display: none;">
+        
+        <!-- 1. Executive Capacity Planner Card -->
+        <div class="mockup-capacity-card" id="capacity-hero">
+          <div class="capacity-card-top">
+            <span class="capacity-card-title">Executive Capacity Planner</span>
+            <span class="badge-compliance-pill compliant" id="hero-capacity-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Compliance</span>
+            </span>
+          </div>
+          <div class="capacity-card-body">
+            <span class="capacity-statement">Highest Observed Compliant Tested Concurrency:</span>
+            <span class="capacity-number-badge" id="hero-capacity-value">—</span>
+          </div>
+          <p class="capacity-summary-subtext" id="hero-capacity-subtext">Maximum tested concurrency level where all repetitions met defined SLO gates.</p>
+        </div>
+
+        <!-- 2. The 4 Primary KPI Summary Cards -->
+        <div class="hero-kpis-grid">
+          <div class="kpi-tile">
+            <span class="kpi-label">TTFT p95 (Time to First Token)</span>
+            <div class="kpi-value-row">
+              <span class="kpi-num" id="hero-kpi-ttft">—</span>
+              <span class="kpi-unit">ms</span>
+            </div>
+          </div>
+          <div class="kpi-tile">
+            <span class="kpi-label">Total Latency p95</span>
+            <div class="kpi-value-row">
+              <span class="kpi-num" id="hero-kpi-latency">—</span>
+              <span class="kpi-unit">ms</span>
+            </div>
+          </div>
+          <div class="kpi-tile">
+            <span class="kpi-label">Throughput</span>
+            <div class="kpi-value-row">
+              <span class="kpi-num" id="hero-kpi-throughput">—</span>
+              <span class="kpi-unit">req/s</span>
+            </div>
+          </div>
+          <div class="kpi-tile">
+            <span class="kpi-label">Error Rate</span>
+            <div class="kpi-value-row">
+              <span class="kpi-num" id="hero-kpi-errors">—</span>
+              <span class="kpi-unit">%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Performance Scaling Curves (2x2 Grid) -->
+        <div class="mockup-charts-grid" id="plots-grid" style="margin-top: 20px;">
+          <!-- Curve 1: TTFT p95 -->
+          <div class="mockup-chart-card" id="card-plot-ttft" data-metric="ttft">
+            <div class="chart-card-header">
+              <span class="chart-card-title">Concurrency vs TTFT p95 (ms)</span>
+              <div class="chart-card-actions">
+                <button type="button" class="chart-toggle-btn active" data-chart="ttft" data-mode="canvas">Vector</button>
+                <button type="button" class="chart-toggle-btn" data-chart="ttft" data-mode="img">PNG</button>
+              </div>
+            </div>
+            <div class="chart-canvas-wrapper" id="wrap-plot-ttft">
+              <canvas id="canvas-plot-ttft" class="interactive-chart-canvas"></canvas>
+              <div class="chart-img-wrapper" id="img-wrap-ttft" style="display: none;">
+                <img id="plot-ttft" class="chart-image" alt="TTFT Scaling Plot">
+              </div>
+              <div class="chart-tooltip" id="tooltip-plot-ttft"></div>
+            </div>
+            <div class="chart-mockup-legend">
+              <span class="legend-item"><span class="legend-line" style="background: #10b981;"></span>Concurrency</span>
+              <span class="legend-item"><span class="legend-line" style="background: #34d399;"></span>TTFT p95 (ms)</span>
+            </div>
+          </div>
+
+          <!-- Curve 2: Total Latency -->
+          <div class="mockup-chart-card" id="card-plot-latency" data-metric="latency">
+            <div class="chart-card-header">
+              <span class="chart-card-title">Concurrency vs Total Latency (p50, p95, p99)</span>
+              <div class="chart-card-actions">
+                <button type="button" class="btn-overlay-toggle" id="btn-toggle-kv-overlay" title="Overlay GPU KV-Cache Memory % on latency curve">
+                  <span class="telemetry-sparkle">◆</span>
+                  <span>KV-Cache %</span>
+                  <span class="badge-mini" id="badge-kv-overlay">OFF</span>
+                </button>
+                <button type="button" class="chart-toggle-btn active" data-chart="latency" data-mode="canvas">Vector</button>
+                <button type="button" class="chart-toggle-btn" data-chart="latency" data-mode="img">PNG</button>
+              </div>
+            </div>
+            <div class="chart-canvas-wrapper" id="wrap-plot-latency">
+              <canvas id="canvas-plot-latency" class="interactive-chart-canvas"></canvas>
+              <div class="chart-img-wrapper" id="img-wrap-latency" style="display: none;">
+                <img id="plot-latency" class="chart-image" alt="Total Latency Plot">
+              </div>
+              <div class="chart-tooltip" id="tooltip-plot-latency"></div>
+            </div>
+            <div class="chart-mockup-legend">
+              <span class="legend-item"><span class="legend-line" style="background: #38bdf8;"></span>Concurrency</span>
+              <span class="legend-item"><span class="legend-line" style="background: #10b981;"></span>Total Latency</span>
+              <span class="legend-item"><span class="legend-line" style="background: #f59e0b;"></span>p50, p95, p99</span>
+              <span class="legend-item legend-kv-item" id="legend-kv-latency" style="display: none;"><span class="legend-diamond" style="color: #a855f7;">◆</span>KV-Cache %</span>
+            </div>
+          </div>
+
+          <!-- Curve 3: Throughput -->
+          <div class="mockup-chart-card" id="card-plot-throughput" data-metric="throughput">
+            <div class="chart-card-header">
+              <span class="chart-card-title">Throughput (req/s &amp; tok/s)</span>
+              <div class="chart-card-actions">
+                <button type="button" class="chart-toggle-btn active" data-chart="throughput" data-mode="canvas">Vector</button>
+                <button type="button" class="chart-toggle-btn" data-chart="throughput" data-mode="img">PNG</button>
+              </div>
+            </div>
+            <div class="chart-canvas-wrapper" id="wrap-plot-throughput">
+              <canvas id="canvas-plot-throughput" class="interactive-chart-canvas"></canvas>
+              <div class="chart-img-wrapper" id="img-wrap-throughput" style="display: none;">
+                <img id="plot-throughput" class="chart-image" alt="Throughput Plot">
+              </div>
+              <div class="chart-tooltip" id="tooltip-plot-throughput"></div>
+            </div>
+            <div class="chart-mockup-legend">
+              <span class="legend-item"><span class="legend-line" style="background: #10b981;"></span>Throughput (req/s &amp; tok/s)</span>
+              <span class="legend-item"><span class="legend-line" style="background: #38bdf8;"></span>(req/s &amp; tok/s)</span>
+            </div>
+          </div>
+
+          <!-- Curve 4: Error Rate % -->
+          <div class="mockup-chart-card" id="card-plot-errors" data-metric="errors">
+            <div class="chart-card-header">
+              <span class="chart-card-title">Error rate %</span>
+              <div class="chart-card-actions">
+                <button type="button" class="chart-toggle-btn active" data-chart="errors" data-mode="canvas">Vector</button>
+                <button type="button" class="chart-toggle-btn" data-chart="errors" data-mode="img">PNG</button>
+              </div>
+            </div>
+            <div class="chart-canvas-wrapper" id="wrap-plot-errors">
+              <canvas id="canvas-plot-errors" class="interactive-chart-canvas"></canvas>
+              <div class="chart-img-wrapper" id="img-wrap-errors" style="display: none;">
+                <img id="plot-errors" class="chart-image" alt="Error Rate Plot">
+              </div>
+              <div class="chart-tooltip" id="tooltip-plot-errors"></div>
+            </div>
+            <div class="chart-mockup-legend">
+              <span class="legend-item"><span class="legend-line" style="background: #10b981;"></span>Error rate</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Saturation Notice Card (if saturation was found) -->
+        <div class="saturation-card" id="saturation-section" style="display: none; margin-top: 16px;">
+          <div class="saturation-badge">Saturation Behavior Detected</div>
+          <div id="saturation-findings" class="saturation-details"></div>
+        </div>
+
+        <!-- 4. Measured Breakdown Table -->
+        <div class="mockup-table-card" style="margin-top: 20px;">
+          <div class="table-card-top">
+            <span class="table-card-heading">Measured Breakdown</span>
+          </div>
+          <div class="data-table-scroll">
+            <table class="mockup-data-table" id="table-breakdown">
+              <thead>
+                <tr>
+                  <th>Concurrency</th>
+                  <th>Repetitions</th>
+                  <th>TTFT percentiles</th>
+                  <th>Latency percentiles</th>
+                  <th>RPS</th>
+                  <th>SLO</th>
+                </tr>
+              </thead>
+              <tbody id="breakdown-tbody">
+                <!-- Populated dynamically by app.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 5. Navigation & Export Footer -->
+        <div class="results-nav-footer">
+          <button type="button" class="btn-sidebar-subtle" id="btn-results-new-bench">+ New Benchmark</button>
+          <button type="button" class="btn-sidebar-subtle" id="btn-results-export">Export Artifacts</button>
+          <button type="button" class="btn-mockup-blue" id="btn-results-view-report">
+            <span>View Full Generated Report →</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         STAGE 4: REPORT (FULL GENERATED REPORT)
+         ======================================================== -->
+    <section class="view-panel" id="tab-reports">
+      <div class="workflow-stepper">
+        <div class="stepper-step completed" data-step="tab-new">
+          <span class="step-num">✓</span>
+          <span class="step-title">New Benchmark</span>
+        </div>
+        <div class="stepper-connector"></div>
+        <div class="stepper-step completed" data-step="tab-running">
+          <span class="step-num">✓</span>
+          <span class="step-title">Running</span>
+        </div>
+        <div class="stepper-connector"></div>
+        <div class="stepper-step completed" data-step="tab-results">
+          <span class="step-num">✓</span>
+          <span class="step-title">Results</span>
+        </div>
+        <div class="stepper-connector"></div>
+        <div class="stepper-step active" data-step="tab-reports">
+          <span class="step-num">4</span>
+          <span class="step-title">Report</span>
+        </div>
+      </div>
+
+      <div class="reports-container">
+        <div class="glass-card">
+          <div class="reports-header-row">
+            <div>
+              <h2 class="card-heading">Benchmark Audit Report</h2>
+              <p class="chart-sub" id="report-view-subtitle">Full defensible markdown summary report</p>
+            </div>
+            <div class="reports-toolbar">
+              <select id="report-exp-selector" class="select-micro">
+                <option value="">Select an experiment...</option>
+              </select>
+              <button type="button" class="btn btn-emerald-outline" id="btn-copy-dedicated-report">Copy Markdown</button>
+              <button type="button" class="btn-sidebar-subtle" id="btn-report-back-results">← Back to Results</button>
+            </div>
+          </div>
+          <div class="report-reading-canvas">
+            <pre class="report-markdown-text" id="dedicated-report-markdown">Select an experiment to read its generated report.md</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SEPARATED UTILITY: HISTORY ARCHIVE
          ======================================================== -->
     <section class="view-panel" id="tab-history">
       <div class="archive-container">
@@ -460,35 +737,29 @@
     </section>
 
     <!-- ========================================================
-         VIEW 4: AUDIT REPORTS VIEWER
+         SEPARATED UTILITY: ABOUT & METHODOLOGY
          ======================================================== -->
-    <section class="view-panel" id="tab-reports">
-      <div class="reports-container">
-        <div class="glass-card">
-          <div class="reports-header-row">
-            <div>
-              <h2 class="card-heading">Benchmark Audit Report</h2>
-              <p class="chart-sub" id="report-view-subtitle">Full defensible markdown summary report</p>
-            </div>
-            <div class="reports-toolbar">
-              <select id="report-exp-selector" class="select-micro">
-                <option value="">Select an experiment...</option>
-              </select>
-              <button type="button" class="btn btn-emerald-outline" id="btn-copy-dedicated-report">Copy Markdown</button>
-            </div>
+    <section class="view-panel" id="tab-about">
+      <div class="diagnostics-grid">
+        
+        <!-- Defensible Measurement Semantics Card -->
+        <div class="glass-card" style="grid-column: 1 / -1;">
+          <div class="card-title-row">
+            <div class="card-icon emerald"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+            <h3 class="card-heading">Defensible LLM Capacity Measurement Semantics</h3>
           </div>
-          <div class="report-reading-canvas">
-            <pre class="report-markdown-text" id="dedicated-report-markdown">Select an experiment to read its generated report.md</pre>
+          <div style="font-size: 13px; line-height: 1.6; color: #c9d1d9; margin-top: 10px;">
+            <p>InferLoad is an LLM inference capacity testing laboratory designed for defensible benchmarking under multi-concurrency load. Rather than relying on generic HTTP ping timing, InferLoad tracks client-observed streaming physics:</p>
+            <ul style="margin: 10px 0 14px 20px;">
+              <li><strong>Time to First Token (TTFT):</strong> Client-observed time elapsed from HTTP request dispatch until receiving the first usable streamed content chunk. Reflects initial response delay and server-side queueing; client-side measurement alone does not isolate GPU memory pressure or internal prefill queue depth without correlated server telemetry.</li>
+              <li><strong>Total Latency:</strong> End-to-end client-observed request duration across all generated tokens, tracking p50, p95, and p99 percentiles for tail latency behavior under concurrent load.</li>
+              <li><strong>Throughput (tok/s &amp; req/s):</strong> Client-observed token generation rate and completed request rate across concurrent streams, measuring overall generation capacity under load.</li>
+              <li><strong>Error Rate %:</strong> Measures dropped requests, HTTP 429 backpressure, and timeout drops.</li>
+              <li><strong>Highest Observed Compliant Tested Concurrency:</strong> The maximum tested concurrency level where all repetitions met your specified SLO thresholds. Concurrency levels with tail latency or error violations are flagged as non-compliant for the configured workload.</li>
+            </ul>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- ========================================================
-         VIEW 5: ENVIRONMENT & DIAGNOSTICS
-         ======================================================== -->
-    <section class="view-panel" id="tab-env">
-      <div class="diagnostics-grid">
         <!-- Host Specs -->
         <div class="glass-card">
           <div class="card-title-row">
@@ -538,6 +809,8 @@
       </div>
     </section>
 
+  </main>
+
   <!-- Settings Modal Dialog -->
   <div class="modal-backdrop" id="modal-settings" style="display: none;">
     <div class="modal-card">
@@ -554,7 +827,7 @@
           <div class="modal-field-grid">
             <div class="modal-field">
               <label for="setting-default-url">Default Base URL</label>
-              <input type="text" id="setting-default-url" class="mockup-input" value="http://localhost:8000/v1">
+              <input type="text" id="setting-default-url" class="mockup-input" value="/mock/v1">
             </div>
             <div class="modal-field">
               <label for="setting-default-model">Default Model</label>
@@ -577,7 +850,7 @@
 
         <div class="modal-section">
           <div class="modal-section-header">
-            <h4>Enterprise Security &amp; RBAC</h4>
+            <h4>Security &amp; RBAC</h4>
             <span class="badge-mini" id="modal-auth-badge">Open Access</span>
           </div>
           <div class="modal-field">
@@ -630,18 +903,18 @@
       <div class="modal-body help-guide-body">
         <div class="help-article-block">
           <h4>🎯 What InferLoad Measures</h4>
-          <p>InferLoad is a rigorous, SRE-grade LLM inference capacity testing laboratory. Unlike generic HTTP load testers, InferLoad captures token-level streaming physics:</p>
+          <p>InferLoad is an LLM inference capacity testing laboratory designed for defensible benchmarking under multi-concurrency load. Rather than relying on generic HTTP request timing, InferLoad tracks client-observed streaming metrics:</p>
           <ul>
-            <li><strong>Time to First Token (TTFT):</strong> Time elapsed between HTTP request dispatch and receiving the initial token chunk. Directly indicates prefill queue depth and GPU memory pressure.</li>
-            <li><strong>Total Latency:</strong> End-to-end elapsed time across all generated tokens. Measures tail degradation across worker pools.</li>
-            <li><strong>Throughput (tok/s &amp; req/s):</strong> Output generation rate. Evaluates KV-cache scheduling efficiency and tensor-parallel saturation.</li>
-            <li><strong>Error Rate %:</strong> Measures dropped requests, HTTP 429 backpressure, and model context timeouts.</li>
+            <li><strong>Time to First Token (TTFT):</strong> Client-observed time elapsed from HTTP request dispatch until receiving the first usable streamed content chunk. Reflects initial response delay and server-side queueing; client-side measurement alone does not isolate GPU memory pressure or internal prefill queue depth without correlated server telemetry.</li>
+            <li><strong>Total Latency:</strong> End-to-end client-observed request duration across all generated tokens, tracking p50, p95, and p99 percentiles for tail latency behavior under concurrent load.</li>
+            <li><strong>Throughput (tok/s &amp; req/s):</strong> Client-observed token generation rate and completed request rate across concurrent streams, measuring overall generation capacity under load.</li>
+            <li><strong>Error Rate %:</strong> Measures dropped requests, HTTP 429 backpressure, and timeout drops.</li>
           </ul>
         </div>
 
         <div class="help-article-block">
           <h4>🚦 Executive Capacity Planner &amp; Strict SLO Gates</h4>
-          <p>InferLoad calculates the <em>Highest Observed Compliant Tested Concurrency</em> against your defined SLO thresholds (e.g. TTFT &lt; 350ms, Latency &lt; 1500ms, Error &lt; 1.0%). Any concurrency level that triggers a tail violation is classified as unfeasible for production deployment.</p>
+          <p>InferLoad determines the <em>Highest Observed Compliant Tested Concurrency</em>: the maximum tested concurrency level where all repetitions met your specified SLO thresholds (e.g. TTFT &lt; 350ms, Latency &lt; 1500ms, Error &lt; 1.0%). Concurrency levels with tail latency or error violations are flagged as non-compliant for the configured workload.</p>
         </div>
 
         <div class="help-article-block">
@@ -652,7 +925,7 @@
         <div class="help-article-block">
           <h4>⌨ Keyboard Shortcuts</h4>
           <div class="shortcut-pills-row">
-            <span class="shortcut-pill"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> Save / Run Benchmark</span>
+            <span class="shortcut-pill"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> Run Benchmark</span>
             <span class="shortcut-pill"><kbd>Esc</kbd> Close Dialogs</span>
           </div>
         </div>

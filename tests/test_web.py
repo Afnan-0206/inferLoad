@@ -254,3 +254,50 @@ def test_web_experiment_websocket(client: TestClient) -> None:
     finally:
         _jobs.pop(mock_job_id, None)
 
+
+def test_web_index_staged_workflow_and_semantics(client: TestClient) -> None:
+    resp = client.get("/")
+    assert resp.status_code == 200
+    html = resp.text
+
+    # Staged navigation
+    assert "data-tab=\"tab-new\"" in html
+    assert "data-tab=\"tab-running\"" in html
+    assert "data-tab=\"tab-results\"" in html
+    assert "data-tab=\"tab-reports\"" in html
+
+    # Initial state correctness (honest empty state, no hardcoded capacity=8)
+    assert "No benchmark run yet" in html
+    assert "Configure a workload and run your first experiment" in html
+    assert "id=\"hero-capacity-value\">—</span>" in html
+
+    # Cloud demo & endpoint advisory
+    assert "value=\"/mock/v1\"" in html
+    assert "value=\"mock-llama3-8b\"" in html
+    assert "Demo mode — runs against InferLoad's built-in test endpoint" in html
+    assert "Local only" in html
+    assert "Remote endpoint required" in html
+
+    # Defensible client-observed semantics (no hype / over-attribution)
+    assert "Directly indicates prefill queue depth" not in html
+    assert "SRE-grade LLM inference capacity testing laboratory" not in html
+    assert "client-observed" in html.lower()
+
+
+def test_web_validate_relative_mock_endpoint(client: TestClient) -> None:
+    payload = {
+        "name": "mock-test",
+        "base_url": "/mock/v1",
+        "model": "mock-llama3-8b",
+        "concurrency": [1, 2],
+        "repetitions": 1,
+        "requests_per_point": 2,
+        "prompts": ["What is caching?"],
+        "max_tokens": 16,
+    }
+    resp = client.post("/api/validate", json=payload)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["valid"] is True
+    assert data["errors"] == []
+

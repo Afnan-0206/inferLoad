@@ -342,21 +342,21 @@
     "semantic_hash": ""
   },
   "src/inferload/web.py": {
-    "mtime": 1791016046.198007,
-    "seen": 1791016531.3430483,
-    "ast_hash": "81cb1757748b56c088a4651fb3cd2276",
+    "mtime": 1791021222.9569376,
+    "seen": 1791021724.8898501,
+    "ast_hash": "b76565e57ee0c43bc19cca45bfb9e2af",
     "semantic_hash": ""
   },
   "src/inferload/web_static/app.js": {
-    "mtime": 1791016450.108054,
-    "seen": 1791016531.3430512,
-    "ast_hash": "af87bd10977b8d06e31cccec23e4c2e6",
+    "mtime": 1791021625.106615,
+    "seen": 1791021724.889854,
+    "ast_hash": "c4f39a250aaa9ba0480c7946161a576d",
     "semantic_hash": ""
   },
   "tests/test_web.py": {
-    "mtime": 1791016472.0332575,
-    "seen": 1791016531.3430912,
-    "ast_hash": "c28982a597015e679b4336d98a099a73",
+    "mtime": 1791021681.9737165,
+    "seen": 1791021724.8898966,
+    "ast_hash": "307c4d4a9a0b96df4570ceae44616927",
     "semantic_hash": ""
   },
   "docs/web_ui.md": {
@@ -366,9 +366,9 @@
     "semantic_hash": ""
   },
   "src/inferload/web_static/index.html": {
-    "mtime": 1791016236.284529,
-    "seen": 1791016531.343173,
-    "ast_hash": "b577c2219b90aebcc6f0bfe3ea3b8dd0",
+    "mtime": 1791021318.990598,
+    "seen": 1791021724.8899732,
+    "ast_hash": "ee561371ebee7895e69ac4cc8c80bd8c",
     "semantic_hash": ""
   },
   "api/index.py": {

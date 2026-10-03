@@ -1,6 +1,6 @@
 /* ============================================================
-   InferLoad — Modern Studio Dark Frontend Engine
-   Full 5-view router, live WebSocket & SSE streaming, SRE-grade telemetry
+   InferLoad — Modern Benchmark & Capacity Analysis Frontend Engine
+   Full staged workflow: New Benchmark -> Running -> Results -> Report
    ============================================================ */
 
 let currentJobId = null;
@@ -60,7 +60,7 @@ function showToast(message, duration = 3000) {
 }
 
 /* ══════════════════════════════════════════════
-   1. NAVIGATION ROUTER (5 VIEWS)
+   1. NAVIGATION ROUTER (STAGED WORKFLOW)
    ══════════════════════════════════════════════ */
 function initNavRouter() {
   const navTabs = document.querySelectorAll('.nav-tab');
@@ -71,23 +71,65 @@ function initNavRouter() {
     });
   });
 
+  // Stepper step navigation clicks
+  document.querySelectorAll('.stepper-step').forEach(step => {
+    step.addEventListener('click', () => {
+      const target = step.dataset.step;
+      if (target) switchView(target);
+    });
+  });
+
+  // Cross-view button actions
   const jumpToAnalyticsBtn = document.getElementById('btn-view-full-analytics');
   if (jumpToAnalyticsBtn) {
     jumpToAnalyticsBtn.addEventListener('click', () => {
       switchView('tab-results');
     });
   }
+
+  const btnResultsToNew = document.getElementById('btn-results-to-new');
+  if (btnResultsToNew) btnResultsToNew.addEventListener('click', () => switchView('tab-new'));
+
+  const btnResultsNewBench = document.getElementById('btn-results-new-bench');
+  if (btnResultsNewBench) btnResultsNewBench.addEventListener('click', () => switchView('tab-new'));
+
+  const btnResultsViewReport = document.getElementById('btn-results-view-report');
+  if (btnResultsViewReport) btnResultsViewReport.addEventListener('click', () => switchView('tab-reports'));
+
+  const btnReportBackResults = document.getElementById('btn-report-back-results');
+  if (btnReportBackResults) btnReportBackResults.addEventListener('click', () => switchView('tab-results'));
+
+  const btnErrorBackNew = document.getElementById('btn-error-back-new');
+  if (btnErrorBackNew) btnErrorBackNew.addEventListener('click', () => switchView('tab-new'));
+
+  const btnResultsExport = document.getElementById('btn-results-export');
+  if (btnResultsExport) {
+    btnResultsExport.addEventListener('click', () => {
+      const modal = document.getElementById('modal-export');
+      if (modal) modal.style.display = 'flex';
+    });
+  }
 }
 
 function switchView(tabId) {
+  // Normalize tab aliases
+  if (tabId === 'tab-studio') tabId = 'tab-new';
+  if (tabId === 'tab-env') tabId = 'tab-about';
+
   // Update nav buttons
   document.querySelectorAll('.nav-tab').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.tab === tabId);
+    btn.classList.toggle('active', btn.dataset.tab === tabId || (tabId === 'tab-about' && btn.dataset.tab === 'tab-env'));
   });
 
-  // Switch panels
+  // Switch view panels
   document.querySelectorAll('.view-panel').forEach(panel => {
-    panel.classList.toggle('active', panel.id === tabId);
+    const isTarget = panel.id === tabId || (tabId === 'tab-about' && panel.id === 'tab-env');
+    panel.classList.toggle('active', isTarget);
+  });
+
+  // Update stepper active states
+  document.querySelectorAll('.stepper-step').forEach(step => {
+    step.classList.toggle('active', step.dataset.step === tabId);
   });
 
   // Lazy loaders
@@ -95,12 +137,35 @@ function switchView(tabId) {
     loadFullHistoryArchive();
   } else if (tabId === 'tab-reports') {
     populateReportsSelector();
+  } else if (tabId === 'tab-results') {
+    if (lastRenderedPoints && lastRenderedPoints.length > 0) {
+      setTimeout(() => {
+        renderAllVectorCharts(lastRenderedPoints, lastRenderedOptions);
+      }, 50);
+    }
   }
 }
 
 /* ══════════════════════════════════════════════
-   2. QUICK LAUNCH PRESETS
+   2. QUICK LAUNCH PRESETS & ENDPOINT ADVISORY
    ══════════════════════════════════════════════ */
+function updateEndpointAdvisory(presetName) {
+  const adv = document.getElementById('endpoint-advisory');
+  const advText = document.getElementById('endpoint-advisory-text');
+  if (!adv || !advText) return;
+
+  if (presetName === 'mock') {
+    adv.className = 'endpoint-advisory-box mock';
+    advText.textContent = "Demo mode — runs against InferLoad's built-in test endpoint. Works immediately on cloud deployments without requiring external models or GPU servers.";
+  } else if (presetName === 'ollama') {
+    adv.className = 'endpoint-advisory-box ollama';
+    advText.textContent = "Local only — runs against http://127.0.0.1:11434. Requires Ollama installed on the server host. Note: On cloud hosting (like Render), localhost refers to the cloud server container, not your personal computer.";
+  } else if (presetName === 'vllm') {
+    adv.className = 'endpoint-advisory-box vllm';
+    advText.textContent = "Remote endpoint required — enter a reachable OpenAI-compatible inference server URL accessible from this instance.";
+  }
+}
+
 function initPresets() {
   const btnMock = document.getElementById('preset-mock');
   const btnOllama = document.getElementById('preset-ollama');
@@ -115,12 +180,22 @@ function initPresets() {
   if (btnMock) {
     btnMock.addEventListener('click', () => {
       setActivePreset(btnMock);
-      document.getElementById('target-base-url').value = '/mock/v1';
-      document.getElementById('target-model').value = 'mock-llama3-8b';
-      document.getElementById('sweep-concurrency').value = '1, 2, 4';
-      document.getElementById('sweep-repetitions').value = '2';
-      document.getElementById('sweep-requests').value = '5';
-      document.getElementById('header-endpoint-label').textContent = '/mock/v1';
+      const urlEl = document.getElementById('target-base-url');
+      if (urlEl) urlEl.value = '/mock/v1';
+      const modEl = document.getElementById('target-model');
+      if (modEl) modEl.value = 'mock-llama3-8b';
+      const sweepEl = document.getElementById('sweep-concurrency');
+      if (sweepEl) {
+        sweepEl.value = '1, 2, 4';
+        sweepEl.dispatchEvent(new Event('input'));
+      }
+      const repsEl = document.getElementById('sweep-repetitions');
+      if (repsEl) repsEl.value = '2';
+      const reqsEl = document.getElementById('sweep-requests');
+      if (reqsEl) reqsEl.value = '5';
+      const headerLbl = document.getElementById('header-endpoint-label');
+      if (headerLbl) headerLbl.textContent = '/mock/v1';
+      updateEndpointAdvisory('mock');
       showToast('Built-in Demo preset loaded');
     });
   }
@@ -128,12 +203,22 @@ function initPresets() {
   if (btnOllama) {
     btnOllama.addEventListener('click', () => {
       setActivePreset(btnOllama);
-      document.getElementById('target-base-url').value = 'http://127.0.0.1:11434/v1';
-      document.getElementById('target-model').value = discoveredModels.length ? discoveredModels[0] : 'qwen2.5:0.5b';
-      document.getElementById('sweep-concurrency').value = '1, 2';
-      document.getElementById('sweep-repetitions').value = '1';
-      document.getElementById('sweep-requests').value = '3';
-      document.getElementById('header-endpoint-label').textContent = 'http://127.0.0.1:11434/v1';
+      const urlEl = document.getElementById('target-base-url');
+      if (urlEl) urlEl.value = 'http://127.0.0.1:11434/v1';
+      const modEl = document.getElementById('target-model');
+      if (modEl) modEl.value = discoveredModels.length ? discoveredModels[0] : 'qwen2.5:0.5b';
+      const sweepEl = document.getElementById('sweep-concurrency');
+      if (sweepEl) {
+        sweepEl.value = '1, 2';
+        sweepEl.dispatchEvent(new Event('input'));
+      }
+      const repsEl = document.getElementById('sweep-repetitions');
+      if (repsEl) repsEl.value = '1';
+      const reqsEl = document.getElementById('sweep-requests');
+      if (reqsEl) reqsEl.value = '3';
+      const headerLbl = document.getElementById('header-endpoint-label');
+      if (headerLbl) headerLbl.textContent = 'http://127.0.0.1:11434/v1';
+      updateEndpointAdvisory('ollama');
       showToast('Local Ollama preset loaded');
     });
   }
@@ -141,12 +226,22 @@ function initPresets() {
   if (btnVllm) {
     btnVllm.addEventListener('click', () => {
       setActivePreset(btnVllm);
-      document.getElementById('target-base-url').value = 'http://127.0.0.1:8000/v1';
-      document.getElementById('target-model').value = 'meta-llama/Meta-Llama-3-8B-Instruct';
-      document.getElementById('sweep-concurrency').value = '1, 4, 8';
-      document.getElementById('sweep-repetitions').value = '2';
-      document.getElementById('sweep-requests').value = '5';
-      document.getElementById('header-endpoint-label').textContent = 'http://127.0.0.1:8000/v1';
+      const urlEl = document.getElementById('target-base-url');
+      if (urlEl) urlEl.value = 'http://127.0.0.1:8000/v1';
+      const modEl = document.getElementById('target-model');
+      if (modEl) modEl.value = 'meta-llama/Meta-Llama-3-8B-Instruct';
+      const sweepEl = document.getElementById('sweep-concurrency');
+      if (sweepEl) {
+        sweepEl.value = '1, 4, 8';
+        sweepEl.dispatchEvent(new Event('input'));
+      }
+      const repsEl = document.getElementById('sweep-repetitions');
+      if (repsEl) repsEl.value = '2';
+      const reqsEl = document.getElementById('sweep-requests');
+      if (reqsEl) reqsEl.value = '5';
+      const headerLbl = document.getElementById('header-endpoint-label');
+      if (headerLbl) headerLbl.textContent = 'http://127.0.0.1:8000/v1';
+      updateEndpointAdvisory('vllm');
       showToast('vLLM Server preset loaded');
     });
   }
@@ -159,8 +254,22 @@ function initFormControls() {
   const urlInput = document.getElementById('target-base-url');
   if (urlInput) {
     urlInput.addEventListener('input', (e) => {
-      const val = e.target.value.trim() || 'http://127.0.0.1:11434/v1';
-      document.getElementById('header-endpoint-label').textContent = val;
+      const val = e.target.value.trim() || '/mock/v1';
+      const headerLbl = document.getElementById('header-endpoint-label');
+      if (headerLbl) headerLbl.textContent = val;
+
+      const adv = document.getElementById('endpoint-advisory');
+      const advText = document.getElementById('endpoint-advisory-text');
+      if (val.startsWith('/mock') || val === '/mock/v1') {
+        if (adv) adv.className = 'endpoint-advisory-box mock';
+        if (advText) advText.textContent = "Demo mode — runs against InferLoad's built-in test endpoint. Works immediately on cloud deployments without requiring external models or GPU servers.";
+      } else if (val.includes('localhost') || val.includes('127.0.0.1')) {
+        if (adv) adv.className = 'endpoint-advisory-box ollama';
+        if (advText) advText.textContent = "Localhost endpoint — Note: On cloud hosting (like Render), localhost refers to the cloud server container, not your personal computer. For local Ollama testing, run InferLoad locally on your machine.";
+      } else {
+        if (adv) adv.className = 'endpoint-advisory-box vllm';
+        if (advText) advText.textContent = "Remote endpoint — ensure this URL is publicly reachable or network-accessible from the InferLoad server.";
+      }
     });
   }
 
@@ -293,17 +402,20 @@ function buildPayload() {
     .filter(n => !isNaN(n) && n > 0);
 
   let rawUrl = document.getElementById('target-base-url').value.trim();
-  if (rawUrl.startsWith('/')) {
-    rawUrl = window.location.origin + rawUrl;
+  if (!rawUrl) {
+    rawUrl = '/mock/v1';
   }
 
+  const modelVal = document.getElementById('target-model').value.trim() || 'mock-llama3-8b';
+  const nameVal = `${modelVal}-sweep`;
+
   const payload = {
-    name: 'web-sweep-' + Date.now(),
+    name: nameVal,
     base_url: rawUrl,
-    model: document.getElementById('target-model').value.trim(),
+    model: modelVal,
     timeout_seconds: parseFloat(document.getElementById('target-timeout')?.value || 60),
     concurrency: concList.length ? concList : [1, 2, 4],
-    repetitions: parseInt(document.getElementById('sweep-repetitions').value, 10) || 1,
+    repetitions: parseInt(document.getElementById('sweep-repetitions').value, 10) || 2,
     requests_per_point: parseInt(document.getElementById('sweep-requests').value, 10) || 5,
     warmup_requests: parseInt(document.getElementById('exec-warmup')?.value || 1, 10),
     max_tokens: parseInt(document.getElementById('workload-max-tokens').value, 10) || 32,
@@ -313,8 +425,8 @@ function buildPayload() {
     arrival_mode: document.getElementById('arrival-mode').value,
     prompts: getPromptsList(),
     slo: {
-      max_ttft_p95_ms: parseFloat(document.getElementById('slo-ttft').value) || 1000.0,
-      max_total_latency_p95_ms: parseFloat(document.getElementById('slo-latency').value) || 2500.0,
+      max_ttft_p95_ms: parseFloat(document.getElementById('slo-ttft').value) || 350.0,
+      max_total_latency_p95_ms: parseFloat(document.getElementById('slo-latency').value) || 1500.0,
       min_throughput_req_per_sec: parseFloat(document.getElementById('slo-throughput').value) || 1.0,
       max_error_rate_pct: parseFloat(document.getElementById('slo-error').value) || 1.0,
     }
@@ -393,16 +505,41 @@ async function handleBenchmarkSubmit(e) {
   const payload = buildPayload();
 
   // Reset UI states
-  document.getElementById('empty-state').style.display = 'none';
-  document.getElementById('studio-summary-card').style.display = 'none';
-  document.getElementById('error-card').style.display = 'none';
-  document.getElementById('progress-card').style.display = 'flex';
+  const errCard = document.getElementById('error-card');
+  if (errCard) errCard.style.display = 'none';
+
+  // Setup running cockpit headers & progress
+  const expTitle = document.getElementById('running-exp-title');
+  if (expTitle) expTitle.textContent = `${payload.model} Concurrency Sweep`;
+  const expTarget = document.getElementById('running-exp-target');
+  if (expTarget) expTarget.textContent = `Target: ${payload.base_url} (Sweep: [${payload.concurrency.join(', ')}], Reps: ${payload.repetitions})`;
+
+  const statusPill = document.getElementById('running-status-pill');
+  if (statusPill) {
+    statusPill.className = 'live-status-pill running';
+    const statusText = document.getElementById('execution-status-text');
+    if (statusText) statusText.textContent = 'Benchmark in Progress';
+  }
+
+  const progressBar = document.getElementById('progress-bar-fill');
+  if (progressBar) progressBar.style.width = '0%';
+  const progressTrials = document.getElementById('progress-trials');
+  if (progressTrials) progressTrials.textContent = `0 / ${payload.concurrency.length * payload.repetitions} trials completed (0%)`;
+  const progressTrialId = document.getElementById('progress-trial-id');
+  if (progressTrialId) progressTrialId.textContent = 'Initializing sweep...';
+
+  // Turn on pulse indicator on running tab
+  const pulse = document.getElementById('nav-running-pulse');
+  if (pulse) pulse.style.display = 'inline-block';
 
   resetExecutionTelemetry();
   updateStepper('step-validation');
 
   runBtn.disabled = true;
   runBtn.innerHTML = 'Launching...';
+
+  // Switch view to Running stage immediately!
+  switchView('tab-running');
 
   try {
     const res = await fetch('/api/experiments', {
@@ -420,7 +557,10 @@ async function handleBenchmarkSubmit(e) {
 
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
-      throw new Error(errData.detail || `Server error ${res.status}`);
+      const detailMsg = typeof errData.detail === 'object' && errData.detail.errors
+        ? errData.detail.errors.join(', ')
+        : (errData.detail || `Server error ${res.status}`);
+      throw new Error(detailMsg);
     }
 
     const data = await res.json();
@@ -430,20 +570,23 @@ async function handleBenchmarkSubmit(e) {
     updateStepper('step-running');
     appendLog(`[InferLoad] Benchmark job initialized. Job ID: ${currentJobId}`);
     appendLog(`[InferLoad] Model: ${payload.model} | Base URL: ${payload.base_url}`);
-    appendLog(`[InferLoad] Concurrency sweep: [${payload.concurrency.join(', ')}] | Reps: ${payload.repetitions}`);
+    appendLog(`[InferLoad] Concurrency sweep: [${payload.concurrency.join(', ')}] | Reps: ${payload.repetitions} | Reqs/pt: ${payload.requests_per_point}`);
 
     // Launch Live Real-Time WebSocket Streaming with SSE / Polling fallbacks
     connectLiveExperimentStream(currentJobId);
   } catch (err) {
     stopTimer();
-    document.getElementById('progress-card').style.display = 'none';
-    document.getElementById('error-card').style.display = 'flex';
-    document.getElementById('error-card-msg').textContent = err.message;
+    if (pulse) pulse.style.display = 'none';
+    if (errCard) {
+      errCard.style.display = 'flex';
+      document.getElementById('error-card-msg').textContent = err.message;
+    }
     runBtn.disabled = false;
     runBtn.innerHTML = `
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-      <span>Launch Benchmark</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      <span>Run Benchmark</span>
     `;
+    appendLog(`[InferLoad Error] Failed to launch benchmark: ${err.message}`);
   }
 }
 
@@ -709,11 +852,23 @@ function resetExecutionTelemetry() {
    ══════════════════════════════════════════════ */
 async function onBenchmarkSuccess(jobData) {
   const runBtn = document.getElementById('btn-run');
-  runBtn.disabled = false;
-  runBtn.innerHTML = `
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-    <span>Launch Benchmark</span>
-  `;
+  if (runBtn) {
+    runBtn.disabled = false;
+    runBtn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      <span>Run Benchmark</span>
+    `;
+  }
+
+  const runningPulse = document.getElementById('nav-running-pulse');
+  if (runningPulse) runningPulse.style.display = 'none';
+
+  const statusPill = document.getElementById('running-status-pill');
+  if (statusPill) {
+    statusPill.className = 'live-status-pill completed';
+    const statusText = document.getElementById('execution-status-text');
+    if (statusText) statusText.textContent = 'Completed';
+  }
 
   appendLog('[InferLoad] Benchmark run successfully finalized. Processing capacity analysis...');
   showToast('Benchmark run completed successfully!');
@@ -724,9 +879,18 @@ async function onBenchmarkSuccess(jobData) {
     const summary = await res.json();
     activeExperimentData = { summary, job_id: jobData.job_id };
 
+    // Reveal active results deck and hide empty state
+    const emptyState = document.getElementById('results-empty-state');
+    if (emptyState) emptyState.style.display = 'none';
+    const activeDeck = document.getElementById('results-active-deck');
+    if (activeDeck) activeDeck.style.display = 'block';
+
     renderStudioSummaryDrawer(summary);
     renderFullAnalyticsView(summary, jobData.job_id);
     loadRecentHistory();
+
+    // Auto-transition to Results stage so user sees the capacity verdict & charts
+    switchView('tab-results');
   } catch (err) {
     appendLog(`[InferLoad Error] Failed to parse summary artifact: ${err.message}`);
   }
@@ -734,14 +898,22 @@ async function onBenchmarkSuccess(jobData) {
 
 function onBenchmarkFailure(jobData) {
   const runBtn = document.getElementById('btn-run');
-  runBtn.disabled = false;
-  runBtn.innerHTML = `
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-    <span>Launch Benchmark</span>
-  `;
+  if (runBtn) {
+    runBtn.disabled = false;
+    runBtn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      <span>Run Benchmark</span>
+    `;
+  }
 
-  document.getElementById('error-card').style.display = 'flex';
-  document.getElementById('error-card-msg').textContent = jobData.error_message || 'Benchmark worker exited with an error.';
+  const runningPulse = document.getElementById('nav-running-pulse');
+  if (runningPulse) runningPulse.style.display = 'none';
+
+  const errCard = document.getElementById('error-card');
+  if (errCard) {
+    errCard.style.display = 'flex';
+    document.getElementById('error-card-msg').textContent = jobData.error_message || 'Benchmark worker exited with an error.';
+  }
   appendLog(`[InferLoad Error] Benchmark failed: ${jobData.error_message || 'Unknown error'}`);
 }
 
@@ -852,6 +1024,7 @@ function renderFullAnalyticsView(summary, jobId) {
   const heroVal = document.getElementById('hero-capacity-value');
   const heroBadge = document.getElementById('hero-capacity-badge');
   const heroBanner = document.getElementById('capacity-hero');
+  const heroSubtext = document.getElementById('hero-capacity-subtext');
 
   if (capVal !== null && capVal !== undefined) {
     if (heroVal) {
@@ -861,9 +1034,12 @@ function renderFullAnalyticsView(summary, jobId) {
     if (heroBadge) {
       heroBadge.innerHTML = `
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        <span>Compliance</span>
+        <span>Compliant</span>
       `;
       heroBadge.className = 'badge-compliance-pill compliant';
+    }
+    if (heroSubtext) {
+      heroSubtext.textContent = `Based on your tested sweep, concurrency ${capVal} is the highest tested level meeting all configured SLO thresholds.`;
     }
     if (heroBanner) heroBanner.className = 'mockup-capacity-card';
   } else {
@@ -874,32 +1050,37 @@ function renderFullAnalyticsView(summary, jobId) {
     if (heroBadge) {
       heroBadge.innerHTML = `
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        <span>Violation</span>
+        <span>SLO Violation</span>
       `;
       heroBadge.className = 'badge-compliance-pill violation';
+    }
+    if (heroSubtext) {
+      heroSubtext.textContent = 'All tested concurrency levels triggered one or more SLO threshold violations.';
     }
     if (heroBanner) heroBanner.className = 'mockup-capacity-card';
   }
 
-  // 4 Primary KPI Tiles (if present in view)
-  if (points.length > 0) {
-    let sumTput = 0, sumTtft = 0, sumLat = 0, sumErr = 0;
-    points.forEach(r => {
-      sumTput += (r.tput_tok || r.tput_req || 0);
-      sumTtft += (r.ttft_p95 || 0);
-      sumLat += (r.lat_p95 || 0);
-      sumErr += (r.error_rate_pct || 0);
-    });
+  // 4 Primary KPI Tiles
+  let targetPoint = null;
+  if (capVal !== null && capVal !== undefined) {
+    targetPoint = points.find(p => p.concurrency === capVal);
+  }
+  if (!targetPoint && points.length > 0) {
+    targetPoint = points[0];
+  }
 
-    const count = points.length;
+  if (targetPoint) {
     const elTput = document.getElementById('hero-kpi-throughput');
     const elTtft = document.getElementById('hero-kpi-ttft');
     const elLat = document.getElementById('hero-kpi-latency');
     const elErr = document.getElementById('hero-kpi-errors');
-    if (elTput) elTput.textContent = (sumTput / count).toFixed(1);
-    if (elTtft) elTtft.textContent = (sumTtft / count).toFixed(1);
-    if (elLat) elLat.textContent = (sumLat / count).toFixed(1);
-    if (elErr) elErr.textContent = `${(sumErr / count).toFixed(2)}%`;
+    const tVal = (targetPoint.tput_req !== undefined && targetPoint.tput_req > 0)
+      ? targetPoint.tput_req
+      : (targetPoint.tput_tok || 0);
+    if (elTput) elTput.textContent = tVal.toFixed(2);
+    if (elTtft) elTtft.textContent = targetPoint.ttft_p95 ? targetPoint.ttft_p95.toFixed(1) : '—';
+    if (elLat) elLat.textContent = targetPoint.lat_p95 ? targetPoint.lat_p95.toFixed(1) : '—';
+    if (elErr) elErr.textContent = `${(targetPoint.error_rate_pct || 0).toFixed(1)}%`;
   }
 
   // Measured Breakdown Table (Mockup Exact: Concurrency | Repetitions | TTFT percentiles | Latency percentiles | RPS | SLO)
@@ -1703,110 +1884,16 @@ async function loadRecentHistory() {
   }
 
   if (cachedHistory && cachedHistory.length > 0) {
-    // Select the richest experiment with the highest number of tested concurrency levels
-    let bestExp = cachedHistory[0];
-    for (const exp of cachedHistory) {
-      const bestLen = (bestExp.concurrency_levels || []).length;
-      const currLen = (exp.concurrency_levels || []).length;
-      if (currLen > bestLen) {
-        bestExp = exp;
-      }
-    }
-    await inspectExperiment(bestExp.experiment_id, false);
+    // Find the latest completed experiment
+    let latestExp = cachedHistory[0];
+    await inspectExperiment(latestExp.experiment_id, false);
   } else {
-    loadBaselineMockupData();
+    // Honest initial state: show empty state card, keep active results deck hidden
+    const emptyState = document.getElementById('results-empty-state');
+    if (emptyState) emptyState.style.display = 'flex';
+    const activeDeck = document.getElementById('results-active-deck');
+    if (activeDeck) activeDeck.style.display = 'none';
   }
-}
-
-function loadBaselineMockupData() {
-  const mockSummary = {
-    schema_version: '0.2',
-    name: 'calibrated-capacity-sweep',
-    highest_compliant_concurrency: 8,
-    points: [
-      {
-        concurrency: 1,
-        repetitions: 1,
-        requests_per_point: 20,
-        ttft_p50: 45.2,
-        ttft_p95: 52.8,
-        ttft_p99: 55.4,
-        latency_p50: 320.5,
-        latency_p95: 410.2,
-        latency_p99: 450.1,
-        throughput: 2.44,
-        tokens_per_second: 76.8,
-        error_rate: 0.0,
-        compliant: true
-      },
-      {
-        concurrency: 2,
-        repetitions: 1,
-        requests_per_point: 20,
-        ttft_p50: 68.4,
-        ttft_p95: 84.1,
-        ttft_p99: 92.0,
-        latency_p50: 460.2,
-        latency_p95: 580.4,
-        latency_p99: 640.2,
-        throughput: 3.82,
-        tokens_per_second: 121.6,
-        error_rate: 0.0,
-        compliant: true
-      },
-      {
-        concurrency: 4,
-        repetitions: 1,
-        requests_per_point: 20,
-        ttft_p50: 112.0,
-        ttft_p95: 145.3,
-        ttft_p99: 168.0,
-        latency_p50: 680.1,
-        latency_p95: 850.6,
-        latency_p99: 980.5,
-        throughput: 5.64,
-        tokens_per_second: 179.2,
-        error_rate: 0.0,
-        compliant: true
-      },
-      {
-        concurrency: 8,
-        repetitions: 1,
-        requests_per_point: 20,
-        ttft_p50: 185.3,
-        ttft_p95: 240.2,
-        ttft_p99: 290.1,
-        latency_p50: 1150.4,
-        latency_p95: 1420.8,
-        latency_p99: 1680.2,
-        throughput: 7.21,
-        tokens_per_second: 230.4,
-        error_rate: 0.0,
-        compliant: true
-      },
-      {
-        concurrency: 16,
-        repetitions: 1,
-        requests_per_point: 20,
-        ttft_p50: 420.6,
-        ttft_p95: 560.4,
-        ttft_p99: 680.9,
-        latency_p50: 2200.5,
-        latency_p95: 2950.2,
-        latency_p99: 3400.0,
-        throughput: 6.85,
-        tokens_per_second: 217.6,
-        error_rate: 0.025,
-        compliant: false,
-        violations: ["Latency p95 (2950ms) exceeded threshold (2500ms)"]
-      }
-    ],
-    saturation_findings: [
-      "Observed saturation knee when concurrency increased beyond 8: throughput saturated near 230 tok/s while latency doubled (+107%)."
-    ]
-  };
-
-  renderFullAnalyticsView(mockSummary, 'demo-baseline');
 }
 
 async function loadFullHistoryArchive() {
@@ -1873,9 +1960,15 @@ async function inspectExperiment(expId, switchTab = true) {
     const res = await fetch(`/api/experiments/${expId}/artifacts/summary.json`);
     if (!res.ok) throw new Error('Artifact summary.json not found');
     const summary = await res.json();
+
+    const emptyState = document.getElementById('results-empty-state');
+    if (emptyState) emptyState.style.display = 'none';
+    const activeDeck = document.getElementById('results-active-deck');
+    if (activeDeck) activeDeck.style.display = 'block';
+
     renderFullAnalyticsView(summary, expId);
     renderStudioSummaryDrawer(summary);
-    if (switchTab) switchView('tab-studio');
+    if (switchTab) switchView('tab-results');
     showToast(`Loaded sweep data for ${expId}`);
   } catch (err) {
     showToast(`Could not load experiment data: ${err.message}`);

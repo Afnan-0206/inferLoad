@@ -411,9 +411,10 @@ def create_app() -> FastAPI:
             errors.append("Target endpoint must be a valid HTTP/HTTPS URL or local path (e.g. http://127.0.0.1:11434/v1 or /mock/v1).")
 
         # Resolve relative URLs like /mock/v1 to local server address if relative
+        port = os.environ.get("PORT", "8000")
         effective_base_url = req.base_url
         if effective_base_url.startswith("/"):
-            effective_base_url = f"http://127.0.0.1:8000{effective_base_url}"
+            effective_base_url = f"http://127.0.0.1:{port}{effective_base_url}"
 
         if not req.model or not req.model.strip():
             errors.append("Model name is required.")
@@ -551,7 +552,12 @@ def create_app() -> FastAPI:
         if not val_res["valid"]:
             raise HTTPException(status_code=400, detail={"errors": val_res["errors"]})
 
-        exp_config, slo_config = build_experiment_config(req)
+        port = os.environ.get("PORT", "8000")
+        req_copy = req.model_copy()
+        if req_copy.base_url.startswith("/"):
+            req_copy.base_url = f"http://127.0.0.1:{port}{req_copy.base_url}"
+
+        exp_config, slo_config = build_experiment_config(req_copy)
         job_id = f"job-{uuid.uuid4().hex[:8]}"
 
         job_state = ExperimentJobState(
